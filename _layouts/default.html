@@ -66,7 +66,8 @@
     {% endif %}
 
      {{ content }}
-      
+      <br />
+      <p>Post date: {{ page.date | date: "%F" }}</p>
       <footer class="site-footer">
           <span class="site-footer-owner">Find us on Twitter <a href="https://twitter.com/tipi_hack">@Tipi_hack</a></span>
           <span>Subscribe with <a href="/feed.xml"><img src="/icons/rss.png" /> RSS/Atom</a></span>
