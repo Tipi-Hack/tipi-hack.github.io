@@ -9,6 +9,7 @@ author: Tipi'Hack
 theme: jekyll-theme-cayman
 google_analytics: UA-116371773-1
 logo: /assets/logo.jpg
+seo_tag.image: /assets/logo.jpg
 
 plugins:
   - jekyll-redirect-from
