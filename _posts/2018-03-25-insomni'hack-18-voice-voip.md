@@ -1,5 +1,6 @@
 ---
 title: Insomni'Hack 2018 - Voice-VoIP
+redirect_from: "Writeups/2018/Insomni'hack/voice-voip/"
 ---
 
 # {{page.title}}
