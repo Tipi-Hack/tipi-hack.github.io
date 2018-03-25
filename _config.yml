@@ -5,6 +5,7 @@ twitter_username: tipi_hack
 github_username:  Tipi-Hack
 author: Tipi'Hack
 theme: jekyll-theme-cayman
+google_analytics: UA-116371773-1
 
 plugins:
   - jekyll-redirect-from
