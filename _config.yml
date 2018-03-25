@@ -1,8 +1,7 @@
 theme: jekyll-theme-cayman
 
-defaults:
-  -
-    scope:
-      path: "" # an empty string here means all files in the project
-    values:
-      title: "Tipi'Hack'
+title: Tipi'Hack CTF team
+description: >- # this means to ignore newlines
+  Yet another 🇫🇷 CTF team of casual players!
+twitter_username: tipi_hack
+github_username:  Tipi-Hack
