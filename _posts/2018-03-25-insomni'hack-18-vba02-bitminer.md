@@ -1,6 +1,6 @@
 ---
 title: Insomni'Hack 2018 - bba02-bitminer
-published: false
+published: true
 ---
 
 # {{page.title}}
