@@ -2,11 +2,15 @@ title: Tipi'Hack CTF team
 description: >- # this means to ignore newlines
   Yet another 🇫🇷 CTF team of casual players!
 twitter_username: tipi_hack
+twitter:
+  username: tipi_hack
 github_username:  Tipi-Hack
 author: Tipi'Hack
 theme: jekyll-theme-cayman
 google_analytics: UA-116371773-1
+logo: /assets/logo.jpg
 
 plugins:
   - jekyll-redirect-from
   - jekyll-feed
+  - jekyll-avatar

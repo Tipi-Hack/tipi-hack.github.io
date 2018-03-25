@@ -11,15 +11,15 @@
 We are a French team of pentesters who like to play CTFs.
 
 Participants vary for each CTF. Here is a list of current and past members.
-* Aurélien Marteau \| [@Filo-Man](https://twitter.com/filoman28)
-* [@C4t0ps1s](https://twitter.com/C4t0ps1s)
-* Clément Notin \| [@cnotin](https://twitter.com/cnotin)
-* [@Crypt0-M3lon](https://twitter.com/Crypt0_M3lon)
-* [@dabi0ne](https://twitter.com/dabi0ne)
+* {% avatar Filo-Man size=30 %} Aurélien Marteau \| [@Filo-Man](https://twitter.com/filoman28)
+* {% avatar C4t0ps1s size=30 %} [@C4t0ps1s](https://twitter.com/C4t0ps1s)
+* {% avatar ClementNotin size=30 %} Clément Notin \| [@cnotin](https://twitter.com/cnotin)
+* {% avatar Crypt0-M3lon size=30 %} [@Crypt0-M3lon](https://twitter.com/Crypt0_M3lon)
+* {% avatar dabi0ne size=30 %} [@dabi0ne](https://twitter.com/dabi0ne)
 * [@Ghost](https://twitter.com/Ghostx_0)
-* Guillaume Lopes \| [@Guillaume_Lopes](https://twitter.com/Guillaume_Lopes)
-* Quentin Lemaire \| [@QuentynLemaire](https://twitter.com/QuentynLemaire)
-* [@ZeArioch](https://twitter.com/ZeArioch)
+* {% avatar lopesg size=30 %} Guillaume Lopes \| [@Guillaume_Lopes](https://twitter.com/Guillaume_Lopes)
+* {% avatar qlemaire size=30 %} Quentin Lemaire \| [@QuentynLemaire](https://twitter.com/QuentynLemaire)
+* {% avatar Rakanga size=30 %} [@ZeArioch](https://twitter.com/ZeArioch)
 
 Of course we are on [CTFtime](https://ctftime.org/team/24535).
 # Twitter preview
