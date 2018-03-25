@@ -6,7 +6,7 @@ title: Insomni'Hack 2018 - vba01-baby
 Solves: 56 / Points: 63
 ## Challenge resolution
 The challenge's description references an infection linked to an .xls file. There are various ways of getting Excel to execute arbitrary code, macros being the most widely used vector. [Philippe Lagadec](https://decalage.info/en/taxonomy/term/12) and [Didier Stevens](https://blog.didierstevens.com/my-software/) published a ton of useful tools to analyze malicious documents. We start with `oledump`:
-```
+```shell
 oledump.py -V vba01-baby_272038055eaa62ffe9042d38aff7b5bae1faa518.xls
 [...]
   7: M    7020 '_VBA_PROJECT_CUR/VBA/Module1'
