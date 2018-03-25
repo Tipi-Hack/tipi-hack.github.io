@@ -1,10 +1,1 @@
-
-# Write-ups
-
-<ul>
-  {% for post in site.posts %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+[Head over to our write-ups](https://tipi-hack.github.io/)
