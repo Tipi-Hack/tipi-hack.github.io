@@ -15,6 +15,7 @@ FIXME: first step
 The following base64 is sent over HTTP to the C2 by the malware: 
 
 ```eyJjaWQiOiJERVNLVE9QLUQwMjE0VjgiLCJjcHUiOiJJbnRlbChSKSBDb3JlKFRNKSBpNS00MzEwVSBDUFUgQCAyLjAwR0h6IiwiZ3B1IjoiQ2FydGUgdmlkw6lvIGRlIGJhc2UgTWljcm9zb2Z0In0=```
+
 The decoded base64 is a json object:
 ```
 {
