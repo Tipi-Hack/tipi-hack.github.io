@@ -1,6 +1,5 @@
 ---
 title: Insomni'Hack 2018 - vba01-baby
-published: true
 ---
 
 # {{page.title}}
