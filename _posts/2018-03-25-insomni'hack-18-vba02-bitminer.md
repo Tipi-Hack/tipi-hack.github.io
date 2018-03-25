@@ -1,5 +1,6 @@
 ---
 title: Insomni'Hack 2018 - Vba02-bitminer
+published: false
 ---
 
 # {{page.title}}
