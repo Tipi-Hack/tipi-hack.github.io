@@ -1,5 +1,5 @@
 ---
-title: Insomni'Hack 2018 - bba02-bitminer
+title: Insomni'Hack 2018 - vba02-bitminer
 ---
 
 # {{page.title}}
