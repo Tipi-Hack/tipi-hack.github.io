@@ -5,8 +5,9 @@ title: Insomni'Hack 2018 - vba02-bitminer
 # {{page.title}}
 Solves: 21 / Points: 142
 ## Challenge description
-Oh no I opened an email attachment AGAIN!! Help me to take my revenge. Here is the file I downloaded:
-`vba02-bitminer_4052500b4f2120d3d3ae458b339ec1f16e89e870.xls`
+> Oh no I opened an email attachment AGAIN!! Help me to take my revenge. Here is the file I downloaded:
+> `vba02-bitminer_4052500b4f2120d3d3ae458b339ec1f16e89e870.xls`
+
 ## Challenge resolution
 This begins again with a .xls file. We follow the same steps as the first `vba` challenge to get the macro:
 ```vb
