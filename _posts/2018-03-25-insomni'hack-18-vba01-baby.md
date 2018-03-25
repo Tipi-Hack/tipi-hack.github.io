@@ -18,7 +18,7 @@ oledump.py -V vba01-baby_272038055eaa62ffe9042d38aff7b5bae1faa518.xls
 `M` marks items that include macros that are set to auto-execute when the document opens so we dump the contents of that particular stream:
 `oledump.py -V -v -s 7 vba01-baby_272038055eaa62ffe9042d38aff7b5bae1faa518.xls`
 
-```visualbasic
+```vb
 Attribute VB_Name = "Module1"
 Sub Auto_Open()
     a ("Sheet1")

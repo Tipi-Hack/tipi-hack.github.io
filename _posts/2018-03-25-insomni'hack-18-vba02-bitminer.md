@@ -9,7 +9,7 @@ Oh no I opened an email attachment AGAIN!! Help me to take my revenge. Here is t
 `vba02-bitminer_4052500b4f2120d3d3ae458b339ec1f16e89e870.xls`
 ## Challenge resolution
 This begins again with a .xls file. We follow the same steps as the first `vba` challenge to get the macro:
-```visualbasic
+```vb
 Attribute VB_Name = "Module1"
 Sub Auto_Open()
     Predict ("Sheet1")
