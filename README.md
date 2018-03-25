@@ -1,1 +1,1 @@
-[Head over to our write-ups](https://tipi-hack.github.io/)
+# [View our write-ups](https://tipi-hack.github.io/)
