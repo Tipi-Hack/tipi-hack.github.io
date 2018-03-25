@@ -1,17 +1,22 @@
 .PageNavigation {
   font-size: 14px;
-  display: block;
-  width: auto;
-  overflow: hidden;
+  width: 100%;
 }
 
-.PageNavigation a {
-  display: block;
-  width: 50%;
+.PageNavigation .prev {
   float: left;
-  margin: 1em 0;
+  width:33.33333%;
+  text-align:left;
+}
+
+.PageNavigation .home {
+  float: left;
+  width:33.33333%;
+  text-align:center;
 }
 
 .PageNavigation .next {
-  text-align: right;
+  float: right;
+  width:33.33333%;
+  text-align:right;
 }
