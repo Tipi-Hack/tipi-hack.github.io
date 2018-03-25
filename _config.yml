@@ -14,9 +14,3 @@ plugins:
   - jekyll-redirect-from
   - jekyll-feed
   - jekyll-avatar
-
-defaults:
-  - scope:
-      path: ""
-    values:
-      image: /assets/logo.jpg
