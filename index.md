@@ -11,9 +11,7 @@
 We are a French team of pentesters who like to play CTFs.
 
 Participants vary for each CTF. Here is a list of current and past members.
-{% for member in site.data.members %}
-  * {% if member.avatar %}{{ member.avatar }}{% endif %}{% if member.github %}{% avatar user=member.github size=30 %} {% endif %}{% if member.name %}{{member.name}} \| {% endif %}{% if member.twitter %}[@{{member.twitter}}](https://twitter.com/{{member.twitter}}){% endif %}
-{% endfor %}
+{% include members.html members=site.data.members %}
 
 Of course we are on [CTFtime](https://ctftime.org/team/24535).
 # Twitter preview

@@ -1,6 +1,7 @@
 ---
 title: Insomni'Hack 2018 - Voice-VoIP
 redirect_from: "Writeups/2018/Insomni'hack/voice-voip/"
+authors: Crypt0-M3lon
 ---
 
 # {{page.title}}
@@ -60,5 +61,5 @@ directory_url: "http://198.51.100.20/directory.xml"
 Wut! A directory file is present on the TFTP server and it contains the phone number of Clarice:  6834. 
 From now, we just need to set up a SIP client, impersonate Hannibal by using previously gathered credentials and call Clarice at 6834@198.51.100.118. A bot answers our call and gives us the flag.
 
-
-Author: {% avatar Crypt0-M3lon size=30 %} [@Crypt0-M3lon](https://twitter.com/Crypt0_M3lon)
+{% capture page_authors %}{{ page.authors }}{% endcapture %}
+{% include authors.html authors=page_authors %}
