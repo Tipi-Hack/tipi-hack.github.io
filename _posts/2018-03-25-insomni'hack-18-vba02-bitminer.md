@@ -93,3 +93,7 @@ $ sqlmap -r raw_request --tamper base64encode --prefix $'{"cid":"NOT-A-SANDBOX",
 ```
 
 Finaly, we retrieve the flag from the flag table: `INS{M1ninG_i5_t0o_H4rD_Lets_D0_Norm4l_Cyb3rCr1me}`
+
+Authors:
+* {% avatar Crypt0-M3lon size=30 %} [@Crypt0-M3lon](https://twitter.com/Crypt0_M3lon)
+* {% avatar Rakanga size=30 %} [@ZeArioch](https://twitter.com/ZeArioch)
