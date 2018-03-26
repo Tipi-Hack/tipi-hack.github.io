@@ -1,6 +1,7 @@
 title: Tipi'Hack CTF team
 description: >- # this means to ignore newlines
   Yet another 🇫🇷 CTF team of casual players!
+url: "https://tipi-hack.github.io/"
 twitter_username: tipi_hack
 twitter:
   username: tipi_hack
@@ -15,3 +16,4 @@ plugins:
   - jekyll-redirect-from
   - jekyll-feed
   - jekyll-avatar
+  - jekyll-sitemap
