@@ -20,7 +20,7 @@ Participants vary for each CTF. Here is a list of current and past members.
 * <img class="avatar avatar-small" src="https://twitter.com/Ghostx_0/profile_image?size=mini" alt="Ghostx_0" width="30" height="30" /> [@Ghostx_0](https://twitter.com/Ghostx_0)
 * {% avatar lopesg size=30 %} Guillaume Lopes \| [@Guillaume_Lopes](https://twitter.com/Guillaume_Lopes)
 * {% avatar qlemaire size=30 %} Quentin Lemaire \| [@QuentynLemaire](https://twitter.com/QuentynLemaire)
-* {% avatar Rakanga size=30 %} [@ZeArioch](https://twitter.com/ZeArioch)
+* {% avatar ZeArioch size=30 %} [@ZeArioch](https://twitter.com/ZeArioch)
 * {% avatar 0xTornado size=30 %} [@0xTornado](https://twitter.com/0xTornado)
 
 Of course we are on [CTFtime](https://ctftime.org/team/24535).
