@@ -61,4 +61,4 @@ Wut! A directory file is present on the TFTP server and it contains the phone nu
 From now, we just need to set up a SIP client, impersonate Hannibal by using previously gathered credentials and call Clarice at 6834@198.51.100.118. A bot answers our call and gives us the flag.
 
 
-
+Author: {% avatar Crypt0-M3lon size=30 %} [@Crypt0-M3lon](https://twitter.com/Crypt0_M3lon)
