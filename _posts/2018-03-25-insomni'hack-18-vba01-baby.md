@@ -56,3 +56,5 @@ End Function
 ```
 
 We skip the obfuscated part and jump straight to the end of the function to see that it creates a registry entry. So we spin a Windows VM up, start [Procmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite) and tune it so it monitors Registry events related to 'EXCEL.EXE' that contain 'INS'. Then we open the file and allow macros to run, quickly revealing the flag: `INS{Do_n0t_Ena8le_M4cro}`
+
+Author: {% avatar Rakanga size=30 %} [@ZeArioch](https://twitter.com/ZeArioch)
