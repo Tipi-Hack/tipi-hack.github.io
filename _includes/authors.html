@@ -9,17 +9,15 @@ Author: {% include member.html member=author %}
                 {% break %}
             {% endif %}
         {% endfor %}
-
     {% else %}
 Authors:
-    {% for author in authors %}
-        {% for m in site.data.members %}
-          {% if m.name == author or m.github == author or m.twitter == author %}
+        {% for author in authors %}
+            {% for m in site.data.members %}
+              {% if m.name == author or m.github == author or m.twitter == author %}
 * {% include member.html member=author %}
-            {% break %}
-          {% endif %}
+                {% break %}
+              {% endif %}
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
-
     {% endif %}
 {% endif %}

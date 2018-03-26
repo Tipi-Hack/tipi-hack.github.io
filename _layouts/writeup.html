@@ -40,7 +40,18 @@
     </section>
     <section class="main-content">
 {% include navigation.html %}
+
+<h1>{{page.title}}</h1>
+
 {{ content }}
+    
+{% capture page_authors %}{{ page.authors }}{% endcapture %}
+{% capture page_authors %}{% include authors.html authors=page_authors %}{% endcapture %}
+{{ page_authors|markdownify }}
+
+    {% if page.date %}
+      <p>Post date: {{ page.date | date: "%F" }}</p>
+    {% endif %}
 
       <footer class="site-footer">
           <span class="site-footer-owner">Find us on Twitter <a href="https://twitter.com/tipi_hack"><img src="/icons/twitter.png" /> @Tipi_hack</a></span>

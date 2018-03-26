@@ -1,9 +1,8 @@
 ---
 title: Insomni'Hack 2018 - vba01-baby
 authors: ZeArioch
+layout: writeup
 ---
-
-# {{page.title}}
 Solves: 56 / Points: 63
 ## Challenge resolution
 The challenge's description references an infection linked to an .xls file. There are various ways of getting Excel to execute arbitrary code, macros being the most widely used vector. [Philippe Lagadec](https://decalage.info/en/taxonomy/term/12) and [Didier Stevens](https://blog.didierstevens.com/my-software/) published a ton of useful tools to analyze malicious documents. We start with `oledump`:
@@ -57,6 +56,3 @@ End Function
 ```
 
 We skip the obfuscated part and jump straight to the end of the function to see that it creates a registry entry. So we spin a Windows VM up, start [Procmon](https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite) and tune it so it monitors Registry events related to 'EXCEL.EXE' that contain 'INS'. Then we open the file and allow macros to run, quickly revealing the flag: `INS{Do_n0t_Ena8le_M4cro}`
-
-{% capture page_authors %}{{ page.authors }}{% endcapture %}
-{% include authors.html authors=page_authors %}
