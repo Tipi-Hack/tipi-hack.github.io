@@ -1,0 +1,1 @@
+bash -c "bundle exec jekyll serve"
