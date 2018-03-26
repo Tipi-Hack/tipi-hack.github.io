@@ -16,10 +16,12 @@ Participants vary for each CTF. Here is a list of current and past members.
 * {% avatar ClementNotin size=30 %} Clément Notin \| [@cnotin](https://twitter.com/cnotin)
 * {% avatar Crypt0-M3lon size=30 %} [@Crypt0-M3lon](https://twitter.com/Crypt0_M3lon)
 * {% avatar dabi0ne size=30 %} [@dabi0ne](https://twitter.com/dabi0ne)
+* {% avatar boursie size=30 %} Etienne Boursier \| [@BoursierEtienne](https://twitter.com/BoursierEtienne)
 * [@Ghost](https://twitter.com/Ghostx_0)
 * {% avatar lopesg size=30 %} Guillaume Lopes \| [@Guillaume_Lopes](https://twitter.com/Guillaume_Lopes)
 * {% avatar qlemaire size=30 %} Quentin Lemaire \| [@QuentynLemaire](https://twitter.com/QuentynLemaire)
 * {% avatar Rakanga size=30 %} [@ZeArioch](https://twitter.com/ZeArioch)
+* {% avatar 0xTornado size=30 %} [@0xTornado](https://twitter.com/0xTornado)
 
 Of course we are on [CTFtime](https://ctftime.org/team/24535).
 # Twitter preview
