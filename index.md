@@ -17,7 +17,7 @@ Participants vary for each CTF. Here is a list of current and past members.
 * {% avatar Crypt0-M3lon size=30 %} [@Crypt0-M3lon](https://twitter.com/Crypt0_M3lon)
 * {% avatar dabi0ne size=30 %} [@dabi0ne](https://twitter.com/dabi0ne)
 * {% avatar boursie size=30 %} Etienne Boursier \| [@BoursierEtienne](https://twitter.com/BoursierEtienne)
-* <img class="avatar avatar-small" src="https://pbs.twimg.com/profile_images/674579005530636289/8JXLl5QS_mini.png" alt="Ghostx_0"  width="30" height="30" /> [@Ghostx_0](https://twitter.com/Ghostx_0)
+* <img class="avatar avatar-small" src="https://twitter.com/Ghostx_0/profile_image?size=mini" alt="Ghostx_0" width="30" height="30" /> [@Ghostx_0](https://twitter.com/Ghostx_0)
 * {% avatar lopesg size=30 %} Guillaume Lopes \| [@Guillaume_Lopes](https://twitter.com/Guillaume_Lopes)
 * {% avatar qlemaire size=30 %} Quentin Lemaire \| [@QuentynLemaire](https://twitter.com/QuentynLemaire)
 * {% avatar Rakanga size=30 %} [@ZeArioch](https://twitter.com/ZeArioch)
