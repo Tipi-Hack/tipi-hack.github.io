@@ -11,7 +11,9 @@
 We are a French team of pentesters who like to play CTFs.
 
 Participants vary for each CTF. Here is a list of current and past members.
-{% include members.html members=site.data.members %}
+{% for m in site.data.members %}
+* {% include member.html member=m %}
+{% endfor %}
 
 Of course we are on [CTFtime](https://ctftime.org/team/24535).
 # Twitter preview
