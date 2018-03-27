@@ -1,23 +1,21 @@
 {% assign authors = include.authors | append: "," | split: "," %}
 
-{% if authors.size > 0 %}
-    {% if authors.size == 1 %}
-        {% capture author %}{{authors[0]}}{% endcapture %}
-        {% for m in site.data.members %}
-            {% if m.name == author or m.github == author or m.twitter == author %}
+{% if authors.size == 1 %}
+    {% capture author %}{{authors[0]}}{% endcapture %}
+    {% for m in site.data.members %}
+        {% if m.name == author or m.github == author or m.twitter == author %}
 Author: {% include member.html member=author %}
-                {% break %}
-            {% endif %}
-        {% endfor %}
-    {% else %}
+            {% break %}
+        {% endif %}
+    {% endfor %}
+{% elsif authors.size > 1 %}
 Authors:
-        {% for author in authors %}
-            {% for m in site.data.members %}
-              {% if m.name == author or m.github == author or m.twitter == author %}
+    {% for author in authors %}
+        {% for m in site.data.members %}
+          {% if m.name == author or m.github == author or m.twitter == author %}
 * {% include member.html member=author %}
-                {% break %}
-              {% endif %}
-            {% endfor %}
+            {% break %}
+          {% endif %}
         {% endfor %}
-    {% endif %}
+    {% endfor %}
 {% endif %}
