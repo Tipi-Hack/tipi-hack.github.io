@@ -7,7 +7,7 @@ Solves: 25 / Points: 124
 
 
 ## Challenge description
-The challenge is pretty simple. You need to find information about a specific developer in order to obtain access to a web application.
+Hello shady hacker, I represent a web development company trying to grow in Geneva, but unfortunately we're running into a lot of competition. One company in particular is stealing all our clients and we'd like you to hack them to obliterate their reputation and show that they are terrible developers. Here is one of their websites. Can you break in and prove that they suck?
 
 
 
