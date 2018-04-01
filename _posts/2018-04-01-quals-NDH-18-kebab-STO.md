@@ -44,7 +44,7 @@ We reconstruct this Zip file and open it:
 
 We obtain a ciphertext we suppose is the key of the encrypted archive, and a public key probably associated to the private key used to construct the ciphertext.
 
-After trying (and failing) to break this public key to retrieve the private one, we focus on the second sentence of the last e-mail: 
+After trying (and failing) to break this public key to retrieve the private one, we focus on the second sentence of the last e-mail:
 ```
 Besides, they also found a service at mydomainndh.ndh (port 55555) which
 decrypts every text encrypted with the public key, apart from the
