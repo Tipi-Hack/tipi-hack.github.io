@@ -1,13 +1,15 @@
 ---
 title: Quals NDH 2018 - whereismypurse
-authors: ZeArioch, Crypt0_M3lon
+authors: ZeArioch,Crypt0_M3lon
 layout: writeup
 published: true
 ---
 Solves: 48 / Points: 200
 ## Challenge description
 > Helps an important person to find the content of his numeric purse.
-Attachments: whereismypurse.7z
+
+Attachments: `whereismypurse.7z`
+
 ## Challenge resolution
 The archive attached to the challenge contains two files:
 * `whereismypurse.vdi`: 8 GB, the extension points to VirtualBox hard drive file.
@@ -93,7 +95,7 @@ Either way, we'll start by navigating the `SatNak` user folder. We find the foll
 
 We'll replicate the whole folder structure to a controlled environment. Then, after messing around for a while with the executables, we find the way to get what we want:
 * Run `dcrd.exe`
-* Run `dcrwallet.exe`, enter the password when prompted
+* Run `dcrwallet.exe`, enter `W4lLet_!Passw0rd` when prompted
 * Run `dcrctl.exe --wallet getbalance`
 
 That last command displays the flag:
