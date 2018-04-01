@@ -16,7 +16,7 @@ Solves: FIXME / Points: FIXME / Category: FIXME
 [Basic writing and formatting in Markdown](https://help.github.com/articles/basic-writing-and-formatting-syntax/)
 
 Insert a picture? Put it in the `assets` folder, and link to it:
-![FIXME img description]({{ site.url }}/assets/james.png){: .image }
+![FIXME img description](/assets/logo.png){: .image }
 The `.image` CSS class centers it and adds a border around.
 
 Source-code highlighting is available. Some available formats:
