@@ -135,7 +135,7 @@ Exponent:
     d2:4e:7b:07:34:0f:4f:ac:f7
 ```
 The key is only 1025 bit ?? Let's try a Wiener's attack in order to get the corresponding private key:
-'''python
+```python
 from sage.all import *
 from Crypto.PublicKey import RSA
 import sys
