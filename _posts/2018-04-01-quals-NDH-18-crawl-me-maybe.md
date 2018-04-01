@@ -14,7 +14,7 @@ This challenge was pretty straightforward.
 The web application only presented the following form:
 ![Challenge interface](/assets/ndh18-crawl-me-maybe-challenge_interface.png){: .image }
 
-When a site like www.google.com was provided, the application fetched the HTML page and printed its contents:
+When a site like https://www.google.com was provided, the application fetched the HTML page and printed its contents:
 ![HTML Result](/assets/ndh18-crawl-me-maybe-result.png){: .image }
 
 While manipulating the only parameter sent (`url`), the following stack trace was returned by the web server:
