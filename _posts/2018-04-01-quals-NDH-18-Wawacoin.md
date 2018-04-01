@@ -21,9 +21,9 @@ This challenge is all about crypto(graphy|currency) since when logging as the *d
 session=757365723d64656d6f|9183ff6055a46981f2f71cd36430ed3d9cbf6861
 ```
 
-The `session` cookie has two parts whose roles we assume based on their length:
-* Encrypted content
-* SHA1 signature
+The *session* cookie has two parts:
+* hex-encoded content, whose value is `user=demo`
+* SHA1 signature, assumed based on its length
 We also notice that any modification of either part triggers either a 500 error, or a redirection to the login page.
 
 Then, we try to find common crypto flaws such as padding oracles. We can try a [hash length extension attack](https://blog.skullsecurity.org/2012/everything-you-need-to-know-about-hash-length-extension-attacks) too and observe the resulting behavior.
@@ -33,12 +33,9 @@ This attack happens when a flawed Message Authentication Code algorithm is based
 ### Hash length extension attack
 We use the [*hash_extender*](https://github.com/iagox86/hash_extender) tool that supports SHA1.
 
-We already have the format `--format sha1`, the original signature `--signature` and we want to start by adding just a char `--append A`.
-We still miss two pieces of information:
-* The original data, let's hope that it is the most obvious `user=demo`
-* The length of the secret, let's bruteforce it!
-
-For example, here is the output for two `--secret` lengths:
+We already have the format `--format sha1`, the original signature `--signature`, the original data `--data user=demo`, and we want to start by appending just one char `--append A`.
+We still miss the length of the secret, so let's bruteforce it!
+Here is the output for two different `--secret` lengths:
 ```shell_session
 $ ./hash_extender --data user=demo --append A --signature 9183ff6055a46981f2f71cd36430ed3d9cbf6861 --format sha1 --secret 1
 Type: sha1
