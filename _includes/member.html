@@ -1,2 +1,2 @@
 {% assign m = include.member %}
-{% if m.avatar %}{{ m.avatar }}{% endif %}{% if m.github %}{% avatar user=m.github size=30 %} {% endif %}{% if m.name %}{{m.name}} \| {% endif %}{% if m.twitter %}[@{{m.twitter}}](https://twitter.com/{{m.twitter}}){% endif %}
+{% if m.avatar %}{{ m.avatar }}{% endif %}{% if m.github %}{% avatar user=m.github size=30 %} {% endif %}{% if m.name %}{{m.name}}{% if m.twitter %} \| {%endif%}{% endif %}{% if m.twitter %}[@{{m.twitter}}](https://twitter.com/{{m.twitter}}){% endif %}
