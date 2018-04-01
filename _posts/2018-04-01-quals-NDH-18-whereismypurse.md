@@ -62,10 +62,8 @@ Writing KeePassX.exe [  2212] to 2212.dmp
 
 Now, we want to look for interesting strings. Windows uses Unicode, specifically UTF-16 with little endian byte order. The SysInternals `strings` tool decodes such strings by default so we give it a try:
 
-```posh
+```
 PS> strings64.exe -n 8 .\2212.dmp | Select-String -context 10 -Pattern "(wallet|purse)"
-```
-```
 [...]
   C:/Users/SatNak/Documents/mykeepass.kdb - KeePassX
   OLEChannelWnd
