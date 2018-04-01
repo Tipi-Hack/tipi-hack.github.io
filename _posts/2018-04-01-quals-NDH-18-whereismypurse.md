@@ -93,8 +93,9 @@ Either way, we'll start by navigating the `SatNak` user folder. We find the foll
 
 We'll replicate the whole folder structure to a controlled environment. Then, after messing around for a while with the executables, we find the way to get what we want:
 * Run `dcrd.exe`
-* Run `dcrwallet.exe`
+* Run `dcrwallet.exe`, enter the password when prompted
 * Run `dcrctl.exe --wallet getbalance`
+
 That last command displays the flag:
 ```
 {
