@@ -10,7 +10,7 @@ Solves: 58 / Points: 300 / Category: Web
 We have a "Curriculum Vitæ Generator" website where we can upload a little form in YAML format with all the required information.
 Once the form is uploaded, a very nice resume is generated in PDF format with the provided information.
 
-The website explains that tool it uses is *[posquit0's Awesome-CV](https://github.com/posquit0/Awesome-CV)*.
+The website explains that the tool it uses is *[posquit0's Awesome-CV](https://github.com/posquit0/Awesome-CV)*.
 
 ## Challenge resolution
 ### LaTeX injection
