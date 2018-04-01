@@ -18,7 +18,7 @@ The archive attached to the challenge contains two files:
 ### Analyzing the .raw file
 We start by checking the supposed RAM dump with Volatility:
 
-```shell
+```
 vol.py -f ./whereismypurse.raw imageinfo
 Volatility Foundation Volatility Framework 2.6
 INFO    : volatility.debug    : Determining profile based on KDBG search...
@@ -39,7 +39,7 @@ INFO    : volatility.debug    : Determining profile based on KDBG search...
 
 Definitely a memory dump! We start by listing processes to have an idea of what's going on:
 
-```shell
+```
 vol.py -f ./whereismypurse.raw --profile=Win7SP1x64 -g 0xf800028070a0 pslist
 Volatility Foundation Volatility Framework 2.6
 Offset(V)          Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit                          
@@ -53,7 +53,7 @@ Offset(V)          Name                    PID   PPID   Thds     Hnds   Sess  Wo
 
 One process stands out of the usual Windows processes: `KeePassX`, a password manager. We are going to take a closer look and dump the process memory:
 
-```shell
+```
 vol.py -f ./whereismypurse.raw --profile=Win7SP1x64 -g 0xf800028070a0 memdump -p 2212 -D .
 Volatility Foundation Volatility Framework 2.6
 ************************************************************************
@@ -62,7 +62,7 @@ Writing KeePassX.exe [  2212] to 2212.dmp
 
 Now, we want to look for interesting strings. Windows uses Unicode, specifically UTF-16 with little endian byte order. The SysInternals `strings` tool decodes such strings by default so we give it a try:
 
-```PowerShell
+```posh
 PS> strings64.exe -n 8 .\2212.dmp | Select-String -context 10 -Pattern "(wallet|purse)"
 [...]
   C:/Users/SatNak/Documents/mykeepass.kdb - KeePassX
