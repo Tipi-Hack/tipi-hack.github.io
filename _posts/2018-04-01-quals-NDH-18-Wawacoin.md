@@ -73,7 +73,7 @@ Generating a payload to probe for a vulnerability, testing it on the website, an
 
 In *Burp*, just go to Extender -> APIs and click on *Save interface files*. Extract the files in a `burp` folder and put your `.py` extension next to this folder.
 
-The full code of our extension is at the end of this writeup.
+The full code of the extension is available at the end of this writeup and on our [GitHub repository](https://github.com/Tipi-Hack/ctf-tools/blob/master/web/burp_extension-hash_extender.py).
 It captures every outgoing request, from any tool (Proxy, Repeater, Scanner...), gets the clear-text content of the *session* cookie and encrypts it using *hash_extender*. Just keep in mind that your payload is appended to the original payload.
 
 It works wonders and is very efficent, isn't it? :ok_hand:
