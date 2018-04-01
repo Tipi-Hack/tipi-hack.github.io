@@ -15,7 +15,7 @@ This challenge presented us with an online Pixel Editor that allows the user to 
 ![PixEditor interface](/assets/ndh18-pixeditor-pixeditor_interface.png){: .image }
 
 ### File extension control
-The first step when exploting such application is to control the extension of the generated file.
+The first step when exploiting such an application is to control the extension of the generated file.
 
 Three parameters were sent while saving an image:
 * Data: the array of pixels that forms the image
@@ -25,7 +25,7 @@ Three parameters were sent while saving an image:
 Since the server is using PHP, we first tested several PHP extensions (.php, .php3, .php4, .php5, .phtml) as well as the use of the double-extensions or null byte injection without any success:
 ![null byte error](/assets/ndh18-pixeditor-nullbyte_error.png){: .image }
 
-After a little bit of digging, we noticed a comment stating that a truncation will occured if the filename exceeds 50 characters in length:
+After a little bit of digging, we noticed a comment stating that a truncation will occur if the filename exceeds 50 characters in length:
 ![Comments search](/assets/ndh18-pixeditor-comments_search.png){: .image }
 
 Great! The file extension can now be controlled:
