@@ -21,7 +21,7 @@ This challenge is all about crypto(graphy|currency) since when logging as the *d
 session=757365723d64656d6f|9183ff6055a46981f2f71cd36430ed3d9cbf6861
 ```
 
-The *session* cookie has two parts:
+The `session` cookie has two parts:
 * Hex-encoded content, whose value is `user=demo`
 * SHA1 signature, assumed based on its length
 We also notice that any modification of either part triggers either a 500 error, or a redirection to the login page.
@@ -61,7 +61,7 @@ We use *Burp Intruder* to try all the generated new strings, with the fixed sign
 ![Burp Intruder]({{ site.url }}/assets/wawacoin-intruder.png){: .image }
 
 Note that the username is displayed in the HTML page on the logout button: it is very helpful to see how our payload is decrypted.
-We confirm that we can successfully append characters to the encrypted *session* cookie which is a very nice power to have!
+We confirm that we can successfully append characters to the encrypted `session` cookie which is a very nice power to have!
 
 ### Creating a custom *Burp* extension
 We still need to find a vulnerability: something interesting to trigger with this string that the website is surely taking for trusted :smirk:
@@ -71,7 +71,7 @@ Generating a payload to probe for a vulnerability, testing it on the website, an
 In *Burp*, just go to Extender -> APIs and click on *Save interface files*. Extract the files in a `burp` folder and put your `.py` extension next to this folder.
 
 The full code of the extension is available at the end of this writeup and on our [GitHub repository](https://github.com/Tipi-Hack/ctf-tools/blob/master/web/burp_extension-hash_extender.py).
-It captures every outgoing request, from any tool (Proxy, Repeater, Scanner...), gets the clear-text content of the *session* cookie and encrypts it using *hash_extender*. Just keep in mind that your payload is appended to the original payload.
+It captures every outgoing request, from any tool (Proxy, Repeater, Scanner...), gets the clear-text content of the `session` cookie and encrypts it using *hash_extender*. Just keep in mind that your payload is appended to the original payload.
 
 It works wonders and is very efficent, isn't it? :ok_hand:
 ![Burp extension]({{ site.url }}/assets/wawacoin-burp-extension.png){: .image }
