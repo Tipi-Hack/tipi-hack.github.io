@@ -25,7 +25,7 @@ SSH-2.0-OpenSSH_7.4p1 Debian-10+deb9u3
 The server try to initiate a SSH connection, our first idea was to set up a small SSH honeypot with Cowrie to spy on the user. It works great but only gave half of the flag and no more information. After many unsuccessfull attempt (and the end of the CTF :( ) we decided to take a look at the user public key.
 
 To do so, we used the Paramiko Python module to log connection information:
-```'python
+```python
 #!/usr/bin/env python
 import logging
 import socket
