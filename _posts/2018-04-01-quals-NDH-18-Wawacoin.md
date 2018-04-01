@@ -30,9 +30,9 @@ Then, we try to find common crypto flaws such as padding oracles. We can try a [
 This attack happens when a flawed Message Authentication Code algorithm is based on the concatenation of `secret+payload`: by having the hash of this string, we can append arbitrary data to the payload and compute a valid hash without knowing the secret. A tool can be used to simply *extend* the hash based on the current known value.
 
 ### Hash length extension attack
-We use the [*hash_extender*](https://github.com/iagox86/hash_extender) tool since it is easy to use and supports SHA1.
+We use the [*hash_extender*](https://github.com/iagox86/hash_extender) tool that supports SHA1.
 
-We already have the format `--format sha1`, the signature `--signature` and we want to start by adding just a char `--append A`.
+We already have the format `--format sha1`, the original signature `--signature` and we want to start by adding just a char `--append A`.
 We still miss two information:
 * the original data, let's hope that it is the most obvious `user=demo`
 * the length of the secret, let's bruteforce it!
@@ -57,7 +57,7 @@ Therefore, to bruteforce the secret, we have a fixed signature and generate the 
 for i in $(seq 0 30); do ./hash_extender --data user=demo --append A --signature 9183ff6055a46981f2f71cd36430ed3d9cbf6861 --format sha1 --secret $i | grep "New string" | cut -d' ' -f3; done
 ```
 
-We use *Burp Intruder* to all the generated new strings, with the fixed signature. The payload for the length 16 is giving an interesting result:
+We use *Burp Intruder* to try all the generated new strings, with the fixed signature. The payload for the length 16 gives an interesting result:
 ![Burp Intruder]({{ site.url }}/assets/wawacoin-intruder.png){: .image }
 
 Note that the username is displayed in the HTML page on the logout button: it is very helpful to see how our payload is decrypted.
@@ -78,13 +78,14 @@ It works wonders and is very efficent, isn't it? :ok_hand:
 
 ### Finding a vulnerability and the flag
 Thanks to our extension, we quickly try several things and come to the conclusion that we can try to impersonate the admin.
-If the original payload is: `user=demo`. What if we append `&user=admin`?
+
+If the original payload is: `user=demo`, what would happen if we append `&user=admin`?
 The anwser is that the second `user` overwrites the first, we impersonate *admin* and get the flag:
 ![Got admin]({{ site.url }}/assets/wawacoin-got-admin.png){: .image }
 
 ![Got flag]({{ site.url }}/assets/wawacoin-flag.png){: .image }
 
-`NDH{c7774051db4b880da67598770c955ff99363e76d}`
+Flag: `NDH{c7774051db4b880da67598770c955ff99363e76d}`
 
 ## Appendix: Burp extension
 ```python
