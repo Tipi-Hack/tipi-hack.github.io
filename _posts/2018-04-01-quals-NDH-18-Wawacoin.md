@@ -22,7 +22,7 @@ session=757365723d64656d6f|9183ff6055a46981f2f71cd36430ed3d9cbf6861
 ```
 
 The *session* cookie has two parts:
-* hex-encoded content, whose value is `user=demo`
+* Hex-encoded content, whose value is `user=demo`
 * SHA1 signature, assumed based on its length
 We also notice that any modification of either part triggers either a 500 error, or a redirection to the login page.
 
