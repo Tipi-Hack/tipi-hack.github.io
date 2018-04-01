@@ -73,7 +73,7 @@ The `func57` has 3 parameters:
 Digging further with the debugger, we enter the `func57`:
 ![Func35]({{ site.url }}/assets/ndh18-assemblyme-func57.png)
 
-Looking at the code, we can see that the function is checking if the `size` first characters of the `input` string match the `size` first characters of the `valid` string.
+Looking at the code, we can see that the function is checking if the `size` first characters of the `input` string match the `size` first characters of the `valid` string (which is similar to the `strncmp` function).
 
 We have the following pseudo-code:
 ```python
@@ -100,7 +100,7 @@ Reusing the `Pointer_stringify` JS function, we can grab all the `valid` values:
 "KXK,,,xie"
 ```
 
-We now have the following cascading "if"s:
+We now have the following parameters given to `func57`:
 
 | iteration | param0: input | param1: valid | param2: size |
 | --- | --- | --- | --- |
@@ -111,7 +111,7 @@ We now have the following cascading "if"s:
 | 4 | password+17 | 1681 -> "W_enc_cb" | 3 |
 | 5 | password+20 | 1654 -> "KXK,,,xie" | 9 |
 
-Hence, to pass the first condition, the 4th (from 0 to 3) first characters of our password need to be "d51x".
+Hence, to pass the first condition, the 4 first characters (from 0 to 3) of our password need to be "d51x".
 To pass the second condition, the characters from 4 to 7 need to be "Pox)".
 To pass the third condition, the characters from 8 to 13 need to be "1S0xk".
 And so on...
