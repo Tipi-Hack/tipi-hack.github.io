@@ -143,3 +143,4 @@ class BurpExtender(IBurpExtender, IHttpListener):
         messageInfo.setHighlight("yellow")
 
         messageInfo.setRequest(req)
+```
