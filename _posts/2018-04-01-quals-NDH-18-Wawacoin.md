@@ -16,12 +16,13 @@ First, we find that the login form discloses that the *admin* account is valid, 
 
 ### Crypto cookie
 This challenge is all about crypto(graphy|currency) since when logging as the *demo* user we are assigned a `session` cookie with the following content:
+
 ```
 session=757365723d64656d6f|9183ff6055a46981f2f71cd36430ed3d9cbf6861
 ```
 
-The *session* cookie has two parts whose role we assume based on their length:
-* encrypted content
+The `session` cookie has two parts whose roles we assume based on their length:
+* Encrypted content
 * SHA1 signature
 We also notice that any modification of either part triggers either a 500 error, or a redirection to the login page.
 
@@ -33,9 +34,9 @@ This attack happens when a flawed Message Authentication Code algorithm is based
 We use the [*hash_extender*](https://github.com/iagox86/hash_extender) tool that supports SHA1.
 
 We already have the format `--format sha1`, the original signature `--signature` and we want to start by adding just a char `--append A`.
-We still miss two information:
-* the original data, let's hope that it is the most obvious `user=demo`
-* the length of the secret, let's bruteforce it!
+We still miss two pieces of information:
+* The original data, let's hope that it is the most obvious `user=demo`
+* The length of the secret, let's bruteforce it!
 
 For example, here is the output for two `--secret` lengths:
 ```shell_session
@@ -51,8 +52,10 @@ Secret length: 2
 New signature: 41b8fd13c9ad0b2f18fc76e0f17dd01768ca8b63
 New string: 757365723d64656d6f800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005841
 ```
+
 The signature is identical, only the new string is slightly different.
 Therefore, to bruteforce the secret, we have a fixed signature and generate the resulting values for a length of 0 to 30:
+
 ```shell
 for i in $(seq 0 30); do ./hash_extender --data user=demo --append A --signature 9183ff6055a46981f2f71cd36430ed3d9cbf6861 --format sha1 --secret $i | grep "New string" | cut -d' ' -f3; done
 ```
@@ -61,7 +64,7 @@ We use *Burp Intruder* to try all the generated new strings, with the fixed sign
 ![Burp Intruder]({{ site.url }}/assets/wawacoin-intruder.png){: .image }
 
 Note that the username is displayed in the HTML page on the logout button: it is very helpful to see how our payload is decrypted.
-We confirm that we can successfully append characters to the encrypted *session* cookie which is a very nice power!
+We confirm that we can successfully append characters to the encrypted *session* cookie which is a very nice power to have!
 
 ### Creating a custom *Burp* extension
 We still need to find a vulnerability: something interesting to trigger with this string that the website is surely taking for trusted :smirk:
@@ -71,7 +74,7 @@ Generating a payload to probe for a vulnerability, testing it on the website, an
 In *Burp*, just go to Extender -> APIs and click on *Save interface files*. Extract the files in a `burp` folder and put your `.py` extension next to this folder.
 
 The full code of our extension is at the end of this writeup.
-It captures every outgoing request, from any tool (Proxy, Repeater, Scanner...), get the clear-text content of the *session* cookie and encrypt it using *hash_extender*. Just keep in mind that your payload is appended to the original payload.
+It captures every outgoing request, from any tool (Proxy, Repeater, Scanner...), gets the clear-text content of the *session* cookie and encrypts it using *hash_extender*. Just keep in mind that your payload is appended to the original payload.
 
 It works wonders and is very efficent, isn't it? :ok_hand:
 ![Burp extension]({{ site.url }}/assets/wawacoin-burp-extension.png){: .image }
