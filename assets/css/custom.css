@@ -3,7 +3,8 @@ section.page-header a {
     text-decoration: none;
 }
 
-.center {
+.image {
     margin: 0 auto;
     display: block;
+    border: 1px solid teal;
 }
