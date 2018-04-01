@@ -103,6 +103,6 @@ Indeed, if we use 0.009 for instance. When the script will compare it, it will d
 ### Putting All the pieces together
 So at the end, we just need to send the following request, in order to obtain the flag!!!
 
-![Flag]({{ site.url }}/assets/phuck-flag.png)
+![Flag](/assets/phuck-flag.png)
 
 

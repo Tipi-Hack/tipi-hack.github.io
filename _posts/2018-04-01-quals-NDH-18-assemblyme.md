@@ -30,12 +30,12 @@ At first, we tried to decompile the assembly with several tools, such as `wasmdu
 By setting a break point on the `a(u)` JavaScript call, we can dig into the web assembly source code.
 
 We first stop the execution at the following point:
-![Breakpoint]({{ site.url }}/assets/ndh18-assemblyme-breakpoint.png)
+![Breakpoint](/assets/ndh18-assemblyme-breakpoint.png)
 
 The `apply` function will execute the `checkAuth` function with the supplied user input as argument (the password). The output is given to the `Pointer_stringify` function which will be helpful later.
 
 Stepping further, we get into the web assembly, within a function called `func35`:
-![Func35]({{ site.url }}/assets/ndh18-assemblyme-func35.png)
+![Func35](/assets/ndh18-assemblyme-func35.png)
 
 At this point, we looked for the webassembly documentation to understand the assembly:
 * http://webassembly.org/docs/text-format/
@@ -71,7 +71,7 @@ The `func57` has 3 parameters:
 3. an integer value (let's call it "size")
 
 Digging further with the debugger, we enter the `func57`:
-![Func35]({{ site.url }}/assets/ndh18-assemblyme-func57.png)
+![Func35](/assets/ndh18-assemblyme-func57.png)
 
 Looking at the code, we can see that the function is checking if the `size` first characters of the `input` string match the `size` first characters of the `valid` string (which is similar to the `strncmp` function).
 
@@ -117,6 +117,6 @@ To pass the third condition, the characters from 8 to 13 need to be "1S0xk".
 And so on...
 
 Putting everything together, the final password is "d51XPox)1S0xk5S11W_eKXK,,,xie", which validates:
-![Flag]({{ site.url }}/assets/ndh18-assemblyme-flag.png)
+![Flag](/assets/ndh18-assemblyme-flag.png)
 
 Special thanks to Sébastien Mériot for his help on the Web Assembly reversing. We could not make it without him!
