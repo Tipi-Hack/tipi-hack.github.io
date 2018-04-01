@@ -51,7 +51,7 @@ Offset(V)          Name                    PID   PPID   Thds     Hnds   Sess  Wo
 [...]
 ```
 
-One process stands out of the usual Windows processes: `KeePassX`, a password manager. We are going to take a closer look and dump the process memory:
+One process stands out of the usual Windows suspects: `KeePassX`, a password manager. We are going to take a closer look and dump its memory:
 
 ```
 $ vol.py -f ./whereismypurse.raw --profile=Win7SP1x64 -g 0xf800028070a0 memdump -p 2212 -D .
@@ -82,7 +82,7 @@ PS> strings64.exe -n 8 .\2212.dmp | Select-String -context 10 -Pattern "(wallet|
 
 Bingo on the last line! Also we can see that our user of interest is `SatNak`.
 
-**Note:** the same result can be achieved with UNIX `strings`, but you will need to use the `-e l` switch to make it properly parse UTF-16 strings.
+**Note:** the same result can be achieved with UNIX `strings`, but you will need to use the `-e l` switch to make it properly parse UTF-16 LE strings.
 
 ### Analyzing the .vdi file
 To access the VDI file, we can go the traditional forensics route and use `qemu-img` to convert the file then an evidence management tool such as [FTK Imager](https://accessdata.com/product-download/ftk-imager-version-4.2.0)... Or go the quick n' dirty way and just use 7-Zip, proving yet again this tool will open just about anything:
