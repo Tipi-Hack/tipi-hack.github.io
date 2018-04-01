@@ -86,11 +86,11 @@ Bingo on the last line! Also we can see that our user of interest is `SatNak`.
 
 ### Analyzing the .vdi file
 To access the VDI file, we can go the traditional forensics route and use `qemu-img` to convert the file then an evidence management tool such as [FTK Imager](https://accessdata.com/product-download/ftk-imager-version-4.2.0)... Or go the quick n' dirty way and just use 7-Zip, proving yet again this tool will open just about anything:
-![7zip]({{ site.url }}/assets/ndh18-whereismypurse-7zip.png)
+![7zip]({{ site.url }}/assets/ndh18-whereismypurse-7zip.png){: .center-image }
 
 Either way, we'll start by navigating the `SatNak` user folder. We find the following interesting items:
 * A `decred` folder containing binaries related to the [Decred](https://www.decred.org/) crypto-currency,
-![Decred]({{ site.url }}/assets/ndh18-whereismypurse-decred-binaries.png)
+![Decred]({{ site.url }}/assets/ndh18-whereismypurse-decred-binaries.png){: .center-image }
 * Folders named `Dcrctl`, `Dcrd`, and `Dcrwallet` within the `AppData\Local` folder. 
 
 We'll replicate the whole folder structure to a controlled environment. Then, after messing around for a while with the executables, we find the way to get what we want:

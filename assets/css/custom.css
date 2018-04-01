@@ -2,3 +2,9 @@ section.page-header a {
     color: #fff;
     text-decoration: none;
 }
+
+.center
+{
+    margin: 0 auto;
+    display: block;
+}
