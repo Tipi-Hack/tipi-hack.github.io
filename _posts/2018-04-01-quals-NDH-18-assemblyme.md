@@ -2,7 +2,7 @@
 title: Quals NDH 2018 - AssemblyMe
 layout: writeup
 authors: Marine Martin, qlemaire
-published: false
+date: 2018-04-01 16:30:00 +0200
 ---
 Solves: 53 / Points: 300 / Category : Reverse
 
