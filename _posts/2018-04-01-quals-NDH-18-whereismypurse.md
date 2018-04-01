@@ -2,7 +2,7 @@
 title: Quals NDH 2018 - whereismypurse
 authors: ZeArioch, Crypt0_M3lon
 layout: writeup
-published: false
+published: true
 ---
 Solves: 48 / Points: 200
 ## Challenge description
