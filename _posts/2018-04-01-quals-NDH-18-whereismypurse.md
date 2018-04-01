@@ -19,7 +19,7 @@ The archive attached to the challenge contains two files:
 We start by checking the supposed RAM dump with Volatility:
 
 ```
-vol.py -f ./whereismypurse.raw imageinfo
+$ vol.py -f ./whereismypurse.raw imageinfo
 Volatility Foundation Volatility Framework 2.6
 INFO    : volatility.debug    : Determining profile based on KDBG search...
           Suggested Profile(s) : Win7SP1x64, Win7SP0x64, Win2008R2SP0x64, Win2008R2SP1x64_23418, Win2008R2SP1x64, Win7SP1x64_23418
@@ -40,7 +40,7 @@ INFO    : volatility.debug    : Determining profile based on KDBG search...
 Definitely a memory dump! We start by listing processes to have an idea of what's going on:
 
 ```
-vol.py -f ./whereismypurse.raw --profile=Win7SP1x64 -g 0xf800028070a0 pslist
+$ vol.py -f ./whereismypurse.raw --profile=Win7SP1x64 -g 0xf800028070a0 pslist
 Volatility Foundation Volatility Framework 2.6
 Offset(V)          Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit                          
 ------------------ -------------------- ------ ------ ------ -------- ------ ------ ------------------------------ ------------------------------
@@ -54,7 +54,7 @@ Offset(V)          Name                    PID   PPID   Thds     Hnds   Sess  Wo
 One process stands out of the usual Windows processes: `KeePassX`, a password manager. We are going to take a closer look and dump the process memory:
 
 ```
-vol.py -f ./whereismypurse.raw --profile=Win7SP1x64 -g 0xf800028070a0 memdump -p 2212 -D .
+$ vol.py -f ./whereismypurse.raw --profile=Win7SP1x64 -g 0xf800028070a0 memdump -p 2212 -D .
 Volatility Foundation Volatility Framework 2.6
 ************************************************************************
 Writing KeePassX.exe [  2212] to 2212.dmp
@@ -64,6 +64,8 @@ Now, we want to look for interesting strings. Windows uses Unicode, specifically
 
 ```posh
 PS> strings64.exe -n 8 .\2212.dmp | Select-String -context 10 -Pattern "(wallet|purse)"
+```
+```
 [...]
   C:/Users/SatNak/Documents/mykeepass.kdb - KeePassX
   OLEChannelWnd
