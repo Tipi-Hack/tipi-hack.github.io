@@ -6,13 +6,11 @@ layout: writeup
 ---
 Solves: FIXME / Points: FIXME / Category: FIXME
 
-
 ## Challenge description
 > FIXME description given in the CTF page
 
 ## Challenge resolution
 ### FIXME step one
-
 [Basic writing and formatting in Markdown](https://help.github.com/articles/basic-writing-and-formatting-syntax/)
 
 Insert a picture? Put it in the `assets` folder, and link to it:
