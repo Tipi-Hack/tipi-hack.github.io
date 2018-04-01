@@ -10,7 +10,7 @@ We were provided an URL leading to a single page website with a form and the fol
 
 ## Challenge resolution
 Let's start a listener on port 5555 and submit our IP address:
-```shell
+```shell_session
 # nc -lvp 5555
 listening on [any] 5555 ...
 Warning: forward host lookup failed for 51-15-185-101.rev.poneytelecom.eu: Unknown host
@@ -99,7 +99,7 @@ while True:
 
 We can run the server and trigger a new connection:
 
-```shell
+```shell_session
 # python serv2.py test_rsa.key
 Auth attempt for user mickey with key: AAAAB3NzaC1yc2EAAACBAVcIniIfR3tkfO/0E7W/lri2ec4WGca6CH7nOm8PqV4W+fHSKLSghmOauArZW0DuSDM9zqpXrPBx3QHBoe2x/1Vt25yyzjj99EwtmUefedtU+eRJopFSSKr5UaImhBxx8QqxkCkRGzg8SRaiOnKqXykCC8
 tDDjZT0k57BzQPT6z3AAAAgQG1/myKcXWiQhXSDEFULU7Qambs0+kkT+LLcuX7B08sbcvzoG+a5OYziM6QbTZQjtw/nhEHxbt0wAAJe/hi5MWAMRTPOZqg50SaS5lOZnLSGlR+DRGz7b/woF3Wkqdv0ZSTNq7L+o5WtzcffiJdAmHoQlC1gKhI8MqsO0E3Q3SQHQ==
@@ -108,7 +108,7 @@ echo NDH{a_WInN3r_15_A_Dr3AMeR > ~/flag_1.txt
 
 Well, now we have the public key and first part of the flag. Before doing anything else, we need to convert the public key to PEM format and use OpenSSL to get the modulus and exponent:
 
-```shell
+```shell_session
 # ssh-keygen -f public.key -e -m PKCS8 > public.pem
 # openssl rsa -pubin -inform PEM -text -noout -in public.pem
 Public-Key: (1025 bit)
@@ -199,7 +199,7 @@ print(key.exportKey())
 
 We run the script:
 
-```shell
+```shell_session
 $ python2 wiener.py
 
 [~] Using Wiener attack to retrieve the private exponent
@@ -226,7 +226,7 @@ VgyFOnIZnCWfXAhz6UQkk0MJ+yCUICzqQZcmpUmlNMumA36w75lZmcexL22zeA==
 
 Now that we have the private key, we can connect to the server on port 2222 ("mirror image" of 5555 (otherwise nmap is a great tool)) and grab the second part of the flag:
 
-```shell
+```shell_session
 # ssh -i private.pem mickey@maninthemirror.challs.malice.fr -p 2222
 Linux 24b0bd880e30 4.9.0-3-amd64 #1 SMP Debian 4.9.30-2+deb9u5 (2017-09-19) x86_64
 

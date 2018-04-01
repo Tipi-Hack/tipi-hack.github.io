@@ -38,7 +38,7 @@ We still miss two information:
 * the length of the secret, let's bruteforce it!
 
 For example, here is the output for two `--secret` lengths:
-```shell
+```shell_session
 $ ./hash_extender --data user=demo --append A --signature 9183ff6055a46981f2f71cd36430ed3d9cbf6861 --format sha1 --secret 1
 Type: sha1
 Secret length: 1
