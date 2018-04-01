@@ -111,4 +111,9 @@ That last command displays the flag:
 [...]
  ```
 
- And we're done!
+And we're done!
+
+### Bonus - challenge bypass
+While we played the challenge straight, a closer look at the `wallet.db` file would show you that despite being protected by a password, its contents are not encrypted.
+
+As evidenced by [0x90r00t's write-up](https://0x90r00t.com/2018/04/01/ndh-2018-forensics-200-where-is-my-purse-write-up/), this challenge can essentially be solved by running `strings -e l wallet.db | grep flag`! :smirk:
