@@ -2,7 +2,6 @@
 title: Quals NDH 2018 - Man in the Mirror
 authors: Crypt0_M3lon
 layout: writeup
-published: false
 ---
 Solves: 10 / Points: 500
 ## Challenge description
@@ -10,21 +9,26 @@ Solves: 10 / Points: 500
 
 ## Challenge resolution
 We were provided an URL leading to a single page website with a form and the following message:
+
 ```
 Hey, mickey ! Give me your IP address, I'll send you what you're looking for.
 Stay tuned on 5555 mickey !
 ```
+
 Let's start a listener on port 5555 and submit our IP address:
+
 ```
-╰─# nc -lvp 5555
+# nc -lvp 5555
 listening on [any] 5555 ...
 Warning: forward host lookup failed for 51-15-185-101.rev.poneytelecom.eu: Unknown host
 connect to [10.8.20.207] from 51-15-185-101.rev.poneytelecom.eu [51.15.185.101] 39920
 SSH-2.0-OpenSSH_7.4p1 Debian-10+deb9u3
 ```
-The server try to initiate a SSH connection, our first idea was to set up a small SSH honeypot with Cowrie to spy on the user. It works great but only gave half of the flag and no more information. After many unsuccessfull attempt (and the end of the CTF :( ) we decided to take a look at the user public key.
+
+The server tries to initiate an SSH connection, our first idea was to set up a small SSH honeypot with Cowrie to spy on the user. It works great but only gives half of the flag and no additional information. After many unsuccessful attempts (and the end of the CTF :( ) we decided to take a look at the user's public key.
 
 To do so, we used the Paramiko Python module to log connection information:
+
 ```python
 #!/usr/bin/env python
 import logging
@@ -99,19 +103,21 @@ while True:
         logger.error(exc)
 
 ```
+
 We can run the server and trigger a new connection:
+
 ```
-╰─# python serv2.py test_rsa.key
-Auth attempt for user mickey with key: AAAAB3NzaC1yc2EAAACBAVcIniIfR3tkfO/0E7W/lri2ec4WGca6CH7nOm8PqV4W+fHSKLSghmOauArZW0DuSDM9zqpXrPBx3QHBoe2x/1Vt25yyzjj99EwtmUefedtU+eRJopFSSKr5UaImhBxx8QqxkCkRGzg8SRaiOnKqXykCC8
-tDDjZT0k57BzQPT6z3AAAAgQG1/myKcXWiQhXSDEFULU7Qambs0+kkT+LLcuX7B08sbcvzoG+a5OYziM6QbTZQjtw/nhEHxbt0wAAJe/hi5MWAMRTPOZqg50SaS5lOZnLSGlR+DRGz7b/woF3Wkqdv0ZSTNq7L+o5WtzcffiJdAmHoQlC1gKhI8MqsO0E3Q3SQHQ==
+# python serv2.py test_rsa.key
 Auth attempt for user mickey with key: AAAAB3NzaC1yc2EAAACBAVcIniIfR3tkfO/0E7W/lri2ec4WGca6CH7nOm8PqV4W+fHSKLSghmOauArZW0DuSDM9zqpXrPBx3QHBoe2x/1Vt25yyzjj99EwtmUefedtU+eRJopFSSKr5UaImhBxx8QqxkCkRGzg8SRaiOnKqXykCC8
 tDDjZT0k57BzQPT6z3AAAAgQG1/myKcXWiQhXSDEFULU7Qambs0+kkT+LLcuX7B08sbcvzoG+a5OYziM6QbTZQjtw/nhEHxbt0wAAJe/hi5MWAMRTPOZqg50SaS5lOZnLSGlR+DRGz7b/woF3Wkqdv0ZSTNq7L+o5WtzcffiJdAmHoQlC1gKhI8MqsO0E3Q3SQHQ==
 echo NDH{a_WInN3r_15_A_Dr3AMeR > ~/flag_1.txt
 ```
-Well, now we have the public key and first part of the flag. Before doing anything else, we need to convert the public key to pem format and use OpenSSL to get modulus and exponent:
+
+Well, now we have the public key and first part of the flag. Before doing anything else, we need to convert the public key to PEM format and use OpenSSL to get the modulus and exponent:
+
 ```
-╰─# ssh-keygen -f public.key -e -m PKCS8 > public.pem
-╰─# openssl rsa -pubin -inform PEM -text -noout -in public.pem
+# ssh-keygen -f public.key -e -m PKCS8 > public.pem
+# openssl rsa -pubin -inform PEM -text -noout -in public.pem
 Public-Key: (1025 bit)
 Modulus:
     01:b5:fe:6c:8a:71:75:a2:42:15:d2:0c:41:54:2d:
@@ -134,7 +140,9 @@ Exponent:
     49:16:a2:3a:72:aa:5f:29:02:0b:cb:43:0e:36:53:
     d2:4e:7b:07:34:0f:4f:ac:f7
 ```
-The key is only 1025 bit ?? Let's try a Wiener's attack in order to get the corresponding private key:
+
+The key is only 1025 bits long?? Let's try a Wiener attack in order to get the corresponding private key:
+
 ```python
 from sage.all import *
 from Crypto.PublicKey import RSA
@@ -195,15 +203,17 @@ print("[~] Generating PEM private key")
 key = RSA.construct((long(n),long(e),long(d)))
 print(key.exportKey())
 ```
-Run the script:
+
+We run the script:
+
 ```
-╰─$ python2 wiener.py
+$ python2 wiener.py
 
 [~] Using Wiener attack to retrieve the private exponent
 [+] Found p: 20889245576632215937496060923102635902336468597218301616718124305930809261428763079736436110981840441822764789723011958852494201758313569356745363994791549
 [+] Found q: 14723831723094455775085365007141143530544095877112879851235256680184460118386958820268233017983677957272300333838816815589094172676082132570036830797290017
 [~] Calculating the private exponent from previous p and q
-[+] Found alice's old private exponent!
+[+] Found private exponent!
 [~] Generating PEM private key
 -----BEGIN RSA PRIVATE KEY-----
 MIICOgIBAAKBgQG1/myKcXWiQhXSDEFULU7Qambs0+kkT+LLcuX7B08sbcvzoG+a
@@ -220,9 +230,11 @@ CXUpUvMezQeCeMW4SVioZY1hyTFp4GtKqCDHAkEAvxQ93dEo5hEGiTZ1IVXR+TmL
 VgyFOnIZnCWfXAhz6UQkk0MJ+yCUICzqQZcmpUmlNMumA36w75lZmcexL22zeA==
 -----END RSA PRIVATE KEY-----
 ```
-Now that we have the private key, we can connect to the server on port 2222 (miroring of 5555 (else nmap is a great tool)) and grab the second part of  flag:
+
+Now that we have the private key, we can connect to the server on port 2222 ("mirror image" of 5555 (otherwise nmap is a great tool)) and grab the second part of the flag:
+
 ```
-╰─# ssh -i private.pem mickey@maninthemirror.challs.malice.fr -p 2222
+# ssh -i private.pem mickey@maninthemirror.challs.malice.fr -p 2222
 Linux 24b0bd880e30 4.9.0-3-amd64 #1 SMP Debian 4.9.30-2+deb9u5 (2017-09-19) x86_64
 
 The programs included with the Debian GNU/Linux system are free software;
