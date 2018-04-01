@@ -4,7 +4,7 @@ authors: ZeArioch,Crypt0_M3lon
 layout: writeup
 published: true
 ---
-Solves: 48 / Points: 200 / Category: Forensics
+Solves: 48 / Points: 200 / Category: Forensic
 ## Challenge description
 > Helps an important person to find the content of his numeric purse.
 
