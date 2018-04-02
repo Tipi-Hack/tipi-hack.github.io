@@ -15,9 +15,9 @@ title: Welcome
 Go check the tools we developed for CTF events in our [*'ctf-tool'* Github repo](https://github.com/Tipi-Hack/ctf-tools/).
 
 # About us
-We are a French team of pentesters who like to play CTFs.
+We are a French team of friends who like to play CTFs. We are not affiliated with our employers, nor any other company.
 
-Participants vary for each CTF. Here is a list of current and past members.
+Participants vary for each CTF event. Here is a compilation of all our current and past members.
 {% for m in site.data.members %}
 * {% include member.html member=m %}
 {% endfor %}
