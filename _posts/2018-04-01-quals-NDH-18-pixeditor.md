@@ -40,12 +40,19 @@ Then, while manipulating the "data" parameter, we noticed the following error me
 ![Data array error](/assets/ndh18-pixeditor-data_array_error.png){: .image }
 
 This parameter thus contains an array of pixels representing a square of 32 pixels, each pixel being represented on 4 bytes.
+![Phpinfo](/assets/ndh18-pixeditor-first_tests.png){: .image }
+
+However, as shown below, the generated image did contain our payload but not in the intended order:
+![Phpinfo](/assets/ndh18-pixeditor-incorrect_sequence.png){: .image }
 
 We just need to get our payload in the right order!
 
 After some tests we noticed that each block of three characters (in decimal) were placed in reverse order and followed with the value "255".
 
-We thus crafted our payload to get a phpinfo() page allowing to verify that our assessment was correct:
+We thus crafted our payload [using a few lines of python](https://github.com/Tipi-Hack/ctf-tools/blob/master/web/quals-NDH-18-pixeditor_array.py) to get a phpinfo() page:
+![Phpinfo](/assets/ndh18-pixeditor-final_php_payload.png){: .image }
+
+This allowed us to verify that our assessment was indeed correct:
 ![Phpinfo](/assets/ndh18-pixeditor-phpinfo.png){: .image }
 
 ### Flag recovery
