@@ -9,7 +9,7 @@ Solves: ?? / Points: 200 / Category: Crypto
 > Do you remember diffie failman last year ? I've patched all the vulns ! (i think...)
 Fortunately we have already solved the [similarly named challenged of last year](https://securite.intrinsec.com/2017/05/01/breizhctf-2017/) :wink:
 
-We get a ZIP file with a Python script implementing a server and a client, (find the [full script in appendix](#script)) and a pcap capture with only one TCP exchange.
+We get a ZIP file with a Python script implementing a server and a client, (find the [full script in appendix](#python-script-from-the-challenge)) and a pcap capture with only one TCP exchange.
 
 The goal is clear: understand the script implementing the crypto, find a flaw, then decrypt the exchange!
 
@@ -189,7 +189,7 @@ Isn't it awesome? And contrary to this custom implementation, it is not flawed! 
 
 * * *
 
-## [](#script) Python script from the challenge
+## Python script from the challenge
 ```python
 from Crypto.Cipher import AES
 from Crypto import Random
