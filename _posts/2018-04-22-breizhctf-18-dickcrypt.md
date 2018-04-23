@@ -7,6 +7,7 @@ Solves: ?? / Points: 75 / Category: Crypto
 
 ## Challenge description
 > Chef, un p'tit flag, on a soif ! feat gr4nd J0j0
+
 We get a Python script implementing a server (find the [full script in appendix](#python-script-from-the-challenge)) and the IP and the port where we could contact this service.
 
 The server takes a raw value and returns it encrypted and base64-encoded.
