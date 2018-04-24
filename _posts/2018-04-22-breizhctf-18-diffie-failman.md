@@ -3,7 +3,7 @@ title: BreizhCTF 2k18 - Diffie-Failman - strike back
 authors: cnotin
 layout: writeup
 ---
-Solves: ?? / Points: 200 / Category: Crypto
+Solves: 16% / Points: 200 / Category: Crypto
 
 ## Challenge description
 > Do you remember diffie failman last year ? I've patched all the vulns ! (i think...)
