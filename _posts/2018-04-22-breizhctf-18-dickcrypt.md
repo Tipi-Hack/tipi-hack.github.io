@@ -3,7 +3,7 @@ title: BreizhCTF 2k18 - Dickcrypt
 authors: cnotin
 layout: writeup
 ---
-Solves:  % / Points: 75 / Category: Crypto
+Solves: 16 % / Points: 75 / Category: Crypto
 
 ## Challenge description
 > Chef, un p'tit flag, on a soif ! feat gr4nd J0j0
