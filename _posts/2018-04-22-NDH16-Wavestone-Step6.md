@@ -7,9 +7,13 @@ layout: writeup
 
 ## Challenge description
 > Oh no. We detected and eliminated the RAT on the vice-boss computer, but it managed to launch a ransomware before.
+
 > We quickly performed a memory dump of the computer, but  **one of the most important files has been encrypted**...
+
 > See if you can decrypt it and get the flag!
+
 > **Notice:**  this is a custom but real ransomware. However, the version you might find in memory does not delete the original files (phew!). However, for reverse sakes, do your analyses in a VM!
+
 Note : The encrypted file was provided as : **Revolution.docx.wave**
 ## Solution 
 Here we are, another gz file, let's extract the juicy memory dump.
