@@ -33,7 +33,7 @@ Revolution.docx.wave
 Revolution.docx.wave
 Revolution.docx.wave
 Revolution.docx*
-Wow, many files with the same name, let's pop Volatility and dig deeper. (Since I'm a nice guy, I won't skip the basics commands).
+Wow, many files with the same name, let's pop Volatility and dig deeper. (Since I'm a nice guy, I won't skip the basic commands).
 ```shell_session
 root@kali:~/ndh16/step6# volatility -f 259338720a45a131e1ef701fa266f070 imageinfo
 Volatility Foundation Volatility Framework 2.6
