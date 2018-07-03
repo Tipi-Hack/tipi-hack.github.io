@@ -23,7 +23,6 @@ Here we are, another gz file, let's extract the juicy memory dump.
 Because I'm a lazy guy I always start with `strings`, sometimes it could be worthy, let's look for our vice-boss important file :
 ```shell_session
 # strings 259338720a45a131e1ef701fa266f070 | grep Revolution.docx
-```
 Revolution.docx
 Revolution.docx
 Revolution.docx
@@ -33,6 +32,7 @@ Revolution.docx.wave
 Revolution.docx.wave
 Revolution.docx.wave
 Revolution.docx*
+```
 Wow, many files with the same name, let's pop Volatility and dig deeper. (Since I'm a nice guy, I won't skip the basic commands).
 ```shell_session
 # volatility -f 259338720a45a131e1ef701fa266f070 imageinfo
@@ -68,11 +68,11 @@ Success, let's open our file and see if it contains something special :
 ```shell_session
 # file dumped/file.None.0xfffffa8001068f10.dat 
 dumped/file.None.0xfffffa8001068f10.dat: Microsoft Word 2007+
-root@kali:~/ndh16/step6# mv dumped/file.None.0xfffffa8001068f10.dat dumped/Revolution.docx
+# mv dumped/file.None.0xfffffa8001068f10.dat dumped/Revolution.docx
 ```
 Oops, the word document is corrupted, we can't open it. No problem, since we know that [docx files are ZIP archives](https://www.forensicswiki.org/wiki/Word_Document_(DOCX)), let's try otherwise. [Even Tay has told Paris Hilton about it.](https://twitter.com/SwiftOnSecurity/status/1013130217135755265) :p
 ```shell_session
-6# unzip dumped/Revolution.docx 
+# unzip dumped/Revolution.docx 
 Archive:  dumped/Revolution.docx
   inflating: [Content_Types].xml     
   inflating: _rels/.rels             
