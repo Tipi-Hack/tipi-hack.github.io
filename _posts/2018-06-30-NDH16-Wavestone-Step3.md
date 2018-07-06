@@ -24,9 +24,9 @@ A module to browse the filesystem and retrieve deleted files can be found in the
 Great, Testdisk found many deleted files!
 ![Testdisk](/assets/ndh18-wavestone-testdisk.png)
 
-We can dump all files, including deleted one, by pressing `a` to select everything and `C` to dump.
+We can dump all files, including deleted ones, by pressing `a` to select everything and `C` to dump.
 
-Good! We have retrieved all the deleted files from the dump. Maybe we can try to run `file` to identity suspicious result:
+Good! We have retrieved all the deleted files from the dump. Maybe we can try to run `file` to identisy a suspicious file:
 ```bash
 $ find . -exec sh -c "file {};" \;
 [...]
