@@ -26,7 +26,7 @@ Great, Testdisk found many deleted files!
 
 We can dump all files, including deleted one, by pressing `a` to select everything and `C` to dump.
 
-Good! We have retrived all the deleted files from the dump. Maybe we can try to run `file` to identity suspicious result:
+Good! We have retrieved all the deleted files from the dump. Maybe we can try to run `file` to identity suspicious result:
 ```bash
 $ find . -exec sh -c "file {};" \;
 [...]
