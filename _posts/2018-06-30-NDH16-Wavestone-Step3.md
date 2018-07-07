@@ -40,6 +40,6 @@ $ find . -exec sh -c "file {};" \;
 ```
 `qpng.dll` looks very interesting, the file is a UPXed PE despite the .dll extension and note the lowercase name and extension. We try to validate with path to the file and ... it works!
 
-The third flag is **/Dolphin-x64/QtPlugins/imageformats/qpng.dll**.
+The third flag is **\Dolphin-x64\QtPlugins\imageformats\qpng.dll**.
 
 *Note: according to the organizer, the file should have been the same that the one retrieved from step 2, then a simple hash comparison would have been sufficient to identify the malicious file. Unfortunately, the payload was UPXed in step 3 and not in step 2 ;)*
