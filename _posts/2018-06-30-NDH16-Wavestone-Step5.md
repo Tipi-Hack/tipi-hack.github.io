@@ -34,7 +34,7 @@ We conclude that the malware persists in the `%TEMP%` folder with a random named
 ![](/assets/ndh18-wavestone-persistence_2_download_exe.png){: .image }
 
 3. The `COMPUTERNAME` and `USERNAME` environment variables are obtained, concatenated with a "|" in the middle and encoded to be sent to the C&C server. We also notice that the malware gets the value of the `HKCU:\Software\Redstone` registry key.
-![](/assets/ndh18-wavestone-send computername_and_username.png){: .image }
+![](/assets/ndh18-wavestone-send_computername_and_username.png){: .image }
 
 4. There is also code to remove the persistence by deleting the `KemelUpdater` registry key:
 ![](/assets/ndh18-wavestone-unpersistence.png){: .image }
