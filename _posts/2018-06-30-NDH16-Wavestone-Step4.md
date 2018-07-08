@@ -24,7 +24,8 @@ layout: writeup
 > * 5 = Password of the "wavestone" user
 
 
-## Solution 
+## Solution
+### First observations
 The pcap contains communication of a compromised computer with the C&C. However the communication is made over HTTPS, if only we could decrypt them...
 
 Maybe there is something interesting in the backup archive? Well, it seems to be the case :smiley: The archive contains the server private key in `/letsencrypt/archive/westwood.aperture-science.fr/privkey1.pem`. By setting up Wireshark correctly, we are able to decrypt communications.
@@ -34,11 +35,29 @@ After digging a lot inside the HTTP requests, we can identify two type of reques
 * GET requests seem to be used to retrieve commands to execute through the `X-CMD` header
 * POST requests seem to be used to send back data in the body to the C&C.
 
-Data blobs are base64-encoded, but when decoded, we don't get intelligible text. Maybe there is some kind of custom encoding? It's time to reverse the binarie retrieved in steps 2 and 3 :wink:
+Data blobs are base64-encoded, but when decoded, we don't get intelligible text. Maybe there is some kind of custom encoding? It's time to reverse the binary retrieved in steps 2 and 3 :wink:
 
-FIXME : Reverse part
+### Binary reversing
+The program is packed with UPX. We can simply unpack it with `upx -d sample.exe`. It it stripped but we quickly find the relevant strings: "GET" & "POST" HTTP methods, URLs, format strings for GET/POST parameters...
 
-Now that we know how to decrypt communications, we need to extract the executed commands and their results from the pcap. Wa can do it manually (tedious, but effective) or use `tshark` to extract both fields:
+The binary has mirror functions for, decoding and encoding data, from and to the C&C server. Let's analyse the code in charge of decoding data from the C&C server.
+
+As we supposed, we find the proof that the dot characters, found at the end of encoded blobs, are in fact equal characters used as padding in base64:
+![](/assets/ndh18-wavestone-custom encoding replace equal dot.png){: .image }
+
+We notice also the calls to [`CryptStringToBinaryA`](https://docs.microsoft.com/en-us/windows/desktop/api/wincrypt/nf-wincrypt-cryptstringtobinarya)/[`CryptBinaryToStringA`](https://docs.microsoft.com/en-us/windows/desktop/api/wincrypt/nf-wincrypt-cryptbinarytostringa). These functions are from the `Wincrypt` Windows library but they are for encoding, not encryption.
+In this screenshot, `CryptStringToBinaryA` is used.
+![](/assets/ndh18-wavestone-b64 decode and custom decode.png){: .image }
+
+Its third parameter, `dwFlags` is `1` which means `CRYPT_STRING_BASE64` based on [the function documentation](https://docs.microsoft.com/en-us/windows/desktop/api/wincrypt/nf-wincrypt-cryptstringtobinarya). We notice that it is called twice with slightly different parameters. According to the same documentation, regarding the fourth parameter `pbBinary`
+> "If this parameter is NULL, the function calculates the length of the buffer needed and returns the size, in bytes, of required memory in the DWORD pointed to by `pcbBinary`."
+
+So, this double call is normal. The first call returns the size of the output buffer (after base64-decoding), we suppose that it is then allocated (hence the `mallocMaybe` name we attributed to the function between the two), then the function is called again with the appropriate buffer to hold the output.
+
+We should not neglect the lines of code that follow since they are the second part of the encoding used to communicate with the C&C. It is a simple but important loop which iterates over the decoded bytes and substract 0 from the first byte, 1 from the second, etc. Actually, it substracts the value of the iterator, modulo 256.
+
+### Communications analysis
+Now that we know how to decrypt communications, we need to extract the executed commands and their results from the pcap. We can do it manually (tedious, but effective) or use `tshark` to extract both fields:
 ```terminal
 .\tshark.exe -r "network_activity.pcap" -o ssl.keys_list:"35.178.116.212","443","http","privkey1.pem" -Tfields -e http.header.X-CMD -e urlencoded-form.key -Eseparator=','
 ```
