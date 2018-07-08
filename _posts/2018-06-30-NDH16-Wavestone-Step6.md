@@ -53,7 +53,7 @@ INFO    : volatility.debug    : Determining profile based on KDBG search...
 ```
 Grep is life, let's scan files on memory and look for the important one.
 ```shell_session
-# volatility -f 259338720a45a131e1ef701fa266f070 --profile=Win7SP1x64 filescan | grep Revolution.docx
+# volatility -f 259338720a45a131e1ef701fa266f070 --profile=Win7SP1x6*4 filescan | grep Revolution.docx
 Volatility Foundation Volatility Framework 2.6
 0x000000003ed6d530      2      0 RW---- \Device\HarddiskVolume2\Users\iznogoud\Desktop\Revolution.docx
 ```
@@ -93,3 +93,9 @@ Let's see if we can still recover our data from document.xml file, by openening 
 <w:t xml:space="preserve">Impressive, </w:t></w:r><w:proofErr w:type="spellStart"/><w:r><w:rPr><w:b/><w:sz w:val="48"/><w:lang w:val="en-US"/></w:rPr><w:t>huh</w:t></w:r><w:r w:rsidRPr="004B3C7D"><w:rPr><w:b/><w:sz w:val="4"/><w:szCs w:val="2"/><w:lang w:val="en-US"/></w:rPr><w:t>**flagbelow**</w:t></w:r><w:proofErr w:type="spellEnd"/></w:p><w:p w:rsidR="004B3C7D" w:rsidRPr="004B3C7D" w:rsidRDefault="004B3C7D" w:rsidP="004B3C7D"><w:pPr><w:jc w:val="center"/><w:rPr><w:b/><w:color w:val="FFFFFF" w:themeColor="background1"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr></w:pPr><w:r w:rsidRPr="004B3C7D"><w:rPr><w:b/><w:color w:val="FFFFFF" w:themeColor="background1"/><w:sz w:val="20"/><w:szCs w:val="20"/><w:lang w:val="en-US"/></w:rPr><w:t>WAVE{0dc621d0844f67a7d781b9fc4d5bf175}</w:t></w:r></w:p><w:sectPr w:rsidR="004B3C7D" w:rsidRPr="004B3C7D" w:rsidSect="004B3C7D"><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="709" w:right="1417" w:bottom="709" w:left="1417" w:header="708" w:footer="708" w:gutter="0"/><w:cols w:space="708"/><w:docGrid w:linePitch="360"/></w:sectPr></w:body></w:document>
 ```
 W00t, no reverse needed, we got the **important file** containing the flag from memory & in just a few minutes !
+
+## That's a win!
+And that was the full story of how we won the [Wavestone](https://twitter.com/SecuInsider/) challenge at the *16th Nuit du Hack*
+
+<blockquote class="twitter-tweet tw-align-center" data-lang="fr"><p lang="fr" dir="ltr">Voici les heureux gagnants :) <a href="https://twitter.com/tipi_hack?ref_src=twsrc%5Etfw">@tipi_hack</a> . On espère que vous avez apprécié le challenge. Merci <a href="https://twitter.com/iansus?ref_src=twsrc%5Etfw">@iansus</a> ! <a href="https://twitter.com/hashtag/ndh16?src=hash&amp;ref_src=twsrc%5Etfw">#ndh16</a> <a href="https://t.co/YcEUbe6LyR">pic.twitter.com/YcEUbe6LyR</a></p>&mdash; SecurityInsider (@SecuInsider) <a href="https://twitter.com/SecuInsider/status/1013092089331056642?ref_src=twsrc%5Etfw">30 juin 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
