@@ -25,39 +25,39 @@ layout: writeup
 
 
 ## Solution 
-The pcap contains communication of a compromised computer with the C&C. However the communication is made over HTTPS, if only we can decrypt them...
-Maybe there is something interesting in the backup archive ? Well, it seems to be the case :) The archive contains the server private key in `/letsencrypt/archive/westwood.aperture-science.fr/privkey1.pem`. By setting up Wireshark correctly, we are able to decrypt communication.
-![wireshark](/assets/ndh18-wavestone-wireshark.png)
+The pcap contains communication of a compromised computer with the C&C. However the communication is made over HTTPS, if only we could decrypt them...
 
-After digging a lot inside the HTTP request, we can identify two type of request:
-* GET request seems to be used to retrieve command to execute through the X-CMD header
-* POST request seembs to be used to send back data in the body to the C2
+Maybe there is something interesting in the backup archive? Well, it seems to be the case :smiley: The archive contains the server private key in `/letsencrypt/archive/westwood.aperture-science.fr/privkey1.pem`. By setting up Wireshark correctly, we are able to decrypt communications.
+![wireshark](/assets/ndh18-wavestone-wireshark.png){: .image }
 
-Data are base64 encoded, but when decoded, we don't get intelligible text. Maybe there is some kind of custom encoding ? It's time to reverse the binarie retrieved in step 2 and 3 :)
+After digging a lot inside the HTTP requests, we can identify two type of requests:
+* GET requests seem to be used to retrieve commands to execute through the `X-CMD` header
+* POST requests seem to be used to send back data in the body to the C&C.
+
+Data blobs are base64-encoded, but when decoded, we don't get intelligible text. Maybe there is some kind of custom encoding? It's time to reverse the binarie retrieved in steps 2 and 3 :wink:
 
 FIXME : Reverse part
 
-Now that we know how to get decrypt communication, we need to exctract executed commands and results from the pcap. Wa can use tshark to extract both fields:
-```
-.\tshark.exe -r "C:\Users\ctf\wavestone\network_activity.pcap" -o ssl.keys_list:"35.178.116.212","443","http","C:\Users\ctf\wavestone\privkey1.pem" -Tfields -e http.header.X-CMD -e urlencoded-form.key -Eseparator=','
+Now that we know how to decrypt communications, we need to extract the executed commands and their results from the pcap. Wa can do it manually (tedious, but effective) or use `tshark` to extract both fields:
+```terminal
+.\tshark.exe -r "network_activity.pcap" -o ssl.keys_list:"35.178.116.212","443","http","privkey1.pem" -Tfields -e http.header.X-CMD -e urlencoded-form.key -Eseparator=','
 ```
 
-After cleaning a lot (replace space by plus, remove coma, replace dot by equal...), we can use a simple python script to decrypt the exctracted information:
+After a lot of cleaning (replacing the characters space by plus, removing commas, replacing the characters dots by equals...), we can use a simple python script to decrypt the extracted information:
 ```python
-import base64
+from base64 import b64decode
 
 fic = open("cmd.txt","r")
 
 for line in fic:
-    decoded = base64.b64decode(line)
+    decoded = b64decode(line)
     out = ""
-    cpt=0
+    cpt = 0
     for char in decoded:
-        out +=chr((ord(char)-cpt)%256)
-        cpt+=1
+        out += chr((ord(char)-cpt)%256)
+        cpt += 1
 
     print out.strip()
-
 ```
 
 And the decoded communication:
@@ -283,147 +283,7 @@ SID               : S-1-5-21-1961777594-3267676878-1645317608-1001
 	ssp :	
 	credman :	
 
-Authentication Id : 0 ; 997 (00000000:000003e5)
-Session           : Service from 0
-User Name         : LOCAL SERVICE
-Domain            : NT AUTHORITY
-Logon Server      : (null)
-Logon Time        : 6/19/2018 5:39:15 PM
-SID               : S-1-5-19
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : (null)
-	 * Domain   : (null)
-	 * Password : (null)
-	kerberos :	
-	 * Username : (null)
-	 * Domain   : (null)
-	 * Password : (null)
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 43678 (00000000:0000aa9e)
-Session           : Interactive from 1
-User Name         : DWM-1
-Domain            : Window Manager
-Logon Server      : (null)
-Logon Time        : 6/19/2018 5:39:15 PM
-SID               : S-1-5-90-0-1
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 43652 (00000000:0000aa84)
-Session           : Interactive from 1
-User Name         : DWM-1
-Domain            : Window Manager
-Logon Server      : (null)
-Logon Time        : 6/19/2018 5:39:15 PM
-SID               : S-1-5-90-0-1
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 996 (00000000:000003e4)
-Session           : Service from 0
-User Name         : DESKTOP-4SL25V8$
-Domain            : WORKGROUP
-Logon Server      : (null)
-Logon Time        : 6/19/2018 5:39:15 PM
-SID               : S-1-5-20
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	 * Username : desktop-4sl25v8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 23804 (00000000:00005cfc)
-Session           : Interactive from 1
-User Name         : UMFD-1
-Domain            : Font Driver Host
-Logon Server      : (null)
-Logon Time        : 6/19/2018 5:39:14 PM
-SID               : S-1-5-96-0-1
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 23791 (00000000:00005cef)
-Session           : Interactive from 0
-User Name         : UMFD-0
-Domain            : Font Driver Host
-Logon Server      : (null)
-Logon Time        : 6/19/2018 5:39:14 PM
-SID               : S-1-5-96-0-0
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 23035 (00000000:000059fb)
-Session           : UndefinedLogonType from 0
-User Name         : (null)
-Domain            : (null)
-Logon Server      : (null)
-Logon Time        : 6/19/2018 5:39:14 PM
-SID               : 
-	msv :	
-	tspkg :	
-	wdigest :	
-	kerberos :	
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 999 (00000000:000003e7)
-Session           : UndefinedLogonType from 0
-User Name         : DESKTOP-4SL25V8$
-Domain            : WORKGROUP
-Logon Server      : (null)
-Logon Time        : 6/19/2018 5:39:14 PM
-SID               : S-1-5-18
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	 * Username : desktop-4sl25v8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	ssp :	
-	credman :	
+[...]
 
 mimikatz(commandline) # exit
 Bye!
@@ -471,130 +331,7 @@ SID               : S-1-5-21-1961777594-3267676878-1645317608-1001
 	ssp :	
 	credman :	
 
-Authentication Id : 0 ; 997 (00000000:000003e5)
-Session           : Service from 0
-User Name         : LOCAL SERVICE
-Domain            : NT AUTHORITY
-Logon Server      : (null)
-Logon Time        : 6/20/2018 8:24:04 AM
-SID               : S-1-5-19
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : (null)
-	 * Domain   : (null)
-	 * Password : (null)
-	kerberos :	
-	 * Username : (null)
-	 * Domain   : (null)
-	 * Password : (null)
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 42453 (00000000:0000a5d5)
-Session           : Interactive from 1
-User Name         : DWM-1
-Domain            : Window Manager
-Logon Server      : (null)
-Logon Time        : 6/20/2018 8:24:04 AM
-SID               : S-1-5-90-0-1
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 996 (00000000:000003e4)
-Session           : Service from 0
-User Name         : DESKTOP-4SL25V8$
-Domain            : WORKGROUP
-Logon Server      : (null)
-Logon Time        : 6/20/2018 8:24:04 AM
-SID               : S-1-5-20
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	 * Username : desktop-4sl25v8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 22526 (00000000:000057fe)
-Session           : Interactive from 1
-User Name         : UMFD-1
-Domain            : Font Driver Host
-Logon Server      : (null)
-Logon Time        : 6/20/2018 8:24:04 AM
-SID               : S-1-5-96-0-1
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 22518 (00000000:000057f6)
-Session           : Interactive from 0
-User Name         : UMFD-0
-Domain            : Font Driver Host
-Logon Server      : (null)
-Logon Time        : 6/20/2018 8:24:04 AM
-SID               : S-1-5-96-0-0
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 20773 (00000000:00005125)
-Session           : UndefinedLogonType from 0
-User Name         : (null)
-Domain            : (null)
-Logon Server      : (null)
-Logon Time        : 6/20/2018 8:24:04 AM
-SID               : 
-	msv :	
-	tspkg :	
-	wdigest :	
-	kerberos :	
-	ssp :	
-	credman :	
-
-Authentication Id : 0 ; 999 (00000000:000003e7)
-Session           : UndefinedLogonType from 0
-User Name         : DESKTOP-4SL25V8$
-Domain            : WORKGROUP
-Logon Server      : (null)
-Logon Time        : 6/20/2018 8:24:04 AM
-SID               : S-1-5-18
-	msv :	
-	tspkg :	
-	wdigest :	
-	 * Username : DESKTOP-4SL25V8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	kerberos :	
-	 * Username : desktop-4sl25v8$
-	 * Domain   : WORKGROUP
-	 * Password : (null)
-	ssp :	
-	credman :	
+[...]
 
 mimikatz(commandline) # exit
 Bye!
@@ -605,60 +342,7 @@ Image Name                     PID Session Name        Session#    Mem Usage
 System Idle Process              0 Services                   0          8 K
 System                           4 Services                   0        128 K
 Registry                        88 Services                   0     20,180 K
-smss.exe                       308 Services                   0      1,164 K
-csrss.exe                      404 Services                   0      4,748 K
-wininit.exe                    480 Services                   0      6,600 K
-csrss.exe                      496 Console                    1      4,748 K
-winlogon.exe                   572 Console                    1      9,932 K
-services.exe                   608 Services                   0      7,436 K
-lsass.exe                      620 Services                   0     15,868 K
-svchost.exe                    716 Services                   0     26,480 K
-fontdrvhost.exe                740 Console                    1      4,324 K
-fontdrvhost.exe                748 Services                   0      3,728 K
-svchost.exe                    836 Services                   0     10,140 K
-dwm.exe                        932 Console                    1     67,356 K
-svchost.exe                     60 Services                   0     46,960 K
-svchost.exe                    332 Services                   0     14,356 K
-svchost.exe                    388 Services                   0     25,120 K
-svchost.exe                    476 Services                   0     25,604 K
-svchost.exe                   1096 Services                   0      7,048 K
-svchost.exe                   1140 Services                   0     20,300 K
-svchost.exe                   1204 Services                   0     15,256 K
-VBoxService.exe               1348 Services                   0      7,384 K
-Memory Compression            1428 Services                   0     16,912 K
-svchost.exe                   1536 Services                   0     10,740 K
-svchost.exe                   1596 Services                   0     14,032 K
-svchost.exe                   1624 Services                   0      6,248 K
-svchost.exe                   1632 Services                   0      9,104 K
-svchost.exe                   1788 Services                   0      7,552 K
-audiodg.exe                   1828 Services                   0      6,732 K
-svchost.exe                   1876 Services                   0      9,736 K
-spoolsv.exe                   1924 Services                   0     14,304 K
-svchost.exe                   1120 Services                   0     18,892 K
-SecurityHealthService.exe     2080 Services                   0     12,624 K
-svchost.exe                   2100 Services                   0     11,688 K
-wlms.exe                      2212 Services                   0      3,060 K
-sihost.exe                    2724 Console                    1     22,444 K
-svchost.exe                   2760 Console                    1     34,740 K
-taskhostw.exe                 2812 Console                    1     13,556 K
-ctfmon.exe                    2884 Console                    1     13,260 K
-explorer.exe                  1968 Console                    1     84,628 K
-ShellExperienceHost.exe       3372 Console                    1     46,120 K
-SearchUI.exe                  3488 Console                    1     65,540 K
-RuntimeBroker.exe             3588 Console                    1     22,516 K
-RuntimeBroker.exe             3696 Console                    1     22,396 K
-SearchIndexer.exe             3864 Services                   0     17,112 K
-SearchProtocolHost.exe        2932 Services                   0     11,484 K
-SearchFilterHost.exe          1736 Services                   0      5,880 K
-backgroundTaskHost.exe         980 Console                    1     23,748 K
-backgroundTaskHost.exe        4048 Console                    1     26,980 K
-SkypeHost.exe                 2964 Console                    1     15,148 K
-HxTsr.exe                     2928 Console                    1     22,268 K
-RuntimeBroker.exe             2700 Console                    1     16,908 K
-RuntimeBroker.exe             4180 Console                    1      8,600 K
-RuntimeBroker.exe             4228 Console                    1      6,900 K
-RuntimeBroker.exe             4264 Console                    1      7,708 K
-MSASCuiL.exe                  4372 Console                    1      8,924 K
+[...]
 VBoxTray.exe                  4532 Console                    1     10,324 K
 OneDrive.exe                  4612 Console                    1     28,952 K
 Kemel-QJqA.exe                4800 Console                    1     11,552 K
@@ -669,6 +353,6 @@ WmiPrvSE.exe                  4748 Services                   0      8,072 K
 > taskkill /im Kemel-QJqA.exe /f
 ```
 
-Now we can build the flag with needed information.
+Now we have all the pieces of information needed to build the flag.
 
 The fourth flag is **desktop-4sl25v83xpl01tmimikatzHKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest\UseLogonCredentialpool123**.
