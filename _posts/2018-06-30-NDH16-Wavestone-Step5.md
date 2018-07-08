@@ -1,7 +1,7 @@
 ---
 title: NDH16/Wavestone - Step 5 - In memoriam
 published: false # delete line when ready to publish
-authors: cnotin
+authors: cnotin,Crypt0_M3lon
 layout: writeup
 ---
 
@@ -41,7 +41,17 @@ We conclude that the malware persists in the `%TEMP%` folder with a random named
 
 
 ### Memory dump analysis
-Now, we need the flag! We already now the first three parts of the flag from the previous step (1 = Name of the victim's computer = "VBOSS-PC", 2 = Name of the compromised user = "iznogoud", 3 = Password of the compromised user = "klif").
+Now, we need the flag! The easyest way to get the first three parts of the flag is to use the [Mimikatz Volatility plugin](https://github.com/sans-dfir/sift-files/blob/master/volatility/mimikatz.py)!
+```console
+# volatility --plugins=plugins/ -f memory --profile=Win7SP1x64 mimikatz
+Volatility Foundation Volatility Framework 2.6
+Module   User             Domain           Password                                
+-------- ---------------- ---------------- ----------------------------------------
+wdigest  iznogoud         VBOSS-PC         klif                                    
+wdigest  ndh              VBOSS-PC         wavestone                               
+wdigest  VBOSS-PC$        WORKGROUP    
+```
+Good, but there is two users. We need to discover what is the malicious process and its owner. However we have the fist flag, "1 = Name of the victim's computer" = "VBOSS-PC".
 
 For the three parts missing, we decide to use Volatility (see the next step writeup for the detailed instructions). Here is the process tree with the `pstree` command:
 ```console
@@ -158,6 +168,21 @@ C:\Users\marsault\source\repos\NdH-2k18-RedStone\Release\RedStone.pdb
 
 We have discovered the fourth part of the flag "4 = Full location of the running malware on disk (c:\xxx)" = "C:\Windows\System32\dllhost\svchost.exe"
 
+We still need to know the name of the infected user, remember ? The `envars` module can be user to get environment variable of the process.
+```console
+# volatility --plugins=plugins/ -f memory --profile=Win7SP1x64 envars -p 1928
+Volatility Foundation Volatility Framework 2.6
+Pid      Process              Block              Variable                       Value
+-------- -------------------- ------------------ ------------------------------ -----
+[...]
+    1928 svchost.exe          0x0000000000131320 SystemRoot                     C:\Windows
+    1928 svchost.exe          0x0000000000131320 TEMP                           C:\Users\iznogoud\AppData\Local\Temp
+    1928 svchost.exe          0x0000000000131320 TMP                            C:\Users\iznogoud\AppData\Local\Temp
+    1928 svchost.exe          0x0000000000131320 USERDOMAIN                     VBOSS-PC
+    1928 svchost.exe          0x0000000000131320 USERNAME                       iznogoud
+[...]
+```
+Bingo! Using the information gatherd with the `mimikatz` plugin, we have two more parts of the flag. "2 = Name of the compromised user" = "iznogoud" and "3 = Password of the compromised user" = "klif".
 
 Now we need to dig in the process memory to find the information we are looking for. Especially the strings that have been constructed during the execution. For example, in the disassembly we discovered that the malware UID was sent as a GET parameter to the C&C with the URL `/159487.php?uid=%s`. Shall we try?
 ```console
@@ -193,6 +218,5 @@ Kemel-MHGa.exe
 Bingo! 🎉
 
 "6 = Malware persistence location on disk (c:\xxx)" = "C:\Users\iznogoud\AppData\Local\Temp\Kemel-MHGa.exe"
-
 
 Finally, the flag is **VBOSS-PCiznogoudklifC:\Windows\System32\dllhost\svchost.exe6eb7ec101042487bd3eb72d49180a144C:\Users\iznogoud\AppData\Local\Temp\Kemel-MHGa.exe**
