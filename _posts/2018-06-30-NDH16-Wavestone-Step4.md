@@ -40,6 +40,9 @@ Data blobs are base64-encoded, but when decoded, we don't get intelligible text.
 ### Binary reversing
 The program is packed with UPX. We can simply unpack it with `upx -d sample.exe`. It it stripped but we quickly find the relevant strings: "GET" & "POST" HTTP methods, URLs, format strings for GET/POST parameters...
 
+For example, the following code clearly shows a GET request to the C&C server (the functions names were added by us after guessing their purpose):
+![](/assets/ndh18-wavestone-get request.png){: .image }
+
 The binary has mirror functions for, decoding and encoding data, from and to the C&C server. Let's analyse the code in charge of decoding data from the C&C server.
 
 As we supposed, we find the proof that the dot characters, found at the end of encoded blobs, are in fact equal characters used as padding in base64:
