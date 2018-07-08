@@ -27,14 +27,14 @@ We continue on the reverse-engineering that we started at the previous step to u
 *Since the binary is stripped, in the screenshots below many of the functions were renamed by ourselves based on our understanding, or guessing, of their roles.*
 
 1. First step of persistence: it gets the value of the `TEMP` environment variable (TEMP folder) then obtains 4 random values with `BCryptGenRandom`. These values seem to be passed to a function that takes a format string with fields for all these values:
-![](/assets/ndh18-wavestone-persistence 1 get random filename.png){: .image }
+![](/assets/ndh18-wavestone-persistence_1_get_random_filename.png){: .image }
 We conclude that the malware persists in the `%TEMP%` folder with a random named composed of "Kemel-", plus 4 random characters (`%c`), plus ".exe".
 
 2. We see that the executable is stored in the folder and with the name prepared before. Then the `KemelUpdater` registry key is added in `HKCU:\Software\Microsoft\Windows\CurrentVersion\Run` to make it run when the users open their session:
-![](/assets/ndh18-wavestone-persistence 2 download exe.png){: .image }
+![](/assets/ndh18-wavestone-persistence_2_download_exe.png){: .image }
 
 3. The `COMPUTERNAME` and `USERNAME` environment variables are obtained, concatenated with a "|" in the middle and encoded to be sent to the C&C server. We also notice that the malware gets the value of the `HKCU:\Software\Redstone` registry key.
-![](/assets/ndh18-wavestone-send computername and username.png){: .image }
+![](/assets/ndh18-wavestone-send computername_and_username.png){: .image }
 
 4. There is also code to remove the persistence by deleting the `KemelUpdater` registry key:
 ![](/assets/ndh18-wavestone-unpersistence.png){: .image }
