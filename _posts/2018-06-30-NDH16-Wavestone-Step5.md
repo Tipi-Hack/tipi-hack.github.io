@@ -41,7 +41,7 @@ We conclude that the malware persists in the `%TEMP%` folder with a random named
 
 
 ### Memory dump analysis
-Now, we need the flag! The easyest way to get the first three parts of the flag is to use the [Mimikatz Volatility plugin](https://github.com/sans-dfir/sift-files/blob/master/volatility/mimikatz.py)!
+Now, we need the flag! The easiest way to get the first three parts of the flag is to use the [Mimikatz Volatility plugin](https://github.com/sans-dfir/sift-files/blob/master/volatility/mimikatz.py)!
 ```console
 # volatility --plugins=plugins/ -f memory --profile=Win7SP1x64 mimikatz
 Volatility Foundation Volatility Framework 2.6
@@ -51,9 +51,9 @@ wdigest  iznogoud         VBOSS-PC         klif
 wdigest  ndh              VBOSS-PC         wavestone                               
 wdigest  VBOSS-PC$        WORKGROUP    
 ```
-Good, but there is two users. We need to discover what is the malicious process and its owner. However we have the fist flag, "1 = Name of the victim's computer" = "VBOSS-PC".
+Good, but there are two users. We need to discover what is the malicious process and its owner. However we have the first flag, "1 = Name of the victim's computer" = "VBOSS-PC".
 
-For the three parts missing, we decide to use Volatility (see the next step writeup for the detailed instructions). Here is the process tree with the `pstree` command:
+For the remaining parts of the flag, we decide to use Volatility (see the next step writeup for the detailed instructions). Here is the process tree with the `pstree` command:
 ```console
 # volatility -f memory --profile=Win7SP1x64 pstree
 Volatility Foundation Volatility Framework 2.6
@@ -111,7 +111,7 @@ The following extract stands out:
 We have the `whoami.exe` process, child of `cmd.exe` (this is what happens when you type `whoami` in a command prompt), which is a child of `svchost.exe` (PID 1928). This process is usually legitimate (it hosts services), however here we see that it is a child of `explorer.exe` which is uncommon. Let's dig further on this `svchost.exe` process with the [`psinfo` plugin](https://github.com/monnappa22/Psinfo).
 
 ```console
-# volatility --plugins=/usr/share/volatility/plugins -f memory --profile=Win7SP1x64 psinfo -p 1928
+# volatility --plugins=plugins/ -f memory --profile=Win7SP1x64 psinfo -p 1928
 Volatility Foundation Volatility Framework 2.6
 Process Information:
 	Process: svchost.exe PID: 1928
@@ -168,7 +168,7 @@ C:\Users\marsault\source\repos\NdH-2k18-RedStone\Release\RedStone.pdb
 
 We have discovered the fourth part of the flag "4 = Full location of the running malware on disk (c:\xxx)" = "C:\Windows\System32\dllhost\svchost.exe"
 
-We still need to know the name of the infected user, remember ? The `envars` module can be user to get environment variable of the process.
+We still need to know the name of the infected user, remember? We use the `envars` plugin to get the environment variables of the process.
 ```console
 # volatility --plugins=plugins/ -f memory --profile=Win7SP1x64 envars -p 1928
 Volatility Foundation Volatility Framework 2.6
@@ -182,7 +182,7 @@ Pid      Process              Block              Variable                       
     1928 svchost.exe          0x0000000000131320 USERNAME                       iznogoud
 [...]
 ```
-Bingo! Using the information gatherd with the `mimikatz` plugin, we have two more parts of the flag. "2 = Name of the compromised user" = "iznogoud" and "3 = Password of the compromised user" = "klif".
+Bingo! Using the information gathered with the `mimikatz` plugin, we have two more parts of the flag. "2 = Name of the compromised user" = "iznogoud" and "3 = Password of the compromised user" = "klif".
 
 Now we need to dig in the process memory to find the information we are looking for. Especially the strings that have been constructed during the execution. For example, in the disassembly we discovered that the malware UID was sent as a GET parameter to the C&C with the URL `/159487.php?uid=%s`. Shall we try?
 ```console
