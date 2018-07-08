@@ -1,6 +1,5 @@
 ---
 title: NDH16/Wavestone - Step 1 - Little bad duck
-published: false # delete line when ready to publish
 authors: Crypt0_M3lon
 layout: writeup
 ---

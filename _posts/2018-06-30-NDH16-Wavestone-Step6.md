@@ -1,6 +1,5 @@
 ---
 title: NDH16/Wavestone - Step 6 - Raiders of the lost file
-published: false # delete line when ready to publish
 authors: 0xTornado
 layout: writeup
 ---

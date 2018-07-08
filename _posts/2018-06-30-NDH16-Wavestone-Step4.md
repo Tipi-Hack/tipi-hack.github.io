@@ -1,6 +1,5 @@
 ---
 title: NDH16/Wavestone - Step 4 - The great interceptor
-published: false # delete line when ready to publish
 authors: Crypt0_M3lon,cnotin
 layout: writeup
 ---

@@ -1,6 +1,5 @@
 ---
 title: NDH16/Wavestone - Step 2 - Give yourshellf strength
-published: false # delete line when ready to publish
 authors: Crypt0_M3lon
 layout: writeup
 ---

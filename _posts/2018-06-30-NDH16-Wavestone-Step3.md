@@ -1,6 +1,5 @@
 ---
 title: NDH16/Wavestone - Step 3 - Raise the dead
-published: false # delete line when ready to publish
 authors: Crypt0_M3lon
 layout: writeup
 ---

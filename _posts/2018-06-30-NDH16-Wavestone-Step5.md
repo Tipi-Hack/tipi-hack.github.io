@@ -1,6 +1,5 @@
 ---
 title: NDH16/Wavestone - Step 5 - In memoriam
-published: false # delete line when ready to publish
 authors: cnotin,Crypt0_M3lon
 layout: writeup
 ---
