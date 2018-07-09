@@ -203,7 +203,7 @@ With the same very advanced `strings` technique (:wink:), we try to find the nam
 ```
 Bad luck this time... We found the pattern but not the specific value for this execution...
 
-We remember that Windows uses Unicode UTF-16 (see also ["Quals NDH 2018 - Where is my Purse ?"]({% post_url 2018-04-01-quals-NDH-18-whereismypurse %}), so we can try again with the `-el` (`-e` for "encoding" and `l` for "16-bit littleendian" which is UTF-16).
+We remember that Windows uses Unicode UTF-16 (see also ["Quals NDH 2018 - Where is my Purse ?"]({% post_url 2018-04-01-quals-NDH-18-whereismypurse %})), so we can try again with the `-el` (`-e` for "encoding" and `l` for "16-bit littleendian" which is UTF-16).
 ```console
 # strings -el 1928.dmp | grep "Kemel-"
 Kemel-MHGa.exe
