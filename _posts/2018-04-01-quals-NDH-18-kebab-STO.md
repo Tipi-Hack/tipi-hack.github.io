@@ -2,6 +2,7 @@
 title: Quals NDH 2018 - Kebab STO
 authors: Zweisamkeit
 layout: writeup
+ctf_url: https://nuitduhack.com/
 ---
 Solves: 89 / Points: 350 / Category: Network
 

@@ -3,6 +3,7 @@ title: Insomni'Hack 2018 - Voice-VoIP
 layout: writeup
 redirect_from: "Writeups/2018/Insomni'hack/voice-voip/"
 authors: Crypt0-M3lon
+ctf_url: https://insomnihack.ch/
 ---
 Solves: 6 / Points: 307
 

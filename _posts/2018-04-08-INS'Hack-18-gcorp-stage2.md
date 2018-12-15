@@ -2,6 +2,7 @@
 title: INS'Hack 2018 - Gcorp Stage 2
 authors: qlemaire
 layout: writeup
+ctf_url: http://inshack.insecurity-insa.fr/
 ---
 Solves: 44 / Points: 85 / Category: PWN
 

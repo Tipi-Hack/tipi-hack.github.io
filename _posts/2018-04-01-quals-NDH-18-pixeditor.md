@@ -2,6 +2,7 @@
 title: Quals NDH 2018 - PixEditor
 authors: Ghostx_0
 layout: writeup
+ctf_url: https://nuitduhack.com/
 ---
 Solves: 63 / Points: 350 / Category: Web
 

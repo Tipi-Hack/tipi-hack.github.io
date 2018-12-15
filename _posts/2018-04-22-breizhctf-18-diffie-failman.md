@@ -2,6 +2,7 @@
 title: BreizhCTF 2k18 - Diffie-Failman - strike back
 authors: cnotin
 layout: writeup
+ctf_url: https://www.breizhctf.com/
 ---
 Solves: 16% / Points: 200 / Category: Crypto
 

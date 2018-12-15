@@ -2,6 +2,7 @@
 title: Insomni'Hack 2018 - vba02-bitminer
 layout: writeup
 authors: Crypt0-M3lon,ZeArioch
+ctf_url: https://insomnihack.ch/
 ---
 Solves: 21 / Points: 142
 ## Challenge description

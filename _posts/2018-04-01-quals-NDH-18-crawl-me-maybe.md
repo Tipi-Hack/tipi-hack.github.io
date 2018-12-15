@@ -2,6 +2,7 @@
 title: Quals NDH 2018 - Crawl me maybe
 authors: Ghostx_0
 layout: writeup
+ctf_url: https://nuitduhack.com/
 ---
 Solves: 47 / Points: 100 / Category: Web
 ## Challenge description

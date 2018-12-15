@@ -2,6 +2,7 @@
 title: Insomni'Hack 2018 - PHuck
 layout: writeup
 authors: Guillaume_Lopes
+ctf_url: https://insomnihack.ch/
 ---
 Solves: 26 / Points: 120
 

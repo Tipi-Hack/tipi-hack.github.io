@@ -2,6 +2,7 @@
 title: Insomni'Hack 2018 - vba01-baby
 authors: ZeArioch
 layout: writeup
+ctf_url: https://insomnihack.ch/
 ---
 Solves: 56 / Points: 63
 ## Challenge resolution

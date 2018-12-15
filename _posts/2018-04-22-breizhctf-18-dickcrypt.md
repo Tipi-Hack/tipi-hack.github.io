@@ -2,6 +2,7 @@
 title: BreizhCTF 2k18 - Dickcrypt
 authors: cnotin
 layout: writeup
+ctf_url: https://www.breizhctf.com/
 ---
 Solves: 16 % / Points: 75 / Category: Crypto
 

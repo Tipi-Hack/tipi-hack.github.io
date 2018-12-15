@@ -2,6 +2,7 @@
 title: Quals NDH 2018 - Wawacoin
 authors: cnotin
 layout: writeup
+ctf_url: https://nuitduhack.com/
 ---
 Solves: 23 / Points: 400 / Category: Crypto/web
 ## Challenge description

@@ -3,6 +3,7 @@ title: Insomni'Hack 2018 - VBaby
 layout: writeup
 date: 2018-03-25 21:00:00 +0100
 authors: qlemaire
+ctf_url: https://insomnihack.ch/
 ---
 Solves: 22 / Points: 137
 

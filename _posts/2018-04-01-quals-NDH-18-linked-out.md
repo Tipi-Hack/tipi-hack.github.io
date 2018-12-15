@@ -2,6 +2,7 @@
 title: Quals NDH 2018 - Linked Out
 authors: cnotin
 layout: writeup
+ctf_url: https://nuitduhack.com/
 ---
 Solves: 58 / Points: 300 / Category: Web
 ## Challenge description

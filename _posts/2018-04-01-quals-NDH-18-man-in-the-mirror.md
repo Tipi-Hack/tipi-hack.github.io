@@ -2,6 +2,7 @@
 title: Quals NDH 2018 - Man in the Mirror
 authors: Crypt0_M3lon
 layout: writeup
+ctf_url: https://nuitduhack.com/
 ---
 Solves: 10 / Points: 500
 ## Challenge description

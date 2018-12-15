@@ -2,6 +2,7 @@
 title: FIXME_CTF_name - FIXME_challenge_title
 authors: FIXME_author_1,FIXME_author_2 # put the Twitter/Github handle, or full name. Comma-separated if two or more authors. Check _data/members.yml for valid values.
 layout: writeup
+ctf_url: https://example.com # delete line if needed
 ---
 Solves: FIXME / Points: FIXME / Category: FIXME
 

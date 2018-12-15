@@ -2,11 +2,12 @@
 title: Ph0wn - Healing the Toothbrush 1
 authors: cnotin
 layout: writeup
+ctf_url: http://ph0wn.org/
 ---
 Category: Reverse
 
 ## Challenge description
-This challenge was based on the famous smart toothbrush of cryptax / Axelle Apvrille!
+This challenge was based on the famous smart toothbrush of [@cryptax](https://twitter.com/cryptax) / Axelle Apvrille!
 
 > Ph0wn aliens have abducted my smart toothbrush.
 > My toothbrush has hidden this horrible episode far in its subconscious mind, but I know encrypted memories of the event are still there... My psychiatrist tells me I need to get my toothbrush talk, that it will help it heal.

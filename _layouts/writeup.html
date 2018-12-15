@@ -42,6 +42,9 @@
 {% include navigation.html %}
 
 <h1>{{page.title}}</h1>
+{% if page.ctf_url %}
+CTF URL: <a href="{{ page.ctf_url }}">{{ page.ctf_url }}</a>
+{% endif %}
 
 {{ content }}
     
