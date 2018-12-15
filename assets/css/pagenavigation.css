@@ -1,6 +1,7 @@
 .PageNavigation {
   font-size: 14px;
   width: 100%;
+  overflow: auto;
 }
 
 .PageNavigation .prev {
