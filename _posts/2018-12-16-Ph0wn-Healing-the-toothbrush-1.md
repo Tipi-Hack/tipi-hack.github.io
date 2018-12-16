@@ -33,4 +33,4 @@ We were told to look for the `BrushEvent` class. There was a false lead with hex
 We then decided to simply look for "crypt" in all the files and indeed it was a good idea :wink:
 ![](/assets/ph0wn-toothbrush1-key.png){: .image }
 
-As a bonus we found the exact encryption algorithm: AES, in ECB mode, without padding. We kept this in mind for the [second stage]({% post_url 2018-12-15-Ph0wn-Healing-the-toothbrush-2 %}).
+As a bonus we found the exact encryption algorithm: AES, in ECB mode, without padding. We kept this in mind for the [second stage]({% post_url 2018-12-16-Ph0wn-Healing-the-toothbrush-2 %}).

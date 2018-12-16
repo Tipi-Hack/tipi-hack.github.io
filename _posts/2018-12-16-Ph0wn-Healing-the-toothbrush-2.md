@@ -7,7 +7,7 @@ ctf_url: http://ph0wn.org/
 Category: Misc
 
 ## Challenge description
-This challenge was the second stage of [Healing the toothbrush 1]({% post_url 2018-12-15-Ph0wn-Healing-the-toothbrush-1 %}).
+This challenge was the second stage of [Healing the toothbrush 1]({% post_url 2018-12-16-Ph0wn-Healing-the-toothbrush-1 %}).
 
 Now that we had the encryption key, we had to communicate with it. Fortunately most of the required information was provided and we did not have to reverse the app.
 
