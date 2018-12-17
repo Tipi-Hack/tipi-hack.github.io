@@ -13,7 +13,9 @@ This challenge required to plug a computer to a switch to analyze traffic. A TV 
 >
 > **EDIT**: Make sure to take a close look at the images! 
 >
-> **EDIT2**: If you think you find the flag, but can't read it, come talk to us! Author: Roman
+> **EDIT2**: If you think you find the flag, but can't read it, come talk to us!
+>
+> Author: Roman
 
 ## Challenge resolution
 After connecting to the switch, the first idea was to launch Wireshark and analyze the traffic. When the image displayed on the screen changed, we observed an HTTP request in Wireshark:
