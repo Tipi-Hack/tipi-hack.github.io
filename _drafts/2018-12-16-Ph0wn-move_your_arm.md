@@ -7,7 +7,7 @@ ctf_url: http://ph0wn.org/
 Category: Prog
 
 ## Challenge description
-In these challenge we were provided an ssh access to a Lego robotic arm. We used Python in our solution, another approach is available on [Duks' blog](http://duksctf.github.io/2018/12/14/Ph0wn2018-wannadrink.html).
+In these challenge we were provided with an SSH access to a Lego robotic arm. We used Python in our solution, but a different approach is available on [Duks' blog](http://duksctf.github.io/2018/12/14/Ph0wn2018-wannadrink.html).
 
 > Ph0wn aliens have abducted my coke and put it in the fridge. But, now, I am thirsty. Open the door with the robotic arm, and you will get a free coke ... and a flag!
 > Fortunately, the aliens have left a few instructions in case they would format their internal memory.
@@ -21,14 +21,19 @@ In these challenge we were provided an ssh access to a Lego robotic arm. We used
 > Author: ludoze
 
 ## Challenge resolution
-Once connected on the device, we had to identify what to do. A short Google search showed that such kind of robot can be managed using Python script and the ev3dev package. Fortunately, we had a Python interpreter installed on the robot with Ev3dev package. After taking a look at the [documentation](https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/spec.html), we were able to call the `ev3dev.core.list_motors()` function to retrieve the name of the three motors available on the robotic arm. A first one for up/down movement, a second for rotation and the last one managing the pinch.
+Once connected to the device, we had to identify what to do. A quick Google search showed that such kind of robot can be managed using Python scripting with the `ev3dev` package. Fortunately, we had a Python interpreter installed on the robot with the `ev3dev` package. 
 
-It exists many ways to move a motor. We decided to use a fonction which move the motor for a certain time at a certain speed:
+After taking a look at the [`ev3dev` documentation](https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/spec.html), we were able to call the `ev3dev.core.list_motors()` function to retrieve the names of the three motors available on the robotic arm. A first one for up/down movement, a second for rotation and the last one managing the pinch.
+
+There are many ways to move a motor. We decided to use a function which moves the motor for a certain duration at a certain speed:
 ```python
-from ev3dev..ev import *
+from ev3dev.core import *
 
 motor = Motor('motor_name')
 motor.run_timed(time_sp=300, speed_sp=-750)
 ```
-And it moved! Note that the sense of rotation can be changed be setting `speed_sp` to a negative or positive value.
-Then we just had to move the robotic arm until we were able to open the fridge :)
+And it moved!
+
+Note that the sense of rotation can be changed by setting `speed_sp` to a negative or positive value.
+
+Then we just had to move the robotic arm until we were able to open the fridge :smiley:
