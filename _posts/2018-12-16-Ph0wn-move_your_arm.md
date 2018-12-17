@@ -1,5 +1,5 @@
 ---
-title: Ph0wn - Wanna drink? Move your arm!
+title: Ph0wn 2018 - Wanna drink? Move your arm!
 authors: Crypt0_M3lon
 layout: writeup
 ctf_url: http://ph0wn.org/

@@ -1,5 +1,5 @@
 ---
-title: Ph0wn - Healing the Toothbrush 1
+title: Ph0wn 2018 - Healing the Toothbrush 1
 authors: cnotin
 layout: writeup
 ctf_url: http://ph0wn.org/

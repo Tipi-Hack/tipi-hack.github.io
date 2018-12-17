@@ -1,5 +1,5 @@
 ---
-title: Ph0wn - PowerPlay
+title: Ph0wn 2018 - PowerPlay
 authors: cnotin
 layout: writeup
 ctf_url: http://ph0wn.org/
