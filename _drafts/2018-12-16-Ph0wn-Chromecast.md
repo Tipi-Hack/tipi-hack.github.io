@@ -17,7 +17,7 @@ This challenge required to plug a computer to a swith to analyze trafic. A TV di
 After connecting to the switch, the first idea was to launch Wireshark and analyze trafic. When image diaplayed on screen changed, we observed an HTTP request in Wireshark:
 ![](/assets/ph0wn-chromecast-wireshark.png){: .image }
 
-All we had to do was to wait until the screen display the "Ph0wned" image and exctract it from Wireshark. Then by playing with brightness we were able to idenfity some text:
+All we had to do was to wait until the screen displayed the "Ph0wned" image and exctract it from Wireshark. Then by playing with brightness we were able to idenfity some texts:
 ![](/assets/ph0wn-chromecast-flag.png){: .image }
 
-Unfortunatly, due to compression the flag was not readable. But it was enough to ask the valid flag to the admin :)
+Unfortunatly, due to compression the flag was not readable. But it was enough to ask the valid flag to the admin ;)

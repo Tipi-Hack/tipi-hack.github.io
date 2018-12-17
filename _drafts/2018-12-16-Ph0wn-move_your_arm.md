@@ -23,12 +23,12 @@ In these challenge we were provided an ssh access to a Lego robotic arm. We used
 ## Challenge resolution
 Once connected on the device, we had to identify what to do. A short Google search showed that such kind of robot can be managed using Python script and the ev3dev package. Fortunately, we had a Python interpreter installed on the robot with Ev3dev package. After taking a look at the [documentation](https://ev3dev-lang.readthedocs.io/projects/python-ev3dev/en/stable/spec.html), we were able to call the `ev3dev.core.list_motors()` function to retrieve the name of the three motors available on the robotic arm. A first one for up/down movement, a second for rotation and the last one managing the pinch.
 
-It exist many ways to use a motor. We decided to use a fonction which move the motor for a certain time to a certain speed:
+It exists many ways to move a motor. We decided to use a fonction which move the motor for a certain time at a certain speed:
 ```python
 from ev3dev..ev import *
 
 motor = Motor('motor_name')
-motor.run_timed(time_sp=3000, speed_sp=-750)
+motor.run_timed(time_sp=300, speed_sp=-750)
 ```
-And it moved! Note that the sense of rotation could be changed be setting `speed_sp` to a negative or positive value.
+And it moved! Note that the sense of rotation can be changed be setting `speed_sp` to a negative or positive value.
 Then we just had to move the robotic arm until we were able to open the fridge :)
