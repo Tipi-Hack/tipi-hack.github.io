@@ -1,6 +1,6 @@
 ---
 title: Ph0wn - Wanna drink? Move your arm!
-authors: crypt0_M3lon
+authors: Crypt0_M3lon
 layout: writeup
 ctf_url: http://ph0wn.org/
 ---
