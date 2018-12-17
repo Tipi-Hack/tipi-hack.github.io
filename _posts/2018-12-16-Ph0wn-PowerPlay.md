@@ -20,6 +20,8 @@ In this challenge we were provided with a smart plug and we knew we could connec
 > Please help me. I've noted the plug's WiFi on its side, I trust you to know how to handle this computer stuff. 
 > 
 > Ah, one last thing: I wouldn't pair this thing with my smartphone. Ever. Really not. I'm serious. That's not a joke. YOU COULD BRICK THIS PIECE OF ART.
+>
+> Author: Jonas
 
 ## Challenge resolution
 The Wi-Fi was open so we just joined it. We obtained a private IP address via DHCP. The `.1` IP was the one of the device.

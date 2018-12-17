@@ -8,6 +8,7 @@ Category: Misc
 
 ## Challenge description
 This challenge was the next step of [Save the factory]({% post_url 2018-12-16-Ph0wn-Save-the-factory %}). We were told that the hacker found a way to store data, some kind of file, and we were asked to find it.
+> Challenge author: m0eukh
 
 ## Challenge resolution
 Like previously, we discovered that many nodes were standing out. They were named `frg_<number>`, like *"fragment number..."*.

@@ -37,6 +37,8 @@ Now that we had the encryption key, we had to communicate with it. Fortunately m
 >
 > - [Is my toothbrush really smart?](https://download.ernw-insight.de/troopers/tr18/slides/TR18_NGI_BR_Is-my-toothbrush-really-smart.pdf)
 > - **Sample Python code** to get notifications (`example.py`). This code is for Linux only. If you don't have Linux, reading the source code might nevertheless help you out.
+>
+> Author: cryptax
 
 You can [download the example file](/assets/ph0wn_toothbrush_example.py).
 

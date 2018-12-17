@@ -16,6 +16,8 @@ Category: Reverse
 > -------
 > You should get this app and figure out the mysteries of this watch...
 > Then, borrow the watch to get the flag :)
+>
+> Author: ludoze
 
 ## Challenge resolution
 The smartwatch was tactile and had a physical button on the side. We played with the button and noticed notifications displayed in some cases but without really understanding what happened... Some were encouraging and others not...

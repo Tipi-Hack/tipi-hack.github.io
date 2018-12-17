@@ -8,6 +8,7 @@ Category: Prog
 
 ## Challenge description
 We were provided with information about a factory with machines controlled by a main board that was compromised by an attacker. We were told that the [OPC UA](https://en.wikipedia.org/wiki/OPC_Unified_Architecture) machine to machine communication protocol for industrial automation was used. We had SSH access to this main board (Linux based) with an example Python client. The OPC UA server was also directly available via TCP.
+> Challenge author: m0eukh
 
 ## Challenge resolution
 The provided sample client was based on the `python-opcua` library. We discovered that this library also provides tools such as `uals` ([tool](https://github.com/FreeOpcUa/python-opcua/blob/master/tools/uals) and [implementation](https://github.com/FreeOpcUa/python-opcua/blob/4a9c569ab13875a31ee2fd450e2e3943636a86ca/opcua/tools.py#L274)).

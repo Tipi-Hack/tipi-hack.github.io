@@ -24,6 +24,8 @@ This challenge was based on the famous smart toothbrush of [@cryptax](https://tw
 > - Do not try to install the Android application on your smartphone: it is not malicious but it requires a client login (which you don't have) to operate, so it will be useless to run it...
 > - Please **do not connect to the toothbrush via Bluetooth**, it may cause service disruptions for stage 2. And it won't help for stage 1. Actually, if you don't need Bluetooth on your smartphone or laptop, we recommend you **disable** it.
 > - For this stage, you need to flag `ph0wn{hexstring of encryption key}`. The encryption key is required to complete stage 2.
+>
+> Author: cryptax
 
 ## Challenge resolution
 We used the usual `unzip`, `dex2jar` and `JD-GUI`/`Procyon` tools to reverse the Java code of the app.

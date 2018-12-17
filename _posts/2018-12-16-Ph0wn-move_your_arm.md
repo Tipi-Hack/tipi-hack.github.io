@@ -18,6 +18,7 @@ In these challenge we were provided with an SSH access to a Lego robotic arm. We
 > - Login: `robot`
 > - Password: `maker`
 > The flag has the usual format.
+>
 > Author: ludoze
 
 ## Challenge resolution
