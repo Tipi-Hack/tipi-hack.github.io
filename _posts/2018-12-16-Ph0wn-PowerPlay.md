@@ -31,9 +31,9 @@ A quick `nmap` showed that 2 services were avaible: Telnet on TCP/23 and Web on 
 The writeup explains that Telnet works with `admin/<blank>` which indeed worked on the provided device. The writeup explains that the Wi-Fi configuration, including password, could be leaked but it was empty.
 
 As described, the web interface allowed us to change the password but it did not give something new since we were already able to connect to Telnet:
-![](/assets/ph0wn-powerplay-web.png){: .image }
+![](/assets/ph0wn-powerplay-web.png)
 
 By browsing the available menus (hint: use the `help` command), we discovered that under the `cfg` menu, the `prof show` command allowed to dump the configuration, including the flag :wink::
-![](/assets/ph0wn-powerplay-flag.png){: .image }
+![](/assets/ph0wn-powerplay-flag.png)
 
 We actually lost some time since the first smart plug we used was reseted and did not contain the flag. But we had the good idea to try with another one!

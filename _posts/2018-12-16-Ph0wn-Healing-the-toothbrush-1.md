@@ -33,6 +33,6 @@ We used the usual `unzip`, `dex2jar` and `JD-GUI`/`Procyon` tools to reverse the
 We were told to look for the `BrushEvent` class. There was a false lead with hexadecimal values that looked promising but were actually `client_id` and `client_secret` values for OAuth.
 
 We then decided to simply look for "crypt" in all the files and indeed it was a good idea :wink:
-![](/assets/ph0wn-toothbrush1-key.png){: .image }
+![](/assets/ph0wn-toothbrush1-key.png)
 
 As a bonus we found the exact encryption algorithm: AES, in ECB mode, without padding. We kept this in mind for the [second stage]({% post_url 2018-12-16-Ph0wn-Healing-the-toothbrush-2 %}).

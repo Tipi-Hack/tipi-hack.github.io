@@ -25,17 +25,17 @@ The smartwatch was tactile and had a physical button on the side. We played with
 The source code of the app was provided so we dived into it. However it was based on a sample project that had many files and features. Therefore, we had to isolate the custom part.
 
 We searched the displayed messages in the project files but it did not work. We noticed that the messsage telling us that we failed had "ko" in the title. Therefore, we searched for this exact single word and got lucky:
-![](/assets/ph0wn-push_me-ko.png){: .image }
+![](/assets/ph0wn-push_me-ko.png)
 
 Indeed the messages were base64-encoded to make it more difficult to find them: good idea!
 
 We decoded all the messages, especially the `finalSentence` hoping for a quick-win :wink:
-![](/assets/ph0wn-push_me-fake_flag.png){: .image }
+![](/assets/ph0wn-push_me-fake_flag.png)
 
 Ok... We had to review the code to really understand what to do. You can find attached all the relevant custom code at the end of this post.
 
 Here is a sample of the interesting part:
-![](/assets/ph0wn-push_me-pressions.png){: .image }
+![](/assets/ph0wn-push_me-pressions.png)
 
 We understood that we had to push the button 3 times, then 2 times, then 6 times, and finally 2 times. For each stage, we had between 3.5 and 4.5 seconds to do this.
 
@@ -47,7 +47,7 @@ private boolean closeTime() {
 ```
 
 After a few tries, we finally had the joy to see the flag displayed on the smartwatch!
-![](/assets/ph0wn-push_me-flag.jpg){: .image }
+![](/assets/ph0wn-push_me-flag.jpg)
 
 ### Appendix: relevant source code
 Here is the custom source code added for this challenge.

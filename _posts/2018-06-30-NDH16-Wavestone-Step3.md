@@ -21,7 +21,7 @@ $ testdisk vboss-usb.raw
 A module to browse the filesystem and retrieve deleted files can be found in the `Advanced` menu. The path to access it is: Select a media: `Proceed` -> Partition table type: `None` ->  `Advanced` -> `Undelete`.
 
 Great, TestDisk finds many deleted files!
-![TestDisk](/assets/ndh18-wavestone-testdisk.png){: .image }
+![TestDisk](/assets/ndh18-wavestone-testdisk.png)
 
 We can dump all files, including deleted ones, by pressing `a` to select everything then `C` to dump.
 

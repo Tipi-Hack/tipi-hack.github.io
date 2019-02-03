@@ -44,7 +44,7 @@ You can [download the example file](/assets/ph0wn_toothbrush_example.py).
 
 ## Challenge resolution
 We first had to find the Bluetooth Low Energy MAC address of the toothbrush to connect to it:
-![](/assets/ph0wn-toothbrush2-scan.png){: .image }
+![](/assets/ph0wn-toothbrush2-scan.png)
 
 Then we adapted the example script for our need. You can [download our solution script](/assets/ph0wn_toothbrush_pwn.py).
 
@@ -84,7 +84,7 @@ We wasted a lot of time since we understood that the challenge description asked
 After each request for information, the toothbrush answered via a notification that we handled.
 
 We were initially surprised to receive a payload of 19 bytes which is not normal for an encrypted block (should be a multiple of 16 in our case). We observed that all payloads began with the same 3 bytes `1B 25 00`. Wireshark helped us understand that the payload actually contained a prefix that we had to discard:
-![](/assets/ph0wn-toothbrush2-header.png){: .image }
+![](/assets/ph0wn-toothbrush2-header.png)
 
 
 Here is the handling code:
@@ -103,4 +103,4 @@ class MyRequester(GATTRequester):
 
 ### Get flag
 Finally we discovered the flag that was split accross several indexes: `ph0wn{brushUrTeeth2mins}`
-![](/assets/ph0wn-toothbrush2-flag.jpg){: .image }
+![](/assets/ph0wn-toothbrush2-flag.jpg)

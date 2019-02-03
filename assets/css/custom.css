@@ -15,7 +15,13 @@ section.page-header a {
     text-decoration: none;
 }
 
-.image {
+/* copied from .main-content */
+@media screen and (min-width: 64em) { .site-footer { max-width: 64rem; padding: 2rem 6rem; margin: 0 auto; font-size: 1.1rem; } }
+@media screen and (min-width: 42em) and (max-width: 64em) { .site-footer { padding: 2rem 4rem; font-size: 1.1rem; } }
+@media screen and (max-width: 42em) { .site-footer { padding: 2rem 1rem; font-size: 1rem; } }
+
+/* apply automatically a default style to all images in an article */
+section.main-content img:not(.avatar):not(.emoji) {
     margin: 0 auto;
     display: block;
     border: 1px solid teal;

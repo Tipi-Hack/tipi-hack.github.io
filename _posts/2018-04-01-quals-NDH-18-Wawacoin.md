@@ -59,7 +59,7 @@ for i in $(seq 0 30); do ./hash_extender --data user=demo --append A --signature
 ```
 
 We use *Burp Intruder* to try all the generated new strings, with the fixed signature. The payload for the length 16 gives an interesting result:
-![Burp Intruder](/assets/wawacoin-intruder.png){: .image }
+![Burp Intruder](/assets/wawacoin-intruder.png)
 
 Note that the username is displayed in the HTML page on the logout button: it is very helpful to see how our payload is decrypted.
 We confirm that we can successfully append characters to the encrypted `session` cookie which is a very nice power to have!
@@ -75,16 +75,16 @@ The full code of the extension is available at the end of this writeup and on ou
 It captures every outgoing request, from any tool (Proxy, Repeater, Scanner...), gets the clear-text content of the `session` cookie and encrypts it using *hash_extender*. Just keep in mind that your payload is appended to the original payload.
 
 It works wonders and is very efficent, isn't it? :ok_hand:
-![Burp extension](/assets/wawacoin-burp-extension.png){: .image }
+![Burp extension](/assets/wawacoin-burp-extension.png)
 
 ### Finding a vulnerability and the flag
 Thanks to our extension, we quickly try several things and come to the conclusion that we can try to impersonate the admin.
 
 If the original payload is: `user=demo`, what would happen if we append `&user=admin`?
 The anwser is that the second `user` overwrites the first, we impersonate *admin* and get the flag:
-![Got admin](/assets/wawacoin-got-admin.png){: .image }
+![Got admin](/assets/wawacoin-got-admin.png)
 
-![Got flag](/assets/wawacoin-flag.png){: .image }
+![Got flag](/assets/wawacoin-flag.png)
 
 Flag: `NDH{c7774051db4b880da67598770c955ff99363e76d}`
 
