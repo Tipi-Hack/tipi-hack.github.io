@@ -89,7 +89,7 @@ if __name__ == "__main__":
 [@Creased_](https://twitter.com/Creased_) from the winning team AperiKube [shared on Twitter](https://twitter.com/Creased_/status/1117505883725029381) the best solution which did not involve brute-forcing at all!
 > Since the seed is the same for every client, I opened a first connection to the service, sent nullbytes to get the mask, then I used another connection to get the xored flag. A simple xor(mask, mask) then gives you the flag :)
 
-Here is his very effective script: https://gist.github.com/Creased/3b036da5b52e0e990bcc7c3e3052182f
+Here is his very effective script: [https://gist.github.com/Creased/3b036da5b52e0e990bcc7c3e3052182f](https://gist.github.com/Creased/3b036da5b52e0e990bcc7c3e3052182f)
 
 
 ## Challenge resolution
