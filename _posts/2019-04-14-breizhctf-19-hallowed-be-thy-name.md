@@ -223,7 +223,7 @@ As we are lucky, or the challenge creator is nice, the first seed is '0' so it d
 Fun fact: the challenge title "Hallowed be thy name", is an Iron Maiden song, and the flag is a verse of the lyrics...
 
 ### "Cheating" solution
-The solution above is, we believe, the intended solution. However, when writing this, we found that actually we could brute-force only the second seed. Yes it is generated from a first random generator, but as it has only 65'536 possible values we can brute-force it on its own 😉
+The solution above is, we believe, the intended solution. However, when writing this, we found that actually we could brute-force only the second seed. Yes it is generated from a first random generator, but as it has only 65'536 possible values, so we can brute-force it on its own 😉
 
 Our trick here is also to know that the flag certainly contains "breizhctf" or "bzhctf". Without this, and with a truly random flag (otherwise we could search for ASCII-only candidates), this would not work.
 
