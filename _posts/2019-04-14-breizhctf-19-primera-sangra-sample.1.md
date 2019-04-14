@@ -13,20 +13,20 @@ Indeed, the website is access restricted and only shows a password form. We unde
 
 ## Challenge resolution
 ### Step one: discovery
-We quickly triy a few trivial passwords on the form but they do not work. The goal of this kind of challenge is usually not to do an online brute-force (which have the side-effect of ruining the challenge for other players... 🤨), so we try something different.
+We quickly try a few trivial passwords on the form, but they do not work. The goal of this kind of challenge is usually not to do an online brute-force (which have the side effect of ruining the challenge for other players... 🤨), so we try something different.
 
-The challenge description gives the hint that the developer fixed it in production. What if he uses a version control system (VCS, such as Git/SVN) directly in production to pull the source-code? This is actually very common...
-So, we try to access the `/.git/` folder but it returns a 404 not-found error. However, we know that some webservers return this error when requesting folders, and if directory listing is disabled, even if the folder effectively exists! So, we try to access `/.git/conf` too and it works! 💡
+The challenge description gives the hint that the developer fixed it in production. What if he uses a version control system (VCS, such as git/SVN) directly in production to pull the source-code? This is actually very common...
+So, we try to access the `/.git/` folder but it returns a 404 not-found error. However, we know that some web servers return this error when requesting folders, and if directory listing is disabled, even if the folder effectively exists! So, we try to access `/.git/conf` too and it works! 💡
 ![](/assets/breizhctf-19-primera-1.png)
 
 For your information, there are other similar files you can try accessing in this situation, such as `/.git/index`, `/.git/HEAD`, `/.git/logs/HEAD`, where among binary data we see interesting file names:
 ![](/assets/breizhctf-19-primera-2.png)
 
-Now we know that there is an exposed Git repository with interesting files and we want to obtain it.
+Now we know that there is an exposed git repository with interesting files, and we want to obtain it.
 
 ### Step two: exploitation
 When a webserver has directory listing enabled, it is easy to fetch the repository with a recursive download but this is not the case here.
-Many tools are available for this. We try several here and obtain similar results, except one that goes on an infinite loop and we will understand later why 😉. Here is a quick list:
+Many tools are available for this. We try several here and obtain similar results, except one that goes on an infinite loop, and we will understand later why 😉. Here is a quick list:
 * [DVCS-Pillage](https://github.com/evilpacket/DVCS-Pillage)
 * [dvcs-ripper](https://github.com/kost/dvcs-ripper)
 * [GitTools](https://github.com/internetwache/GitTools)
@@ -38,10 +38,10 @@ We think that we are finished here, but the content of `secret_password.py` is q
 ```py
 secret_password = "REDACTED"
 ```
-And "REDACTED" is indeed not the correct password (we tried, you never know when you might be lucky 😉). So we read more about this technique of dumping Git repositories without directory listing and we are reminded that everything in Git is well organized. There are trees, nodes, objects, and all of them pointing to others, and everything has a hash (like commit IDs, but for internal objects), etc.
+And "REDACTED" is indeed not the correct password (we tried, you never know when you might be lucky 😉). So we read more about this technique of dumping git repositories without directory listing, and we are reminded that everything in git is well organized. There are trees, nodes, objects, and all of them pointing to others, and everything has a hash (like commit IDs, but for internal objects), etc.
 
-### Step three: dive into Git internals
-Some articles show the usage of the `git fsck` command to check if a repository is valid: are all objects presents and with a valid integrity? In fact some Git dumping tools are based on this command, where it is run repeatedly: it complains about a missing file, then the file is downloaded, and again.
+### Step three: dive into git internals
+Some articles show the usage of the `git fsck` command to check if a repository is valid: are all objects presents and with a valid integrity? In fact some git dumping tools are based on this command, where it is run repeatedly: it complains about a missing file, then the file is downloaded, and again.
 Its result on our copy of the repository is interesting:
 ```console
 # git fsck
@@ -58,9 +58,23 @@ blob 49 secret_password = "REDACTED"
 2d1873bdd1fcf3724385f3da4d1db117eba3883d
 ```
 
-We have the confirmation that the hash differs from the expected one "374e045ef2ea84be825ead668a69aac28ce7b53e". We guess that the developer changed the password in the Git repository too, but without actual a proper method which leads to a file integrity issue!
-We note that in `.git/objects` there are folders with 2 characters names, which are the first 2 characters of the hashes, then the remaining of the hash in the filename. So the file with hash "374e045ef2ea84be825ead668a69aac28ce7b53e" is stored in the "37/" folder and filename "4e045ef2ea84be825ead668a69aac28ce7b53e". We also note that the hash is not based only on the actual content of the file, since there is a prefix added by Git which is the type of the object (here "blob"), followed by its original size (49 octets, which is less than 'secret_password = "REDACTED"'), ended with a NULL-byte separator "\x00" (caution as it was not visible in the output of the previous command). This also well explained in the ["Deep dive into git: git Objects"](https://aboullaite.me/deep-dive-into-git/) article:
+We have the confirmation that the hash differs from the expected one "374e045ef2ea84be825ead668a69aac28ce7b53e". We guess that the developer changed the password in the git repository too, but without actual a proper method which leads to a file integrity issue!
+We note that in `.git/objects` there are folders with 2 characters names, which are the first 2 characters of the hashes, then the remaining of the hash in the filename. So the file with hash "374e045ef2ea84be825ead668a69aac28ce7b53e" is stored in the "37/" folder and filename "4e045ef2ea84be825ead668a69aac28ce7b53e". We also note that the hash is not based only on the actual content of the file, since there is a prefix added by git which is the type of the object (here "blob"), followed by its original size (49 octets, which is less than 'secret_password = "REDACTED"'), ended with a NULL-byte separator "\x00" (caution as it was not visible in the output of the previous command). This also well explained in the ["Deep dive into git: git Objects"](https://aboullaite.me/deep-dive-into-git/) article:
 ![](/assets/breizhctf-19-primera-4.png)
+
+Here are a few other results from git commands:
+```terminal
+# git log
+commit 21ff7f561f87c1a682d11dcb2572772e4e1872af (HEAD -> master)
+Author: ganapati <ganapati@ganapati.com>
+Date:   Tue Sep 25 14:35:47 2018 +0200
+
+    First commit
+# git ls-tree 21ff7f561f87c1a682d11dcb2572772e4e1872af
+100644 blob b9a9f0016edfa13722676a5a7764e5e90683bb6e    bottle.py
+100644 blob a8d36c721525b80c9cb29dac6f06b5acf8c60c2b    challenge.py
+100644 blob 374e045ef2ea84be825ead668a69aac28ce7b53e    secret_password.py
+```
 
 ### Step four: brute-force and conclude
 Now we know the expected hash, and the expected format of the file (we assume that only the password was redacted, and nothing else changed). Now we have to brute-force the redacted password. Let's remind the challenge description that says that the password is common: we will probably not have to do a complicated brute-force. Our first idea is unsurprisingly to use the rockyou passwords dictionnary.
@@ -79,164 +93,33 @@ for word in open("/usr/share/wordlists/rockyou.txt").read().split("\n"):
         print content
         sys.exit(0)
 ```
-After a few seconds, it gives us the original password and content of the Git object (and therefore of the original file):
+After a few seconds, it gives us the original password and content of the git object (and therefore of the original file):
 ```python
 blob 49 secret_password = "mhonowa2248116553575515246859"
 ```
 
 We confirm this result by using this password on the challenge website and it is accepted 👍
 
+Thank you to [@G4N4P4T1](https://twitter.com/g4n4p4t1) for this interesting challenge!
 
+### Bonus
+We initially thought that the brute-force would be more difficult and we thought we would need to make use of password rules. How to combine this with our custom Python script?
+We can chain John-the-Ripper, only used to generate password candidates using a dictionnary and rules and outputs them to `stdout`, with our script to format it and compute the hash of the whole.
+The script is modified as follows to iterate on `stdin` candidate passwords:
+```python
+import hashlib
+import fileinput
+import sys
 
-
-
-
-
-
-
-
-
-
-
-
-[Basic writing and formatting in Markdown](https://help.github.com/articles/basic-writing-and-formatting-syntax/)
-
-Insert a picture? Put it in the `assets` folder, and link to it:
-![FIXME img description](/assets/logo.png)
-
-Source-code highlighting is available. Some available formats:
-* shell: shell scripts
-* shell_session: shell sessions and command lines
-* http: HTTP requests and responses
-* conf: config files
-* json,
-* javascript
-* python
-* php
-* ... [Full list of supported languages and format](https://github.com/jneen/rouge/wiki/List-of-supported-languages-and-lexers)
-
-Emojis are also supported: copy'n'paste from anywhere or use [emoji codes](https://www.webpagefx.com/tools/emoji-cheat-sheet/).
-
-# Formatting examples
-Text can be **bold**, _italic_, or ~~strikethrough~~.
-
-{% raw %}
-  [Link to another post]({% post_url YYYY-MM-DD-name-of-post %}).```
-{% endraw %}
-
-There should be whitespace between paragraphs.
-
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
-
-# [](#header-1)Header 1
-
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
-
-## [](#header-2)Header 2
-
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
-
-### [](#header-3)Header 3
-
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
+for word in fileinput.input():
+    word = word.strip()
+    content = 'secret_password = "' + word + '"'
+    content = 'blob %d\0%s' % (len(content), content)
+    if hashlib.sha1(content).hexdigest() == "374e045ef2ea84be825ead668a69aac28ce7b53e":
+        print word
+        sys.exit(0)
 ```
-
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
+And run the whole with these commands:
+```terminal
+john --wordlist=/usr/share/wordlists/rockyou --rules=all --stdout | python crack2.py
 ```
-
-#### [](#header-4)Header 4
-
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-
-##### [](#header-5)Header 5
-
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
-
-###### [](#header-6)Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![](https://assets-cdn.github.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![](https://guides.github.com/activities/hello-world/branching.png)
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
-
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
-
-```
-The final element.
-```
-
