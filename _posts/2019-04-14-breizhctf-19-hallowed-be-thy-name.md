@@ -140,7 +140,7 @@ Combined with the fact that we can obtain the ciphertext of a plaintext of our c
 ### Solution
 Our solution is to first send a static plaintext string to the server, then ask for the encrypted flag in the same connection (and nothing between). This way we know that the seed for the first `Random` object is the same for both requests and that this object is used only twice.
 ```
-# nc ctf.bzh ???
+# nc ctf.bzh 11000
 Welcome to the Cipherizator !
 1 : Enter plain, we give you the cipher
 2 : Need a flag ?
