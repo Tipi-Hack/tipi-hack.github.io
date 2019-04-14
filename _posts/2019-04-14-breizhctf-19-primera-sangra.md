@@ -31,6 +31,7 @@ Many tools are available for this. We try several here and obtain similar result
 * [dvcs-ripper](https://github.com/kost/dvcs-ripper)
 * [GitTools](https://github.com/internetwache/GitTools)
 * [git-grab](https://www.pentestpartners.com/security-blog/git-extraction-abusing-version-control-systems/)
+
 For example:
 ![](/assets/breizhctf-19-primera-3.png)
 
@@ -51,14 +52,22 @@ Checking object directories: 100% (256/256), done.
 missing blob 374e045ef2ea84be825ead668a69aac28ce7b53e
 ```
 Ok, so one of the objects has a wrong hash 🤔 Now we understand why one of the tools goes to an infinite loop as it cannot download a correct version of the file and re-tries again and again.
-The article ["Reading git objects"](https://matthew-brett.github.io/curious-git/reading_git_objects.html) teaches us to read its compressed content, and obtain the hash, here with the following command:
+The article ["Reading git objects"](https://matthew-brett.github.io/curious-git/reading_git_objects.html) teaches us to read its compressed content, and obtain the hash, here with the following script:
+```python
+from hashlib import sha1
+import zlib
+decompressed = zlib.decompress(open('.git/objects/37/4e045ef2ea84be825ead668a69aac28ce7b53e','rb').read())
+print decompressed
+print sha1(decompressed).hexdigest()
+```
+
 ```console
-# python -c "from hashlib import sha1; import zlib; decompressed=zlib.decompress(open('.git/objects/37/4e045ef2ea84be825ead668a69aac28ce7b53e','rb').read()); print decompressed; print sha1(decompressed).hexdigest()"
 blob 49 secret_password = "REDACTED"
 2d1873bdd1fcf3724385f3da4d1db117eba3883d
 ```
 
-We have the confirmation that the hash differs from the expected one "374e045ef2ea84be825ead668a69aac28ce7b53e". We guess that the developer changed the password in the git repository too, but without actual a proper method which leads to a file integrity issue!
+We have the confirmation that the hash differs from the expected one "374e045ef2ea84be825ead668a69aac28ce7b53e". We guess that the developer changed the password in the git repository, but without a proper method which leads to a file integrity issue!
+
 We note that in `.git/objects` there are folders with 2 characters names, which are the first 2 characters of the hashes, then the remaining of the hash in the filename. So the file with hash "374e045ef2ea84be825ead668a69aac28ce7b53e" is stored in the "37/" folder and filename "4e045ef2ea84be825ead668a69aac28ce7b53e". We also note that the hash is not based only on the actual content of the file, since there is a prefix added by git which is the type of the object (here "blob"), followed by its original size (49 octets, which is less than 'secret_password = "REDACTED"'), ended with a NULL-byte separator "\x00" (caution as it was not visible in the output of the previous command). This also well explained in the ["Deep dive into git: git Objects"](https://aboullaite.me/deep-dive-into-git/) article:
 ![](/assets/breizhctf-19-primera-4.png)
 
@@ -79,14 +88,14 @@ Date:   Tue Sep 25 14:35:47 2018 +0200
 ### Step four: brute-force and conclude
 Now we know the expected hash, and the expected format of the file (we assume that only the password was redacted, and nothing else changed). Now we have to brute-force the redacted password. Let's remind the challenge description that says that the password is common: we will probably not have to do a complicated brute-force. Our first idea is unsurprisingly to use the rockyou passwords dictionnary.
 
-We cannot use (or actually we do not know how) a standard password cracking tool as the input to hash depends on the length of every tested password.
+We cannot use a standard password cracking tool (or actually we do not know how), as the input to hash depends on the length of every tested password.
 
 Therefore, we use the following Python script (totally unoptimized but good enough for the task here):
 ```python
 import hashlib
 import sys
 
-for word in open("/usr/share/wordlists/rockyou.txt").read().split("\n"):
+for word in open("/usr/share/wordlists/rockyou.txt").read().splitlines():
     content = 'secret_password = "' + word + '"'
     content = 'blob %d\0%s' % (len(content), content)
     if hashlib.sha1(content).hexdigest() == "374e045ef2ea84be825ead668a69aac28ce7b53e":
@@ -104,7 +113,7 @@ Thank you to [@G4N4P4T1](https://twitter.com/g4n4p4t1) for this interesting chal
 
 ### Bonus
 We initially thought that the brute-force would be more difficult and we thought we would need to make use of password rules. How to combine this with our custom Python script?
-We can chain John-the-Ripper, only used to generate password candidates using a dictionnary and rules and outputs them to `stdout`, with our script to format it and compute the hash of the whole.
+We can chain John-the-Ripper and the script. First, John is only used to generate password candidates using a dictionnary and rules and outputs them to `stdout`, then our script formats it and computes the hash of the whole. We want to pipe both to prevent creating a huge file.
 The script is modified as follows to iterate on `stdin` candidate passwords:
 ```python
 import hashlib
