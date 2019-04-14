@@ -1,10 +1,10 @@
 ---
-title: BreizhCTF 2019 - Primera Sangra
+title: BreizhCTF 2019 - Primera sangra
 authors: cnotin
 layout: writeup
 ctf_url: https://www.breizhctf.com/
 ---
-Solves: 2 / Points: ?? / Category: ??
+Solves: 2 / Points: 175 / Category: Web
 
 ## Challenge description
 The challenge description gives us a website URL. It says that the webmaster made a mistake and disclosed the password, a common one, and quickly fixed it directly in production.
