@@ -1,5 +1,5 @@
 ---
-title: Breizh'CTF 2019 - Primera Sangra
+title: BreizhCTF 2019 - Primera Sangra
 authors: cnotin
 layout: writeup
 ctf_url: https://www.breizhctf.com/
