@@ -51,7 +51,7 @@ Unfortunately JavaScript is a case-sensitive language, so we can not write our e
 ### Step two : Lowercase alphabet construction
 
 From JavaScript doc :
-> + is also used as the string concatenation operator: If any of its arguments is a string or is otherwise not a number, any non-string arguments are converted to strings, and the 2 strings are concatenated.
+> \+ is also used as the string concatenation operator: If any of its arguments is a string or is otherwise not a number, any non-string arguments are converted to strings, and the 2 strings are concatenated.
 
 In the provided script, we have a fully upercase function name: `EVAL`
 ```
