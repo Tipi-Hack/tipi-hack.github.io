@@ -4,7 +4,7 @@ authors: dabi0ne
 layout: writeup
 ctf_url: https://www.breizhctf.com/
 ---
-Solves: 0 / Points: ?? / Category: Jail
+Solves: 0 / Points: 400 / Category: Jail
 
 ## Challenge description 
 See challenge source code [here](/assets/calc2.js)
@@ -70,7 +70,7 @@ However, we identified that the binding function is available on the object retu
 
 binding: [Function: binding]
 ```
-The binding function allow loading internal modules. 
+The binding function allows loading internal modules. 
 Firstly we tried to read the flag from the file using the "fs" module :
 ```js
 > log(this.constructor.constructor('return this.process.binding')()('fs')
