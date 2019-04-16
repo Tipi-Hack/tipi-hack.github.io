@@ -9,7 +9,7 @@ Solves: 0 / Points: 400 / Category: Jail
 ## Challenge description 
 See [challenge source code](/assets/calc2.js)
 
-The sandbox is implemented using [Node.js `vm` module](https://nodejs.org/api/vm.html)
+The sandbox is implemented using [Node.js `vm` module](https://nodejs.org/api/vm.html). Inside of it, we could only use the `log()` function.
 
 ## Challenge resolution
 Our goal is to execute a system command to obtain the flag.
