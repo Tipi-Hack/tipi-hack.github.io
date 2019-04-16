@@ -83,7 +83,8 @@ But we were able to list directories and identify the flag location:
 > log(this.constructor.constructor('return this.process.binding')()('fs').readdir('/home/guest', {}, "","", function (err, data) {data}));
 ```
 
-After a tip from the challenge author: "you don't have `child_process` and its `exec` function, so write it"
+After a tip from the challenge author:
+> you don't have `child_process` and its `exec` function, so write it
 
 
 So let's read [nodejs source code on Github for `child_process`](https://github.com/nodejs/node/blob/master/lib/internal/child_process.js):
