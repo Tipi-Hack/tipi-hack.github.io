@@ -4,7 +4,7 @@ authors: dabi0ne
 layout: writeup
 ctf_url: https://www.breizhctf.com/
 ---
-Solves: 2 / Points: ?? / Category: Jail
+Solves: 2 / Points: 200 / Category: Jail
 
 ## Challenge description 
 I've made a simple calculator in JS, I know I shouldn't use eval but with only 6 chars per line I should be safe.
@@ -31,7 +31,7 @@ Problem : Simple and good control -> no bypass :(
 
 Solution : 
 
-The calc program use the regexp  "^([0123456789*\/+%-_ 	])+$" to validate inputs.
+The calc program uses the regexp  "^([0123456789*\/+%-_ 	])+$" to validate inputs.
 
 The interesting point here is the position of the operator "-" which define an interval on a RegExp context when it's not escaped.
 Thus, all the characters between the "%" and "_",   A to Z included but not a to z.
@@ -320,7 +320,7 @@ def getQ():
     print "Q=_"
 ```
 
-The getQ function generate the instructions to obtain the letter "q" because there are no "q" on main or EVAL code.
+The getQ function generates the instructions to obtain the letter "q" because there are no "q" on main or EVAL code.
 
 Finally, we wrote the generation of the payload :
 
