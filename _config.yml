@@ -11,6 +11,7 @@ theme: jekyll-theme-cayman
 google_analytics: UA-116371773-1
 google_site_verification: hsPHMrLQytxuG3bJZNPIvtBG1Iv3W6X5FTUdkS-m7EI
 logo: /assets/logo.jpg
+host: 0.0.0.0
 
 plugins:
   - jekyll-redirect-from
