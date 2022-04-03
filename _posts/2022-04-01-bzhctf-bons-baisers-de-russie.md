@@ -412,7 +412,7 @@ From the BloodHound point of view, this user does not have any interesting privi
 
 We have to find another way to escalate privileges. At the beginning of the challenge, we had to play with PKINIT and PFX. Our nmap scan reveals that there is an ADCS role installed on the domain controller and we didn't look at it yet. Time for ADCS information gathering!
 
-We use [Certipy](https://github.com/ly4k/Certipy>) excellent tool to enumerate ADCS objects and permissions:
+We use [Certipy](https://github.com/ly4k/Certipy) excellent tool to enumerate ADCS objects and permissions:
 ```
 $ certipy find -hashes "00000000000000000000000000000000:7a0f1f2a2b2a749312b97777b61cd6a5" 'CONTI.RU/Дарья@10.0.20.11'
 Certipy v2.0.9 - by Oliver Lyak (ly4k)
@@ -576,10 +576,10 @@ $ cat flag.txt
 BZHCTF{pwning_ru_domain_is_fun_no?}
 ```
 
-### Final thoughs
+### Final thoughts
 
 The challenge was not difficult from an Active Directory perspective. However, dealing with cyrillic characters was harder than we though because many tools don't support unicode correctly. We had to alternate between Linux and Windows tools to made it.
 
-For instance, when passing the hash with Mimikatz the user name is replaced with litteral `?` during NTLM authentication. On the other side Sharpkatz seemed to work fine, but we had so mess up with lsass memory that nothing was working fine in the VM... On the other side, all linux tools seemed to accept unicode character, but PKINITTools which if we're not mistaking relies on impacket.
+For instance, when passing the hash with Mimikatz the user name is replaced with litteral `?` during NTLM authentication. On the other side Sharpkatz seemed to work fine, but we had so mess up with lsass memory that nothing was working fine in the VM... On the other side, all linux tools seemed to accept unicode character except [PKINITTools](https://github.com/dirkjanm/PKINITtools) which if we're not mistaking relies on [minikerberos](https://github.com/skelsec/minikerberos) & [impacket](https://github.com/SecureAuthCorp/impacket).
 
 Final words go to Kaluche, thanks very much for this challenge, we had a lot of fun!
