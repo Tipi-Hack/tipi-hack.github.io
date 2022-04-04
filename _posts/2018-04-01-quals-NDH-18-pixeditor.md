@@ -1,6 +1,6 @@
 ---
 title: Quals NDH 2018 - PixEditor
-authors: Ghostx_0
+authors: _MrB0b
 layout: writeup
 ctf_url: https://nuitduhack.com/
 ---
