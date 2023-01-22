@@ -2,7 +2,7 @@
 title: "Insomni'Hack Teaser 2023 - Autopsy"
 authors: Crypt0-M3lon
 layout: writeup
-ctf_url: [https://teaser.insomnihack.ch/](https://teaser.insomnihack.ch/)/
+ctf_url: https://teaser.insomnihack.ch
 ---
 Category: forensic, windows, realistic
 
