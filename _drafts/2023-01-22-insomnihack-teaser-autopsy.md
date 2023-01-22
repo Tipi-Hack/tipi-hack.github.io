@@ -105,10 +105,10 @@ ins.keytab: Kerberos Keytab file, realm=inscorp.com, principal=adm-drp/, type=91
 Perfect, now the keytab can be loaded in Wireshark under KRB5 options:
 ![krb5 load keytab](/assets/ins_teaser23-autopsy-kerberos-keytab.png)
 
-Finally just filter on the `dcerpc` packet and look for interesting call, such as `SchRpcRegisterTask`, the previously encrypted data is decrypted:
+Finally, just filter on the `dcerpc` packets, and look for interesting calls, such as `SchRpcRegisterTask`. The previously encrypted data is now decrypted:
 ![decrypted stub](/assets/ins_teaser23-autopsy-decrypted-stub.png)
 
-All we have to do is copy the XML of the task and get the flag:
+All we have to do is copy the XML of the scheduled task, and get the flag:
 ```xml
 <?xml version="1.0" encoding="UTF-16"?>
 <Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
