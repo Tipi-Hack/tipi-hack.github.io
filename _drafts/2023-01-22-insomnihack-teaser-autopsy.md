@@ -18,18 +18,18 @@ Category: forensic, windows, realistic
 
 ### PCAP analysis and secrets extraction
 
-By analyzing the PCAP we can discover two types of communication:
+By analyzing the PCAP, we can discover two types of communication:
 * HTTP communication using WEBDAV in clear text
-* DCE/RPC call related to schedule task which are encrypted, we need a password or a hash to decrypt the traffic.
+* DCE/RPC calls related to scheduled tasks. These calls are encrypted, so we need a password or a hash to decrypt the traffic.
 
-If we take a deeper look to the WEBDAV browsed URL we can identify that the malicious actor was very interested by `NTDS.dit`, `SECURITY` or `SYSTEM` files. If the attacker was able to retrieve one of the file, the HTTP object object options should allow us to extract them easily.
+If we take a deeper look to the WEBDAV browsed URL, we can identify that the malicious actor was very interested by the `NTDS.dit`, `SECURITY` and `SYSTEM` files. If the attacker was able to retrieve some files, the Wireshark "Export Objects -> HTTP" feature should allow us to extract them easily.
 
-A simple order by size allow us to extract the three files:
+A simple order-by-size allows us to extract all three files:
 ![webdav file extraction](/assets/ins_teaser23-autopsy-webdav-files.png)
 
-Then it is possible to use `secretsdump` from impacket to extract domain secrets:
+Then, it is possible to use `secretsdump` from impacket to extract domain secrets:
 ```
-$ secretsdump.py -ntds ntds.dit -security SECURITY -system SYSTEM local                                                                                                                                                                                                          130 ↵
+$ secretsdump.py -ntds ntds.dit -security SECURITY -system SYSTEM local
 Impacket v0.9.24 - Copyright 2021 SecureAuth Corporation
 
 [*] Target system bootKey: 0x805486c875e5e6992d3d2afeb72c6999
@@ -71,21 +71,21 @@ inscorp.com\adm-drp:aes128-cts-hmac-sha1-96:c7e5d32f0b9e7da9d4c8cabac07b9277
 inscorp.com\adm-drp:des-cbc-md5:70ad4cdf7326dc62
 [*] Cleaning up... 
 ```
-Now we have secrets from the domain, but can we use it to decrypt DCE/RCP communication?
+Now we have secrets from the domain, but can we use them to decrypt DCE/RPC communications?
 
-### The DCE/RDP decryption problem
+### The DCE/RPC decryption problem
 
-One of our member, [@cnotin](https://twitter.com/cnotin/), recently wrote a blog post about [decrypting Kerberos/NTLM “encrypted stub data” in Wireshark](https://medium.com/tenable-techblog/decrypt-encrypted-stub-data-in-wireshark-deb132c076e7) (He also made a Workshop at Sharkfest 22 about it, [it's on Youtube](https://www.youtube.com/watch?v=5O1tKxEa1iY))in which he explains how to decrypt Kerberos communication using a keytab, but here we have NTLMSSP communication. He explains that it should be possible, as per the [Wireshark documentation](https://wiki.wireshark.org/NTLMSSP.md):
+One of our teammates, [@cnotin](https://twitter.com/cnotin/), recently wrote a blog post about [decrypting Kerberos/NTLM “encrypted stub data” in Wireshark](https://medium.com/tenable-techblog/decrypt-encrypted-stub-data-in-wireshark-deb132c076e7) (He also presented a workshop at Sharkfest 22 about it, [it's on Youtube](https://www.youtube.com/watch?v=5O1tKxEa1iY)), in which he explains how to decrypt Kerberos-encrypted communications using a keytab file, but here we have NTLMSSP-encrypted communication. He explains that it should be possible, as per the [Wireshark NTLMSSP documentation](https://wiki.wireshark.org/NTLMSSP.md):
 > The "NT Password" setting can contain a password used to decrypt NTLM exchanges: both the NTLM challenge/response and further protocol payloads (like DCE/RPC that may be encrypted with keys derived from the NTLM authentication.
 > Just input the user's password in the field. According to the source-code, only ASCII passwords are supported (due to the simple method for Unicode encoding). It doesn't seem to support NTLM hashes so make sure to use the cleartext password.
 
-Here come the problem, a clear text ASCII password is needed, but all we have is a NTLM hash. W tried to crack the hash without success, was it even possible? By taking a look at the [wireshark code related to NTLMSSP decrypting](https://gitlab.com/wireshark/wireshark/-/blob/master/epan/dissectors/packet-ntlmssp.c#L512), we realize that the hash is calculated by Wireshark itself before decoding the communication. A dirty solution that worked was to recompile Wireshark by adding the collowing code line 518 and recompile Wireshark:
+Here comes the problem: a clear-text ASCII password is needed, but all we have is an NTLM hash. We tried to crack the hash without success, was it even possible? By taking a look at the [wireshark code related to NTLMSSP decrypting](https://gitlab.com/wireshark/wireshark/-/blob/b71d87ed273fbadb92842d90ede49981ae1213e1/epan/dissectors/packet-ntlmssp.c#L512), we realize that the hash is calculated by Wireshark itself before decoding the communication. A dirty solution that worked, was to recompile Wireshark by adding the following code, on line 518, and recompile it:
 ```c
 // Copy our hash directly in the variable
 memcpy(nt_password_hash, "\x5c\x4d\xbe\x6a\x8a\x44\x44\x6f\x8d\x28\x99\xff\x08\xea\x14\xf2", NTLMSSP_KEY_LEN);
 ```
 
-But could it be done properly? The answer is yes! When loading decryption key (aka NTLM hash), Wireshark is also looking at Kerberos keytab using `read_keytab_file_from_preferences()` and then iterate over each keytab to load the `keyvalue`. Why? because if the Kerberos encryption type is 23 (rc4-hmac), then the NTLM hash is stored within the keytab. If our reading of the code is correct, it is possible to decrypt the DCE/RPC communication using a keytab, let's give it a try.
+But could it be done properly? The answer is yes! When loading decryption key (aka NTLM hash), Wireshark is also looking at the Kerberos keytab file, eventually provided, using `read_keytab_file_from_preferences()`, and then iterates over each key to load its `keyvalue`. Why? Because, if the Kerberos encryption type is 23 (rc4-hmac), then the HT hash is directly equal to the RC4 encryption key, stored within the keytab. If our reading of the code is correct, it is possible to decrypt the DCE/RPC communication using a keytab: let's give it a try!
 
 The first step is to forge a keytab using the previously retrieved hash. On Linux, `ktutil` can be used:
 ```
@@ -96,7 +96,7 @@ ktutil:  wkt ins.keytab
 ktutil:  q
 ```
 
-We can check that our keytabe etype is 23:
+We can check that our keytab contains the inserted key with etype 23:
 ```
 $ file ins.keytab 
 ins.keytab: Kerberos Keytab file, realm=inscorp.com, principal=adm-drp/, type=91085, date=Wed May 19 11:41:52 2060, kvno=23
